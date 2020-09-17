@@ -53,6 +53,7 @@
     <Compile Include="OtherTools\LogHelper.cs" />
     <Compile Include="OtherTools\OtherModel\RandomTimeEntity.cs" />
     <Compile Include="OtherTools\RandomHelper.cs" />
+    <Compile Include="OtherTools\RegularHelper.cs" />
     <Compile Include="OtherTools\TaskHelper.cs" />
     <Compile Include="OtherTools\UnicodeHelper.cs" />
     <Compile Include="OtherTools\XMLHelper.cs" />
