@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6C584DDC-7A73-44C9-86C3-2C0C31AE0047}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hyg.Common</RootNamespace>
+    <AssemblyName>Hyg.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="OtherTools\DataConvertHelper.cs" />
+    <Compile Include="OtherTools\LogHelper.cs" />
+    <Compile Include="OtherTools\OtherModel\RandomTimeEntity.cs" />
+    <Compile Include="OtherTools\RandomHelper.cs" />
+    <Compile Include="OtherTools\TaskHelper.cs" />
+    <Compile Include="OtherTools\UnicodeHelper.cs" />
+    <Compile Include="OtherTools\XMLHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WeChatTools\WeChatHelper.cs" />
+    <Compile Include="WeChatTools\WeChatModel\BaseEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\CardInfoEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\ChatRoomInfoEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\GroupMemberResponseEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\NewFriendInfo.cs" />
+    <Compile Include="CommonCacheConfig.cs" />
+    <Compile Include="WeChatTools\WeChatModel\FriendInfoEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\MessageTypeEnum.cs" />
+    <Compile Include="WeChatTools\WeChatModel\Recv_Accept_Friend_MsgEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\Recv_Decrypt_ImageEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\Recv_File_MsgEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\Recv_Image_MsgEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\Recv_Link_MsgEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\Recv_System_MsgEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\Recv_Text_MsgEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\Recv_Video_MsgEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\Robot_Group_MemberInfoEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\SendMessageEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\WeChat_ResponseInfo.cs" />
+    <Compile Include="WeChatTools\WeChatModel\WeChat_UserInfo.cs" />
+    <Compile Include="WeChatTools\WeChatParseHelper.cs" />
+    <Compile Include="WeChatTools\WeChatTools.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="JDTools\" />
+    <Folder Include="PDDTools\" />
+    <Folder Include="TaobaoTools\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
