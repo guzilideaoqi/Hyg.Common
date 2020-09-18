@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -257,6 +258,28 @@ namespace Hyg.Common.OtherTools
         public static string FileUrlReplace(this string fileUrl)
         {
             return fileUrl.Replace(@"\", @"\\");
+        }
+        #endregion
+
+        #region Model转字符串
+        public static string ModelToUriParam<T>(this T Model) {
+            PropertyInfo[] propertis = Model.GetType().GetProperties();
+            StringBuilder sb = new StringBuilder();
+            foreach (var p in propertis)
+            {
+                var v = p.GetValue(Model, null);
+                if (v.IsEmpty())
+                    continue;
+
+                sb.Append(p.Name);
+                sb.Append("=");
+                //sb.Append(HttpUtility.UrlEncode(v.ToString()));
+                sb.Append(v.ToString());
+                sb.Append("&");
+            }
+            sb.Remove(sb.Length - 1, 1);
+
+            return sb.ToString();
         }
         #endregion
     }

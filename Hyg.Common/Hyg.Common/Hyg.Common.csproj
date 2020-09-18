@@ -42,6 +42,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\System.Data.SQLite.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,8 +51,65 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTKTools\DTKModel\ActivityCatalogueItem.cs" />
+    <Compile Include="DTKTools\DTKModel\CategoryItem.cs" />
+    <Compile Include="DTKTools\DTKModel\DTK_Activity_GoodListResult.cs" />
+    <Compile Include="DTKTools\DTKModel\CommonResponseBase.cs" />
+    <Compile Include="DTKTools\DTKModel\DTK_Good_DetailsItem.cs" />
+    <Compile Include="DTKTools\DTKModel\DTK_OrderItem.cs" />
+    <Compile Include="DTKTools\DTKModel\DTK_Order_DataPaging.cs" />
+    <Compile Include="DTKTools\DTKModel\DTK_SearchGoodList.cs" />
+    <Compile Include="DTKTools\DTKModel\DTK_TB_Service_GoodItem.cs" />
+    <Compile Include="DTKTools\DTKModel\DTK_Topic_GoodListResult.cs" />
+    <Compile Include="DTKTools\DTKModel\OPGoodList.cs" />
+    <Compile Include="DTKTools\DTKModel\ParseContent.cs" />
+    <Compile Include="DTKTools\DTKModel\PrivilegeLinkResult.cs" />
+    <Compile Include="DTKTools\DTKModel\RankingItem.cs" />
+    <Compile Include="DTKTools\DTKModel\SuggestionItem.cs" />
+    <Compile Include="DTKTools\DTKModel\SuperGoodList.cs" />
+    <Compile Include="DTKTools\DTKModel\TB_TopicItem.cs" />
+    <Compile Include="DTKTools\DTKModel\Top100Data.cs" />
+    <Compile Include="DTKTools\DTKModel\TopicCatalogueItem.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Activity_CatalogueRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Activity_GoodListRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Get_dtk_Search_GoodRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Get_Good_DetailsRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_OP_ListRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Order_DataRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Parse_ContentRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Privilege_LinkRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Ranking_ListRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Search_SuggestionRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Super_CategoryRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Super_GoodRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_TB_Service_GoodRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_TB_Topic_ListRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Top100_Request.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Topic_CatalogueRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Topic_GoodListRequest.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Activity_CatalogueResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Activity_GoodListResponse.cs" />
+    <Compile Include="DTKTools\DTKModel\GoodInfoBase.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Get_dtk_Search_GoodResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Get_Good_DetailsResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_OP_ListResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Order_DataResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Parse_ContentResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Privilege_LinkResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Ranking_ListResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Search_SuggestionResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Super_CategoryResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Super_GoodResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_TB_Service_GoodResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_TB_Topic_ListResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Top100_Response.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Topic_CatalogueResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Topic_GoodListResponse.cs" />
+    <Compile Include="DTKTools\DTK_ApiManage.cs" />
+    <Compile Include="OtherTools\AjaxRequest.cs" />
     <Compile Include="OtherTools\DataConvertHelper.cs" />
     <Compile Include="OtherTools\LogHelper.cs" />
+    <Compile Include="OtherTools\Md5Helper.cs" />
     <Compile Include="OtherTools\OtherModel\RandomTimeEntity.cs" />
     <Compile Include="OtherTools\RandomHelper.cs" />
     <Compile Include="OtherTools\RegularHelper.cs" />

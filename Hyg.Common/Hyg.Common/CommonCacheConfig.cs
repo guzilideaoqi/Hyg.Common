@@ -61,5 +61,20 @@ namespace Hyg.Common
         /// </summary>
         public static Queue<NewFriendInfo> newFriendInfoList = new Queue<NewFriendInfo>();
         #endregion
+
+        #region 大淘客账号配置
+        /// <summary>
+        /// 大淘客appkey
+        /// </summary>
+        public static string dtk_appkey = "";
+        /// <summary>
+        /// 大淘客appsecret
+        /// </summary>
+        public static string dtk_appsecret = "";
+        /// <summary>
+        /// 大淘客api域名地址
+        /// </summary>
+        public static string dtk_api_host = "https://openapi.dataoke.com/";
+        #endregion
     }
 }
