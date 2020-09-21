@@ -76,5 +76,24 @@ namespace Hyg.Common
         /// </summary>
         public static string dtk_api_host = "https://openapi.dataoke.com/";
         #endregion
+
+        #region 拼多多账号配置
+        /// <summary>
+        /// 拼多多appkey
+        /// </summary>
+        public static string pdd_appkey = "";
+        /// <summary>
+        /// 拼多多appsecret
+        /// </summary>
+        public static string pdd_appsecret = "";
+        /// <summary>
+        /// 拼多多accesstoken
+        /// </summary>
+        public static string pdd_accesstoken = "";
+        /// <summary>
+        /// 拼多多接口域名地址
+        /// </summary>
+        public static string pdd_api_host = "http://gw-api.pinduoduo.com/api/router";
+        #endregion
     }
 }

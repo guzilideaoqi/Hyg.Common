@@ -281,6 +281,27 @@ namespace Hyg.Common.OtherTools
 
             return sb.ToString();
         }
+
+        public static Dictionary<string, string> ModelToUriParamByDic<T>(this T Model) {
+            PropertyInfo[] propertis = Model.GetType().GetProperties();
+            Dictionary<string, string> dic_Param = new Dictionary<string, string>();
+            foreach (var p in propertis)
+            {
+                var v = p.GetValue(Model, null);
+                if (v.IsEmpty())
+                    continue;
+
+                if (p.PropertyType.Name == "String[]")
+                {
+                    dic_Param.Add(p.Name, v.ToJsonStr());
+                }
+                else {
+                    dic_Param.Add(p.Name, v.ToString());
+                }
+            }
+            
+            return dic_Param;
+        }
         #endregion
     }
 }

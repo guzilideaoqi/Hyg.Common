@@ -3,6 +3,10 @@ using Hyg.Common.DTKTools;
 using Hyg.Common.DTKTools.DTKRequest;
 using Hyg.Common.DTKTools.DTKResponse;
 using Hyg.Common.OtherTools;
+using Hyg.Common.OtherTools.OtherModel;
+using Hyg.Common.PDDTools;
+using Hyg.Common.PDDTools.PDDRequest;
+using Hyg.Common.PDDTools.PDDResponse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +22,25 @@ namespace TestTool
             try
             {
                 CommonCacheConfig.dtk_appkey = "5d2fd0a674e69"; CommonCacheConfig.dtk_appsecret = "7ac9d649468d3603ef506224c9298497";
+                CommonCacheConfig.pdd_appkey = "ac48d84bf6064db4be917cd26d71f9bb"; CommonCacheConfig.pdd_appsecret = "ec47368867643a48b5beab50dd97ebaf7fe96f55";
+                PDD_ApiManage pDD_ApiManage = new PDD_ApiManage();
+                //Goods_Zs_UnitGenerateRequest goods_Zs_UnitGenerateRequest = new Goods_Zs_UnitGenerateRequest();
+                //goods_Zs_UnitGenerateRequest.custom_parameters = "666";
+                //goods_Zs_UnitGenerateRequest.pid = "1912666_125576394";
+                //goods_Zs_UnitGenerateRequest.source_url = "https://p.pinduoduo.com/doXbmz4V";
+                //Goods_Zs_UnitGenerateResponse goods_Zs_UnitGenerateResponse = pDD_ApiManage.Good_Convert_Link(goods_Zs_UnitGenerateRequest);
+
+                //Goods_Promotion_Url_GenerateRequest goods_Promotion_Url_GenerateRequest = new Goods_Promotion_Url_GenerateRequest();
+                //goods_Promotion_Url_GenerateRequest.custom_parameters = "888";
+                //goods_Promotion_Url_GenerateRequest.goods_id_list = new string[] { "177521731055" };
+                //goods_Promotion_Url_GenerateRequest.p_id = "1912666_125576394";
+                //Goods_Promotion_Url_GenerateResponse goods_Promotion_Url_GenerateResponse = pDD_ApiManage.Good_Promotion_Url(goods_Promotion_Url_GenerateRequest);
+
+                IncrementOrderListRequest incrementOrderListRequest = new IncrementOrderListRequest();
+                incrementOrderListRequest.start_update_time = long.Parse(DateTimeHelper.ConvertDateTimeToInt(DateTime.Parse("2020-09-13 07:56:09")));
+                incrementOrderListRequest.end_update_time = long.Parse(DateTimeHelper.ConvertDateTimeToInt(DateTime.Parse("2020-09-14 07:56:09")));
+                IncrementOrder_List_GetResponse incrementOrder_List_GetResponse= pDD_ApiManage.GetIncrementOrderList(incrementOrderListRequest);
+                return;
                 DTK_ApiManage dTK_ApiManage = new DTK_ApiManage();
                 int apiType = 17;
                 object apiData = null;

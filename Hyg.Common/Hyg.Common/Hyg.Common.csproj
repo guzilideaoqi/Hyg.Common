@@ -110,12 +110,23 @@
     <Compile Include="OtherTools\DataConvertHelper.cs" />
     <Compile Include="OtherTools\LogHelper.cs" />
     <Compile Include="OtherTools\Md5Helper.cs" />
+    <Compile Include="OtherTools\OtherModel\DateTimeHelper.cs" />
     <Compile Include="OtherTools\OtherModel\RandomTimeEntity.cs" />
     <Compile Include="OtherTools\RandomHelper.cs" />
     <Compile Include="OtherTools\RegularHelper.cs" />
     <Compile Include="OtherTools\TaskHelper.cs" />
     <Compile Include="OtherTools\UnicodeHelper.cs" />
     <Compile Include="OtherTools\XMLHelper.cs" />
+    <Compile Include="PDDTools\PDDModel\Goods_Promotion_Url_GenerateEntity.cs" />
+    <Compile Include="PDDTools\PDDModel\Good_Zs_UnitGenerateEntity.cs" />
+    <Compile Include="PDDTools\PDDModel\Order_List_GetEntity.cs" />
+    <Compile Include="PDDTools\PDDRequest\Goods_Promotion_Url_GenerateRequest.cs" />
+    <Compile Include="PDDTools\PDDRequest\Goods_Zs_UnitGenerateRequest.cs" />
+    <Compile Include="PDDTools\PDDRequest\IncrementOrderListRequest.cs" />
+    <Compile Include="PDDTools\PDDResponse\Goods_Promotion_Url_GenerateResponse.cs" />
+    <Compile Include="PDDTools\PDDResponse\Goods_Zs_UnitGenerateResponse.cs" />
+    <Compile Include="PDDTools\PDDResponse\IncrementOrder_List_GetResponse.cs" />
+    <Compile Include="PDDTools\PDD_ApiManage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WeChatTools\WeChatHelper.cs" />
     <Compile Include="WeChatTools\WeChatModel\BaseEntity.cs" />
@@ -143,7 +154,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="JDTools\" />
-    <Folder Include="PDDTools\" />
     <Folder Include="TaobaoTools\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

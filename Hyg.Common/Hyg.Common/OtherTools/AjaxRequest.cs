@@ -21,7 +21,7 @@ namespace Hyg.Common.OtherTools
     public class AjaxRequest
     {
         static HttpWebResponse response = null;
-        public static string HttpPost(string Url, string postDataStr, Dictionary<string, string> header = null, string cookie = "")
+        public static string HttpPost(string Url, string postDataStr, Dictionary<string, string> header = null, string cookie = "",string contenttype= "application/x-www-form-urlencoded;charset=UTF-8")
         {
             string token = "";
             try
@@ -29,7 +29,7 @@ namespace Hyg.Common.OtherTools
                 System.Net.ServicePointManager.Expect100Continue = false;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
                 request.Method = "POST";
-                request.ContentType = "application/x-www-form-urlencoded;charset=UTF-8";
+                request.ContentType = contenttype;
                 //request.ContentLength = postDataStr.Length;
                 request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
 
