@@ -36,10 +36,38 @@ namespace TestTool
                 //goods_Promotion_Url_GenerateRequest.p_id = "1912666_125576394";
                 //Goods_Promotion_Url_GenerateResponse goods_Promotion_Url_GenerateResponse = pDD_ApiManage.Good_Promotion_Url(goods_Promotion_Url_GenerateRequest);
 
-                IncrementOrderListRequest incrementOrderListRequest = new IncrementOrderListRequest();
-                incrementOrderListRequest.start_update_time = long.Parse(DateTimeHelper.ConvertDateTimeToInt(DateTime.Parse("2020-09-13 07:56:09")));
-                incrementOrderListRequest.end_update_time = long.Parse(DateTimeHelper.ConvertDateTimeToInt(DateTime.Parse("2020-09-14 07:56:09")));
-                IncrementOrder_List_GetResponse incrementOrder_List_GetResponse= pDD_ApiManage.GetIncrementOrderList(incrementOrderListRequest);
+                //IncrementOrderListRequest incrementOrderListRequest = new IncrementOrderListRequest();
+                //incrementOrderListRequest.start_update_time = long.Parse(DateTimeHelper.ConvertDateTimeToInt(DateTime.Parse("2020-09-13 07:56:09")));
+                //incrementOrderListRequest.end_update_time = long.Parse(DateTimeHelper.ConvertDateTimeToInt(DateTime.Parse("2020-09-14 07:56:09")));
+                //IncrementOrder_List_GetResponse incrementOrder_List_GetResponse= pDD_ApiManage.GetIncrementOrderList(incrementOrderListRequest);
+
+                //Order_Detail_GetRequest order_Detail_GetRequest = new Order_Detail_GetRequest();
+                //order_Detail_GetRequest.order_sn = "200913-277652767482724";
+                //Order_Detail_GetResponse order_Detail_GetResponse = pDD_ApiManage.GetOrderDetailInfo(order_Detail_GetRequest);
+
+                //Order_List_Range_GetRequest order_List_Range_GetRequest = new Order_List_Range_GetRequest();
+                //order_List_Range_GetRequest.end_time = "2020-09-14 07:56:09";
+                //order_List_Range_GetRequest.start_time = "2020-09-13 07:56:09";
+                //Order_List_Range_List_GetResponse order_List_Range_List_GetResponse = pDD_ApiManage.GetRangeOrderList(order_List_Range_GetRequest);
+
+                //Member_Authority_QueryRequest member_Authority_QueryRequest = new Member_Authority_QueryRequest();
+                //member_Authority_QueryRequest.custom_parameters = "{\"uid\":\"123\",\"sid\":\"666\"}";
+                //member_Authority_QueryRequest.pid = "1912666_125576394";
+                //Member_Authority_QueryResponse member_Authority_QueryResponse = pDD_ApiManage.GetMemberAuthorityQuery(member_Authority_QueryRequest);
+
+                //Rp_Prom_Url_GenerateRequest rp_Prom_Url_GenerateRequest = new Rp_Prom_Url_GenerateRequest();
+                //rp_Prom_Url_GenerateRequest.channel_type = 10;
+                //rp_Prom_Url_GenerateRequest.custom_parameters = "{\"uid\":\"123\",\"sid\":\"666\"}";
+                //rp_Prom_Url_GenerateRequest.p_id_list = new string[] { "1912666_125576394" };
+                //rp_Prom_Url_GenerateRequest.generate_short_url = true;
+                //Rp_Prom_Url_GenerateResponse rp_Prom_Url_GenerateResponse = pDD_ApiManage.Get_Rp_Prom_Url_Generate(rp_Prom_Url_GenerateRequest);
+
+                Good_SearchRequest good_SearchRequest = new Good_SearchRequest();
+                //good_SearchRequest.goods_id_list = new string[] { "177521731055" };
+                good_SearchRequest.keyword = "https://p.pinduoduo.com/doXbmz4V";
+                good_SearchRequest.pid = "1912666_125576394";
+                //good_SearchRequest.custom_parameters= "{\"uid\":\"123\",\"sid\":\"666\"}";
+                Good_Search_ListResponse good_Search_ListResponse = pDD_ApiManage.Good_Search_List(good_SearchRequest);
                 return;
                 DTK_ApiManage dTK_ApiManage = new DTK_ApiManage();
                 int apiType = 17;
