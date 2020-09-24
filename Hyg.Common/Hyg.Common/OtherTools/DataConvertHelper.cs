@@ -154,9 +154,8 @@ namespace Hyg.Common.OtherTools
         /// </summary>
         /// <param name="raw_msg"></param>
         /// <returns></returns>
-        public static string GetNewPersonNickName(this string raw_msg)
+        public static string GetNewPersonNickName(this string raw_msg,ref string newPersonNickName,ref string InviteNickName,ref bool IsSelf)
         {
-            string newPersonNickName = "";
             try
             {
                 Regex re = new Regex("(?<=\").*?(?=\")", RegexOptions.None);
@@ -164,13 +163,19 @@ namespace Hyg.Common.OtherTools
                 if (mc.Count == 1)
                 {
                     newPersonNickName = mc[0].Value;
+                    IsSelf = true;//自己邀请的
                 }
                 else if (mc.Count == 3)
                 {
                     if (raw_msg.Contains("邀请"))
+                    {
                         newPersonNickName = mc[2].Value;
-                    else
+                        InviteNickName = mc[0].Value;
+                    }
+                    else {
                         newPersonNickName = mc[0].Value;
+                        InviteNickName = mc[2].Value;
+                    }
                 }
             }
             catch (Exception)

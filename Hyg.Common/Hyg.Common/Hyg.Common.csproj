@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\DHProgram\DHWeChatRobot\WeChatRobot\QuickCreateQun\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -44,6 +44,7 @@
     </Reference>
     <Reference Include="System.Net" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -115,6 +116,7 @@
     <Compile Include="OtherTools\RandomHelper.cs" />
     <Compile Include="OtherTools\RegularHelper.cs" />
     <Compile Include="OtherTools\TaskHelper.cs" />
+    <Compile Include="OtherTools\Toast\MessageBoxExtend.cs" />
     <Compile Include="OtherTools\UnicodeHelper.cs" />
     <Compile Include="OtherTools\XMLHelper.cs" />
     <Compile Include="PDDTools\PDDModel\GenerateLink_BaseEntity.cs" />
@@ -151,6 +153,7 @@
     <Compile Include="WeChatTools\WeChatModel\CardInfoEntity.cs" />
     <Compile Include="WeChatTools\WeChatModel\ChatRoomInfoEntity.cs" />
     <Compile Include="WeChatTools\WeChatModel\GroupMemberResponseEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\LogoutWeChat.cs" />
     <Compile Include="WeChatTools\WeChatModel\NewFriendInfo.cs" />
     <Compile Include="CommonCacheConfig.cs" />
     <Compile Include="WeChatTools\WeChatModel\FriendInfoEntity.cs" />

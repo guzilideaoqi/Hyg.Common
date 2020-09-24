@@ -90,13 +90,7 @@ namespace Hyg.Common.WeChatTools
                 string image_name = Guid.NewGuid().ToString();
                 string filePath = dirPath + "\\" + image_name + ".jpg";
 
-                dynamic dy = new
-                {
-                    data = new { src_file = src_file, dest_file = filePath },
-                    type = (int)MessageTypeEnum.MT_DECRYPT_IMG_MSG
-                };
-                //string strMsg = "{\"data\":{\"src_file\":\"" + src_file.Replace(@"\", @"/\") + "\",\"dest_file\":\"" + filePath.Replace(@"\", @"/\") + "\"},\"type\":" + +"}";
-                string strMsg = dy.ToJsonStr();
+                string strMsg = "{\"data\":{\"src_file\":\"" + src_file.Replace(@"\", @"/\") + "\",\"dest_file\":\"" + filePath.Replace(@"\", @"/\") + "\"},\"type\":" + (int)MessageTypeEnum.MT_DECRYPT_IMG_MSG + "}";
                 SendWeChatData(WxClientId, strMsg);
             }
             catch (Exception ex)
@@ -357,6 +351,21 @@ namespace Hyg.Common.WeChatTools
             catch (Exception ex)
             {
                 LogHelper.WriteException("GetChatRoomInfoList", ex);
+            }
+        }
+
+        /// <summary>
+        /// 发送群公告
+        /// </summary>
+        public static void SendRoomNoticeMsg(uint WxClientId,string room_wxid,string notice) {
+            try
+            {
+                String strMsg = "{\"type\":" + (int)MessageTypeEnum.MT_MOD_ROOM_NOTICE_MSG + ",\"data\":{\"room_wxid\":\"" + room_wxid + "\",\"notice\":\"" + UnicodeHelper.EnUnicode(notice) + "\"}}";
+                SendWeChatData(WxClientId, strMsg);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("SendRoomNoticeMsg", ex);
             }
         }
 

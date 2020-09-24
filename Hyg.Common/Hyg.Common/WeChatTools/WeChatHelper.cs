@@ -97,8 +97,8 @@ namespace Hyg.Common.WeChatTools
         // 接收消息回调
         void WxRecvCallback(uint dwClient, IntPtr intPtr, uint dwSize)
         {
-            if (!CommonCacheConfig.Login_WeChat_UserInfo.Select(t => t.wx_clientid).Contains(dwClient) && CommonCacheConfig.Login_WeChat_UserInfo.Count < CommonCacheConfig.WeChatCount)//防止漏洞双开多获取个微信的数据
-                return;
+            //if (CommonCacheConfig.Login_WeChat_UserInfo.Select(t => t.wx_clientid).Contains(dwClient) || CommonCacheConfig.Login_WeChat_UserInfo.Count >= CommonCacheConfig.WeChatCount)//防止漏洞双开多获取个微信的数据
+            //    return;
 
             String recvData = Marshal.PtrToStringAnsi(intPtr);
             try
@@ -148,6 +148,8 @@ namespace Hyg.Common.WeChatTools
                         #endregion
                         break;
                     case MessageTypeEnum.MT_USER_LOGOUT:
+                        LogoutWeChat logoutWeChat = reponseInfo.data.ToString().ToJsonObject<LogoutWeChat>();
+                        CallBackWeChatMessage(logoutWeChat);
                         break;
                     case MessageTypeEnum.MT_SQL_QUERY:
                         break;
@@ -156,15 +158,16 @@ namespace Hyg.Common.WeChatTools
                     case MessageTypeEnum.MT_DATA_WXID_MSG:
                         break;
                     case MessageTypeEnum.MT_DATA_FRIENDS_MSG:
-                        TaskHelper.ExcuteNewTask(() => { weChatParseHelper.ParseCurrentFriendList(reponseInfo.data, dwClient.GetWxidByClientID()); }, 500);
+                        TaskHelper.ExcuteNewTask(() => { List<FriendInfoEntity> friendInfoList = weChatParseHelper.ParseCurrentFriendList(reponseInfo.data, dwClient.GetWxidByClientID()); CallBackWeChatMessage(friendInfoList); }, 500);
                         break;
                     case MessageTypeEnum.MT_DATA_CHATROOMS_MSG:
-                        TaskHelper.ExcuteNewTask(() => { weChatParseHelper.ParseCurrentChatRoomList(reponseInfo.data, dwClient.GetWxidByClientID()); }, 500);
+                        TaskHelper.ExcuteNewTask(() => { List<ChatRoomInfoEntity> chatRoomInfoList = weChatParseHelper.ParseCurrentChatRoomList(reponseInfo.data, dwClient.GetWxidByClientID()); CallBackWeChatMessage(chatRoomInfoList); }, 500);
                         break;
                     case MessageTypeEnum.MT_DATA_CHATROOM_MEMBERS_MSG:
                         TaskHelper.ExcuteNewTask(() =>
                         {
                             GroupMemberResponseEntity groupMemberResponseEntity = WeChatParseHelper.ConvertObjToModel<GroupMemberResponseEntity>(reponseInfo.data);
+                            CallBackWeChatMessage(groupMemberResponseEntity);
                             //GroupMemberService.BatchUpdateGroupMember(groupMemberResponseEntity);
                         }, 50);
                         break;
@@ -192,11 +195,11 @@ namespace Hyg.Common.WeChatTools
                         break;
                     case MessageTypeEnum.MT_RECV_TEXT_MSG:
                         Recv_Text_MsgEntity recv_Text_MsgEntity = weChatParseHelper.ParseRecvTextMsg(reponseInfo.data);
-                        logText = "消息文本->" + recv_Text_MsgEntity.from_wxid + "->" + recv_Text_MsgEntity.msg;
+                        //logText = "消息文本->" + recv_Text_MsgEntity.from_wxid + "->" + recv_Text_MsgEntity.msg;
 
                         TaskHelper.ExcuteNewTask(() =>
                         {
-                            if (!recv_Text_MsgEntity.from_wxid.IsSelf(dwClient)&& !recv_Text_MsgEntity.from_wxid.FilterMessage())
+                            if (!recv_Text_MsgEntity.from_wxid.IsSelf(dwClient) && !recv_Text_MsgEntity.from_wxid.FilterMessage())
                             {
                                 CallBackWeChatMessage(recv_Text_MsgEntity);
                             }
@@ -383,7 +386,6 @@ namespace Hyg.Common.WeChatTools
 
                 if (logText != "")
                     AddLogs(logText);
-                //Addlogs2(UnicodeHelper.DeUnicode(recvData));
             }
             catch (Exception ex)
             {
