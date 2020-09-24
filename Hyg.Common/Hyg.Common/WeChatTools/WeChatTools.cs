@@ -220,7 +220,7 @@ namespace Hyg.Common.WeChatTools
             try
             {
                 //String strMsg = "{\"type\": 11036, \"data\":{\"to_wxid\":\"" + to_wxid + "\", \"content\":\"" + UnicodeHelper.EnUnicode(content) + "\"}}";
-                String strMsg = "{\"type\":" + (int)MessageTypeEnum.MT_SEND_CHATROOM_ATMSG + ",\"data\":{\"to_wxid\":\"" + to_wxid + "\",\"content\":\"" + UnicodeHelper.EnUnicode(content) + "\",\"at_list\":[" + at_wxid + "]}}";
+                String strMsg = "{\"type\":" + (int)MessageTypeEnum.MT_SEND_CHATROOM_ATMSG + ",\"data\":{\"to_wxid\":\"" + to_wxid + "\",\"content\":\"" + UnicodeHelper.EnUnicode(content) + "\",\"at_list\":[\"" + at_wxid + "\"]}}";
                 SendWeChatData(WxClientId, strMsg);
             }
             catch (Exception ex)
