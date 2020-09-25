@@ -154,27 +154,75 @@ namespace Hyg.Common.OtherTools
         /// </summary>
         /// <param name="raw_msg"></param>
         /// <returns></returns>
-        public static string GetNewPersonNickName(this string raw_msg,ref string newPersonNickName,ref string InviteNickName,ref bool IsSelf)
+        public static string GetNewPersonNickName(this string raw_msg, ref string newPersonNickName, ref string InviteNickName, ref bool IsSelf)
         {
             try
             {
                 Regex re = new Regex("(?<=\").*?(?=\")", RegexOptions.None);
                 MatchCollection mc = re.Matches(raw_msg);
+
+                List<string> AllValues = new List<string>();
+                for (int i = 0; i < mc.Count; i++)
+                {
+                    AllValues.Add(mc[i].Value);
+                }
+
                 if (mc.Count == 1)
                 {
-                    newPersonNickName = mc[0].Value;
+                    newPersonNickName = AllValues[0];
+                    IsSelf = true;//自己邀请的
+                }
+                else if (mc.Count == 2)
+                {
+                    newPersonNickName = AllValues[0] + "\"" + AllValues[1];
                     IsSelf = true;//自己邀请的
                 }
                 else if (mc.Count == 3)
                 {
                     if (raw_msg.Contains("邀请"))
                     {
-                        newPersonNickName = mc[2].Value;
-                        InviteNickName = mc[0].Value;
+                        newPersonNickName = AllValues[2];
+                        InviteNickName = AllValues[0];
                     }
-                    else {
-                        newPersonNickName = mc[0].Value;
-                        InviteNickName = mc[2].Value;
+                    else
+                    {
+                        newPersonNickName = AllValues[0];
+                        InviteNickName = AllValues[2];
+                    }
+                }
+                else if (mc.Count > 3)
+                {
+                    if (raw_msg.Contains("邀请"))
+                    {
+                        var index = AllValues.IndexOf("邀请");//获取邀请的索引
+                        for (int i = 0; i < index; i++)
+                        {
+                            if (InviteNickName != "")
+                                InviteNickName += "\"";
+                            InviteNickName += AllValues[i];
+                        }
+                        for (int i = index + 1; i < AllValues.Count; i++)
+                        {
+                            if (newPersonNickName != "")
+                                newPersonNickName += "\"";
+                            newPersonNickName += AllValues[i];
+                        }
+                    }
+                    else if (raw_msg.Contains("通过扫描"))
+                    {
+                        var index = AllValues.IndexOf("通过扫描");//获取通过扫描的索引
+                        for (int i = 0; i < index; i++)
+                        {
+                            if (newPersonNickName != "")
+                                newPersonNickName += "\"";
+                            newPersonNickName += AllValues[i];
+                        }
+                        for (int i = index + 1; i < AllValues.Count; i++)
+                        {
+                            if (InviteNickName != "")
+                                InviteNickName += "\"";
+                            InviteNickName += AllValues[i];
+                        }
                     }
                 }
             }
@@ -267,7 +315,8 @@ namespace Hyg.Common.OtherTools
         #endregion
 
         #region Model转字符串
-        public static string ModelToUriParam<T>(this T Model) {
+        public static string ModelToUriParam<T>(this T Model)
+        {
             PropertyInfo[] propertis = Model.GetType().GetProperties();
             StringBuilder sb = new StringBuilder();
             foreach (var p in propertis)
@@ -287,7 +336,8 @@ namespace Hyg.Common.OtherTools
             return sb.ToString();
         }
 
-        public static Dictionary<string, string> ModelToUriParamByDic<T>(this T Model) {
+        public static Dictionary<string, string> ModelToUriParamByDic<T>(this T Model)
+        {
             PropertyInfo[] propertis = Model.GetType().GetProperties();
             Dictionary<string, string> dic_Param = new Dictionary<string, string>();
             foreach (var p in propertis)
@@ -300,11 +350,12 @@ namespace Hyg.Common.OtherTools
                 {
                     dic_Param.Add(p.Name, v.ToJsonStr());
                 }
-                else {
+                else
+                {
                     dic_Param.Add(p.Name, v.ToString());
                 }
             }
-            
+
             return dic_Param;
         }
         #endregion

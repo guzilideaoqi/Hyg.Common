@@ -45,6 +45,9 @@ namespace Hyg.Common.OtherTools
                         token = item.Value;
                 }
 
+                if (!CommonCacheConfig.token.IsEmpty() && !request.Headers.AllKeys.Contains("token"))
+                    request.Headers.Add("token", CommonCacheConfig.token);
+
                 byte[] byteData = Encoding.UTF8.GetBytes(postDataStr);
                 int length = byteData.Length;
                 request.ContentLength = length;
@@ -95,6 +98,10 @@ namespace Hyg.Common.OtherTools
                     if (item.Key == "token")
                         token = item.Value;
                 }
+
+                if (!CommonCacheConfig.token.IsEmpty() && !request.Headers.AllKeys.Contains("token"))
+                    request.Headers.Add("token", CommonCacheConfig.token);
+
                 response = (HttpWebResponse)request.GetResponse();
 
                 //HttpWebResponse response = (HttpWebResponse)request.GetResponse();

@@ -42,6 +42,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\System.Data.SQLite.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
@@ -109,6 +110,7 @@
     <Compile Include="DTKTools\DTK_ApiManage.cs" />
     <Compile Include="OtherTools\AjaxRequest.cs" />
     <Compile Include="OtherTools\DataConvertHelper.cs" />
+    <Compile Include="OtherTools\ImageHelper.cs" />
     <Compile Include="OtherTools\LogHelper.cs" />
     <Compile Include="OtherTools\Md5Helper.cs" />
     <Compile Include="OtherTools\OtherModel\DateTimeHelper.cs" />

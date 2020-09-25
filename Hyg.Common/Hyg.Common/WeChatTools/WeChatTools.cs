@@ -219,6 +219,7 @@ namespace Hyg.Common.WeChatTools
         {
             try
             {
+                content = content.Replace(@"\", @"\\").Replace("\"", "\\\"");
                 //String strMsg = "{\"type\": 11036, \"data\":{\"to_wxid\":\"" + to_wxid + "\", \"content\":\"" + UnicodeHelper.EnUnicode(content) + "\"}}";
                 String strMsg = "{\"type\":" + (int)MessageTypeEnum.MT_SEND_CHATROOM_ATMSG + ",\"data\":{\"to_wxid\":\"" + to_wxid + "\",\"content\":\"" + UnicodeHelper.EnUnicode(content) + "\",\"at_list\":[\"" + at_wxid + "\"]}}";
                 SendWeChatData(WxClientId, strMsg);
@@ -360,6 +361,7 @@ namespace Hyg.Common.WeChatTools
         public static void SendRoomNoticeMsg(uint WxClientId,string room_wxid,string notice) {
             try
             {
+                notice = notice.Replace(@"\", @"\\").Replace("\"", "\\\"");
                 String strMsg = "{\"type\":" + (int)MessageTypeEnum.MT_MOD_ROOM_NOTICE_MSG + ",\"data\":{\"room_wxid\":\"" + room_wxid + "\",\"notice\":\"" + UnicodeHelper.EnUnicode(notice) + "\"}}";
                 SendWeChatData(WxClientId, strMsg);
             }
