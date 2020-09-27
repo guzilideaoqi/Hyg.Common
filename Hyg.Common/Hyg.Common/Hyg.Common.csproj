@@ -109,6 +109,7 @@
     <Compile Include="DTKTools\DTKResponse\DTK_Topic_GoodListResponse.cs" />
     <Compile Include="DTKTools\DTK_ApiManage.cs" />
     <Compile Include="OtherTools\AjaxRequest.cs" />
+    <Compile Include="OtherTools\Base64Helper.cs" />
     <Compile Include="OtherTools\DataConvertHelper.cs" />
     <Compile Include="OtherTools\ImageHelper.cs" />
     <Compile Include="OtherTools\LogHelper.cs" />
