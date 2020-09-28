@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace Hyg.Common.OtherTools
 {
@@ -357,6 +358,12 @@ namespace Hyg.Common.OtherTools
             }
 
             return dic_Param;
+        }
+        #endregion
+
+        #region UrlEncode编码
+        public static string ToUrlEncode(this string text) {
+            return HttpUtility.UrlEncode(text);
         }
         #endregion
     }
