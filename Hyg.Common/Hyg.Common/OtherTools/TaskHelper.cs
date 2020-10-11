@@ -24,5 +24,9 @@ namespace Hyg.Common.OtherTools
                 action();
             }).Start();
         }
+
+        public static void Sleep(int time) {
+            Thread.Sleep(time);
+        }
     }
 }

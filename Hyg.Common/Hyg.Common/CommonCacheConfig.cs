@@ -77,6 +77,25 @@ namespace Hyg.Common
         public static string dtk_api_host = "https://openapi.dataoke.com/";
         #endregion
 
+        #region 京东账号配置
+        /// <summary>
+        /// 京东appkey
+        /// </summary>
+        public static string jd_appkey = "";
+        /// <summary>
+        /// 京东appsecret
+        /// </summary>
+        public static string jd_appsecret = "";
+        /// <summary>
+        /// 京东accesstoken
+        /// </summary>
+        public static string jd_accesstoken = "";
+        /// <summary>
+        /// 京东接口域名地址
+        /// </summary>
+        public static string jd_api_host = "https://router.jd.com/api";
+        #endregion
+
         #region 拼多多账号配置
         /// <summary>
         /// 拼多多appkey

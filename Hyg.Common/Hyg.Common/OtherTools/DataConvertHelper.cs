@@ -365,6 +365,10 @@ namespace Hyg.Common.OtherTools
         public static string ToUrlEncode(this string text) {
             return HttpUtility.UrlEncode(text);
         }
+
+        public static string ToUrlDecode(this string text) {
+            return HttpUtility.UrlDecode(text);
+        }
         #endregion
     }
 }

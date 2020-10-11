@@ -38,7 +38,9 @@ namespace Hyg.Common.DTKTools
         string api_tb_topic_list = CommonCacheConfig.dtk_api_host + "api/category/get-tb-topic-list";//官方活动推广
         string api_tb_service_list = CommonCacheConfig.dtk_api_host + "api/tb-service/get-tb-service";//联盟搜索
         string api_parse_content = CommonCacheConfig.dtk_api_host + "api/tb-service/parse-content";//淘客万能解析
-        string api_order_data= CommonCacheConfig.dtk_api_host + "api/tb-service/get-order-details";//淘宝客订单数据
+        string api_order_data = CommonCacheConfig.dtk_api_host + "api/tb-service/get-order-details";//淘宝客订单数据
+        string api_get_collection_list = CommonCacheConfig.dtk_api_host + "api/goods/get-collection-list";//我的收藏
+        string api_get_livematerial = CommonCacheConfig.dtk_api_host + "api/goods/liveMaterial-goods-list";//直播好货
         #endregion
 
         #region 获取商品详情
@@ -362,7 +364,8 @@ namespace Hyg.Common.DTKTools
         #endregion
 
         #region 获取订单
-        public DTK_Order_DataResponse GetOrderData(DTK_Order_DataRequest dTK_Order_DataRequest) {
+        public DTK_Order_DataResponse GetOrderData(DTK_Order_DataRequest dTK_Order_DataRequest)
+        {
             DTK_Order_DataResponse dTK_Order_DataResponse = null;
             try
             {
@@ -392,6 +395,40 @@ namespace Hyg.Common.DTKTools
                 LogHelper.WriteException("GetDTK_TBServiceGood", ex);
             }
             return dTK_TB_Service_GoodResponse;
+        }
+        #endregion
+
+        #region 我的收藏
+        public DTK_Get_CollectResponse GetDTK_CollectGood(DTK_Get_CollectRequest dTK_Get_CollectRequest)
+        {
+            DTK_Get_CollectResponse dTK_Get_CollectResponse = null;
+            try
+            {
+                string resultContent = GeneralApiParam(api_get_collection_list, dTK_Get_CollectRequest.ModelToUriParam());
+                dTK_Get_CollectResponse = resultContent.ToJsonObject<DTK_Get_CollectResponse>();
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("GetDTK_CollectGood", ex);
+            }
+            return dTK_Get_CollectResponse;
+        }
+        #endregion
+
+        #region 直播好货
+        public DTK_LiveMaterialGoodResponse GetDTK_LiveMaterialGood(DTK_LiveMaterialGoodRequest dTK_LiveMaterialGoodRequest)
+        {
+            DTK_LiveMaterialGoodResponse dTK_LiveMaterialGoodResponse = null;
+            try
+            {
+                string resultContent = GeneralApiParam(api_get_livematerial, dTK_LiveMaterialGoodRequest.ModelToUriParam());
+                dTK_LiveMaterialGoodResponse = resultContent.ToJsonObject<DTK_LiveMaterialGoodResponse>();
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("GetDTK_LiveMaterialGood", ex);
+            }
+            return dTK_LiveMaterialGoodResponse;
         }
         #endregion
 

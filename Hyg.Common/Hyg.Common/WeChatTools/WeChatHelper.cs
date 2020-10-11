@@ -82,8 +82,6 @@ namespace Hyg.Common.WeChatTools
             InitWeChatSocket(m_AcceptCallbackFunc, m_RecvCallbackFunc, m_CloseCallbackFunc);
             UseRecvJsUnicode();
 
-            AddLogs("初始化微信交互插件!");
-
             StartWeChat();//启动微信
         }
         #endregion

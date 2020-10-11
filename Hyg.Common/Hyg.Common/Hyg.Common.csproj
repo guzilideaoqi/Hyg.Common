@@ -57,12 +57,17 @@
     <Compile Include="DTKTools\DTKModel\CategoryItem.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_Activity_GoodListResult.cs" />
     <Compile Include="DTKTools\DTKModel\CommonResponseBase.cs" />
+    <Compile Include="DTKTools\DTKModel\DTK_Collect_GoodDetail.cs" />
+    <Compile Include="DTKTools\DTKModel\DTK_Collect_GoodResult.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_Good_DetailsItem.cs" />
+    <Compile Include="DTKTools\DTKModel\DTK_LiveMaterialGoodTemplate.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_OrderItem.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_Order_DataPaging.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_SearchGoodList.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_TB_Service_GoodItem.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_Topic_GoodListResult.cs" />
+    <Compile Include="DTKTools\DTKModel\DTK_LiveMaterialGood.cs" />
+    <Compile Include="DTKTools\DTKModel\DTK_LiveMaterialGoodResult.cs" />
     <Compile Include="DTKTools\DTKModel\OPGoodList.cs" />
     <Compile Include="DTKTools\DTKModel\ParseContent.cs" />
     <Compile Include="DTKTools\DTKModel\PrivilegeLinkResult.cs" />
@@ -74,8 +79,10 @@
     <Compile Include="DTKTools\DTKModel\TopicCatalogueItem.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Activity_CatalogueRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Activity_GoodListRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Get_CollectRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Get_dtk_Search_GoodRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Get_Good_DetailsRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_LiveMaterialGoodRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_OP_ListRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Order_DataRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Parse_ContentRequest.cs" />
@@ -92,8 +99,10 @@
     <Compile Include="DTKTools\DTKResponse\DTK_Activity_CatalogueResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Activity_GoodListResponse.cs" />
     <Compile Include="DTKTools\DTKModel\GoodInfoBase.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Get_CollectResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Get_dtk_Search_GoodResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Get_Good_DetailsResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_LiveMaterialGoodResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_OP_ListResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Order_DataResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Parse_ContentResponse.cs" />
@@ -108,10 +117,20 @@
     <Compile Include="DTKTools\DTKResponse\DTK_Topic_CatalogueResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Topic_GoodListResponse.cs" />
     <Compile Include="DTKTools\DTK_ApiManage.cs" />
+    <Compile Include="JDTools\JDModel\ConvertLinkResultEntity.cs" />
+    <Compile Include="JDTools\JDModel\JD_OrderBaseEntity.cs" />
+    <Compile Include="JDTools\JDRequest\UnionOpenOrderRowQueryRequest.cs" />
+    <Compile Include="JDTools\JDResponse\ConvertLinkResultResponse.cs" />
+    <Compile Include="JDTools\JDRequest\GoodQueryRequest.cs" />
+    <Compile Include="JDTools\JDRequest\UnionOpenPromotionCommonRequest.cs" />
+    <Compile Include="JDTools\JDResponse\GoodQueryResponse.cs" />
+    <Compile Include="JDTools\JDResponse\UnionOpenOrderRowQueryResponse.cs" />
+    <Compile Include="JDTools\JD_ApiManage.cs" />
     <Compile Include="OtherTools\AjaxRequest.cs" />
     <Compile Include="OtherTools\Base64Helper.cs" />
     <Compile Include="OtherTools\DataConvertHelper.cs" />
     <Compile Include="OtherTools\ImageHelper.cs" />
+    <Compile Include="OtherTools\IniHelper.cs" />
     <Compile Include="OtherTools\LogHelper.cs" />
     <Compile Include="OtherTools\Md5Helper.cs" />
     <Compile Include="OtherTools\OtherModel\DateTimeHelper.cs" />
@@ -177,7 +196,6 @@
     <Compile Include="WeChatTools\WeChatTools.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="JDTools\" />
     <Folder Include="TaobaoTools\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -38,6 +39,65 @@ namespace Hyg.Common.OtherTools
             {
                 LogHelper.WriteLog("", ex.Message);
             }
+            return O_Image;
+        }
+        #endregion
+
+        #region 下载图片并保存
+        /// <summary>
+        /// 下载图片并保存
+        /// </summary>
+        /// <param name="HttpUrl"></param>
+        /// <param name="fileName"></param>
+        /// <param name="LocalUrl">本地文件夹地址</param>
+        /// <returns></returns>
+        public static Image SaveDownImage(string HttpUrl, string FileName, string LocalDir)
+        {
+            Image O_Image = null;
+            try
+            {
+                string fileFullName = "";
+                if (LocalDir.IsEmpty())
+                    LocalDir = System.AppDomain.CurrentDomain.BaseDirectory + @"cache\";
+                if (FileName.IsEmpty())
+                    FileName = Guid.NewGuid().ToString();
+
+                if (!Directory.Exists(LocalDir))
+                    Directory.CreateDirectory(LocalDir);
+
+                fileFullName = LocalDir + FileName + ".png";
+
+                O_Image = DownImage(HttpUrl);
+
+                O_Image.Save(fileFullName);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("", ex.Message);
+            }
+
+            return O_Image;
+        }
+        #endregion
+
+        #region 读取本地图片
+        /// <summary>
+        /// 读取本地图片
+        /// </summary>
+        /// <param name="localUrl"></param>
+        /// <returns></returns>
+        public static Image ReadLocalImage(string LocalUrl)
+        {
+            Image O_Image = null;
+            try
+            {
+                O_Image = Image.FromFile(LocalUrl);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteLog("", ex.Message);
+            }
+
             return O_Image;
         }
         #endregion

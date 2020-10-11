@@ -215,13 +215,21 @@ namespace Hyg.Common.WeChatTools
         /// <param name="to_wxid">接受人</param>
         /// <param name="content">消息内容</param>
         /// <param name="at_wxid">at用户id  传入格式("123","456")</param>
-        public static void SendTextMsg(uint WxClientId, string to_wxid, string content, string at_wxid)
+        public static void SendTextMsg(uint WxClientId, string to_wxid, string content, string[] at_wxidList)
         {
             try
             {
+                string at_wxid = "";
+                for (int i = 0; i < at_wxidList.Length; i++)
+                {
+                    if (at_wxid != "")
+                        at_wxid += ",";
+                    at_wxid += "\"" + at_wxidList[i] + "\"";
+                }
+
                 content = content.Replace(@"\", @"\\").Replace("\"", "\\\"");
                 //String strMsg = "{\"type\": 11036, \"data\":{\"to_wxid\":\"" + to_wxid + "\", \"content\":\"" + UnicodeHelper.EnUnicode(content) + "\"}}";
-                String strMsg = "{\"type\":" + (int)MessageTypeEnum.MT_SEND_CHATROOM_ATMSG + ",\"data\":{\"to_wxid\":\"" + to_wxid + "\",\"content\":\"" + UnicodeHelper.EnUnicode(content) + "\",\"at_list\":[\"" + at_wxid + "\"]}}";
+                String strMsg = "{\"type\":" + (int)MessageTypeEnum.MT_SEND_CHATROOM_ATMSG + ",\"data\":{\"to_wxid\":\"" + to_wxid + "\",\"content\":\"" + UnicodeHelper.EnUnicode(content) + "\",\"at_list\":[" + at_wxid + "]}}";
                 SendWeChatData(WxClientId, strMsg);
             }
             catch (Exception ex)
@@ -358,7 +366,8 @@ namespace Hyg.Common.WeChatTools
         /// <summary>
         /// 发送群公告
         /// </summary>
-        public static void SendRoomNoticeMsg(uint WxClientId,string room_wxid,string notice) {
+        public static void SendRoomNoticeMsg(uint WxClientId, string room_wxid, string notice)
+        {
             try
             {
                 notice = notice.Replace(@"\", @"\\").Replace("\"", "\\\"");
@@ -401,21 +410,11 @@ namespace Hyg.Common.WeChatTools
                 if (sendMessageEntity.TextList.HasData())
                 {
                     string at_wxid = "";
-                    //构造@的人
-                    if (sendMessageEntity.at_user_wxid.HasData() && sendMessageEntity.to_wxid.IsQun())
-                    {
-                        for (int i = 0; i < sendMessageEntity.at_user_wxid.Length; i++)
-                        {
-                            if (at_wxid != "")
-                                at_wxid += ",";
-                            at_wxid += "\"" + sendMessageEntity.at_user_wxid[0] + "\"";
-                        }
-                    }
 
                     foreach (var item in sendMessageEntity.TextList)
                     {
                         if (!at_wxid.IsEmpty())//@人不为空则为群组@消息
-                            SendTextMsg(sendMessageEntity.dwClientID, sendMessageEntity.to_wxid, item, at_wxid);
+                            SendTextMsg(sendMessageEntity.dwClientID, sendMessageEntity.to_wxid, item, sendMessageEntity.at_user_wxid);
                         else
                             SendTextMsg(sendMessageEntity.dwClientID, sendMessageEntity.to_wxid, item);
                     }

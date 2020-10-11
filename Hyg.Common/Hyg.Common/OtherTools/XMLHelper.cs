@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace Hyg.Common.OtherTools
@@ -21,6 +22,11 @@ namespace Hyg.Common.OtherTools
     {
         public static XmlNode ResolveXML(string xmlStr, string nodeName, bool IsFirstLevel)
         {
+            #region 解析字符串特殊格式处理
+            Regex reg = new Regex("&");
+            xmlStr = reg.Replace(xmlStr, "&amp;");
+            #endregion
+
             XmlNode xmlNode = null;
             var doc = new XmlDocument();
             doc.LoadXml(xmlStr);

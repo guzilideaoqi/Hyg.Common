@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Hyg.Common.OtherTools
@@ -75,6 +77,62 @@ namespace Hyg.Common.OtherTools
                 return "";
             }
 
+        }
+
+        public static string HttpPost(string url, CookieContainer myCookieContainer, string param = null, string ContentType = "application/x-www-form-urlencoded;charset=UTF-8")
+        {
+            HttpWebRequest httpWebRequest;
+            if (url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+            {
+                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(AjaxRequest.CheckValidationResult);
+                httpWebRequest = (WebRequest.Create(url) as HttpWebRequest);
+                httpWebRequest.ProtocolVersion = HttpVersion.Version10;
+            }
+            else
+            {
+                httpWebRequest = (WebRequest.Create(url) as HttpWebRequest);
+            }
+            httpWebRequest.CookieContainer = myCookieContainer;
+            httpWebRequest.Proxy = null;
+            httpWebRequest.Method = "POST";
+            httpWebRequest.ContentType = ContentType;
+            httpWebRequest.Accept = "*/*";
+            httpWebRequest.Timeout = 15000;
+            httpWebRequest.AllowAutoRedirect = false;
+            string result = null;
+            try
+            {
+                byte[] byteData = Encoding.UTF8.GetBytes(param);
+                int length = byteData.Length;
+                httpWebRequest.ContentLength = length;
+                Stream writer = httpWebRequest.GetRequestStream();
+                writer.Write(byteData, 0, length);
+                writer.Close();
+
+                /*StreamWriter streamWriter = new StreamWriter(httpWebRequest.GetRequestStream());
+                streamWriter.Write(param);
+                streamWriter.Close();*/
+                WebResponse response = httpWebRequest.GetResponse();
+                if (response != null)
+                {
+                    StreamReader streamReader = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
+                    result = streamReader.ReadToEnd();
+                    streamReader.Close();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+            }
+            return result;
+        }
+
+        private static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
+        {
+            return true;
         }
 
         public static string HttpGet(string Url, string postDataStr, Dictionary<string, string> header = null, bool parseLogin = true)
