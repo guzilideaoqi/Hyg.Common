@@ -129,6 +129,7 @@
     <Compile Include="OtherTools\AjaxRequest.cs" />
     <Compile Include="OtherTools\Base64Helper.cs" />
     <Compile Include="OtherTools\DataConvertHelper.cs" />
+    <Compile Include="OtherTools\HashHelper.cs" />
     <Compile Include="OtherTools\ImageHelper.cs" />
     <Compile Include="OtherTools\IniHelper.cs" />
     <Compile Include="OtherTools\LogHelper.cs" />
