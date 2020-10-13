@@ -61,11 +61,19 @@ namespace Hyg.Common.WeChatTools
         /// <summary>
         /// 获取群成员信息列表
         /// </summary>
-        public static void GetChatRoomInfoList(uint WxClientId, string room_wxid)
+        public static void GetChatRoomInfoList(uint WxClientId, string room_wxid, bool IsNetWork = false)
         {
             try
             {
-                string strMsg = "{\"data\":{\"room_wxid\": \"" + room_wxid + "\"},\"type\":" + (int)MessageTypeEnum.MT_DATA_CHATROOM_MEMBERS_MSG + "}";
+                string strMsg = "";
+                if (IsNetWork)
+                {
+                    strMsg = "{\"data\":{\"room_wxid\": \"" + room_wxid + "\"},\"type\":" + (int)MessageTypeEnum.MT_UPDATE_ROOM_MEMBER_MSG + "}";
+                }
+                else
+                {
+                    strMsg = "{\"data\":{\"room_wxid\": \"" + room_wxid + "\"},\"type\":" + (int)MessageTypeEnum.MT_DATA_CHATROOM_MEMBERS_MSG + "}";
+                }
                 SendWeChatData(WxClientId, strMsg);
             }
             catch (Exception ex)
