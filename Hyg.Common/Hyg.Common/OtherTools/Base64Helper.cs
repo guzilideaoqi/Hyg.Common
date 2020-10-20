@@ -34,7 +34,7 @@ namespace Hyg.Common.OtherTools
             return encode;
         }
         ///解码
-        public static string DecodeBase64(string code_type, string code)
+        public static string DecodeBase64(string code,string code_type= "utf-8")
         {
             string decode = "";
             byte[] bytes = Convert.FromBase64String(code);

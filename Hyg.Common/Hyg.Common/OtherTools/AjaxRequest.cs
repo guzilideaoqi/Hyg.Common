@@ -6,6 +6,7 @@
 备注说明 : 
 
  =====================================End=======================================================*/
+using Hyg.Common.OtherTools.OtherModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -49,6 +50,7 @@ namespace Hyg.Common.OtherTools
 
                 if (!CommonCacheConfig.token.IsEmpty() && !request.Headers.AllKeys.Contains("token"))
                     request.Headers.Add("token", CommonCacheConfig.token);
+                request.Headers.Add("timestamp", DateTimeHelper.ConvertDateTimeToInt(DateTime.Now));
 
                 byte[] byteData = Encoding.UTF8.GetBytes(postDataStr);
                 int length = byteData.Length;
@@ -159,6 +161,8 @@ namespace Hyg.Common.OtherTools
 
                 if (!CommonCacheConfig.token.IsEmpty() && !request.Headers.AllKeys.Contains("token"))
                     request.Headers.Add("token", CommonCacheConfig.token);
+
+                request.Headers.Add("timestamp", DateTimeHelper.ConvertDateTimeToInt(DateTime.Now));
 
                 response = (HttpWebResponse)request.GetResponse();
 
