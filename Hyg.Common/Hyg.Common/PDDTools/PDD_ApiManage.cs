@@ -8,6 +8,7 @@
  =====================================End=======================================================*/
 using Hyg.Common.OtherTools;
 using Hyg.Common.OtherTools.OtherModel;
+using Hyg.Common.PDDTools.PDDModel;
 using Hyg.Common.PDDTools.PDDRequest;
 using Hyg.Common.PDDTools.PDDResponse;
 using System;
@@ -126,7 +127,8 @@ namespace Hyg.Common.PDDTools
         /// </summary>
         /// <param name="order_List_Range_GetRequest"></param>
         /// <returns></returns>
-        public Order_List_Range_List_GetResponse GetRangeOrderList(Order_List_Range_GetRequest order_List_Range_GetRequest) {
+        public Order_List_Range_List_GetResponse GetRangeOrderList(Order_List_Range_GetRequest order_List_Range_GetRequest)
+        {
             Order_List_Range_List_GetResponse order_List_Range_List_GetResponse = null;
             try
             {
@@ -149,7 +151,8 @@ namespace Hyg.Common.PDDTools
         /// </summary>
         /// <param name="member_Authority_QueryRequest"></param>
         /// <returns></returns>
-        public Member_Authority_QueryResponse GetMemberAuthorityQuery(Member_Authority_QueryRequest member_Authority_QueryRequest) {
+        public Member_Authority_QueryResponse GetMemberAuthorityQuery(Member_Authority_QueryRequest member_Authority_QueryRequest)
+        {
             Member_Authority_QueryResponse member_Authority_QueryResponse = null;
             try
             {
@@ -172,7 +175,8 @@ namespace Hyg.Common.PDDTools
         /// </summary>
         /// <param name="rp_Prom_Url_GenerateRequest"></param>
         /// <returns></returns>
-        public Rp_Prom_Url_GenerateResponse Get_Rp_Prom_Url_Generate(Rp_Prom_Url_GenerateRequest rp_Prom_Url_GenerateRequest) {
+        public Rp_Prom_Url_GenerateResponse Get_Rp_Prom_Url_Generate(Rp_Prom_Url_GenerateRequest rp_Prom_Url_GenerateRequest)
+        {
             Rp_Prom_Url_GenerateResponse rp_Prom_Url_GenerateResponse = null;
             try
             {
@@ -190,7 +194,8 @@ namespace Hyg.Common.PDDTools
         #endregion
 
         #region 商品搜索
-        public Good_Search_ListResponse Good_Search_List(Good_SearchRequest good_SearchRequest) {
+        public Good_Search_ListResponse Good_Search_List(Good_SearchRequest good_SearchRequest)
+        {
             Good_Search_ListResponse good_Search_ListResponse = null;
             try
             {
@@ -207,8 +212,61 @@ namespace Hyg.Common.PDDTools
         }
         #endregion
 
+        #region 生成token
+        /// <summary>
+        /// 生成拼多多接口访问token
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public Pdd_TokenInfoEntity General_pdd_Token(string code)
+        {
+            Pdd_TokenInfoEntity pdd_TokenInfoEntity = null;
+            try
+            {
+                Dictionary<string, string> paramDic = new Dictionary<string, string>();
+                paramDic.Add("code", code);
+                string param = this.GetParam(paramDic, "pdd.pop.auth.token.create");
+                string resultContent = AjaxRequest.HttpPost(CommonCacheConfig.pdd_api_host + "?" + param, "", null, "", "application/json;charset=UTF-8");
+
+                pdd_TokenInfoEntity = resultContent.ToJsonObject<Pdd_TokenInfoResponse>().pop_auth_token_create_response;
+
+                LogHelper.WriteLog("General_pdd_Token", resultContent);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("General_pdd_Token", ex);
+            }
+
+            return pdd_TokenInfoEntity;
+        }
+        #endregion
+
+        #region 刷新token
+        public Pdd_TokenInfoEntity Refersh_pdd_Token(string refresh_token)
+        {
+            Pdd_TokenInfoEntity pdd_TokenInfoEntity = null;
+            try
+            {
+                Dictionary<string, string> paramDic = new Dictionary<string, string>();
+                paramDic.Add("refresh_token", refresh_token);
+                string param = this.GetParam(paramDic, "pdd.pop.auth.token.refresh");
+                string resultContent = AjaxRequest.HttpPost(CommonCacheConfig.pdd_api_host + "?" + param, "", null, "", "application/json;charset=UTF-8");
+
+                pdd_TokenInfoEntity = resultContent.ToJsonObject<Pdd_TokenInfoResponse>().pop_auth_token_refresh_response;
+
+                LogHelper.WriteLog("Refersh_pdd_Token", resultContent);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("Refersh_pdd_Token", ex);
+            }
+
+            return pdd_TokenInfoEntity;
+        }
+        #endregion
+
         #region 拼多多签名生成部分
-        private string GetParam(IDictionary<string, string> dic, string type)
+        public string GetParam(IDictionary<string, string> dic, string type)
         {
             dic.Add("client_id", CommonCacheConfig.pdd_appkey);
             dic.Add("data_type", "JSON");

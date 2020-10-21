@@ -152,6 +152,7 @@
     <Compile Include="PDDTools\PDDModel\Order_Detail_GetEntity.cs" />
     <Compile Include="PDDTools\PDDModel\Order_List_GetEntity.cs" />
     <Compile Include="PDDTools\PDDModel\Order_List_Range_ListEntity.cs" />
+    <Compile Include="PDDTools\PDDModel\Pdd_TokenInfoEntity.cs" />
     <Compile Include="PDDTools\PDDModel\Rp_Prom_Url_GenerateEntity.cs" />
     <Compile Include="PDDTools\PDDRequest\Goods_Promotion_Url_GenerateRequest.cs" />
     <Compile Include="PDDTools\PDDRequest\Goods_Zs_UnitGenerateRequest.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="PDDTools\PDDResponse\Member_Authority_QueryResponse.cs" />
     <Compile Include="PDDTools\PDDResponse\Order_Detail_GetResponse.cs" />
     <Compile Include="PDDTools\PDDResponse\Order_List_Range_List_GetResponse.cs" />
+    <Compile Include="PDDTools\PDDResponse\Pdd_TokenInfoResponse.cs" />
     <Compile Include="PDDTools\PDDResponse\Rp_Prom_Url_GenerateResponse.cs" />
     <Compile Include="PDDTools\PDD_ApiManage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
