@@ -6,9 +6,12 @@
 备注说明 : 京东接口调用类
 
  =====================================End=======================================================*/
+using Hyg.Common.JDTools.JDModel;
 using Hyg.Common.JDTools.JDRequest;
 using Hyg.Common.JDTools.JDResponse;
+using Hyg.Common.Model;
 using Hyg.Common.OtherTools;
+using Hyg.Common.OtherTools.OtherModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,8 +24,16 @@ namespace Hyg.Common.JDTools
     /// </summary>
     public class JD_ApiManage
     {
-        #region 查询商品
-        public List<JFGoodsRespRow> GetGoodQueryResult(GoodQueryRequest goodQueryRequest)
+        string jd_appkey = "", jd_appsecret = "", jd_accesstoken = "";
+        public JD_ApiManage(string j_appkey, string j_appsecret, string j_accesstoken)
+        {
+            this.jd_appkey = j_appkey;
+            this.jd_appsecret = j_appsecret;
+            this.jd_accesstoken = j_accesstoken;
+        }
+
+        #region 京粉精选商品查询接口
+        public List<JFGoodsRespRow> GetGoodQueryResultByKeyWord(GoodQueryRequest goodQueryRequest)
         {
             List<JFGoodsRespRow> JFGoodsRespRows = null;
             try
@@ -118,10 +129,74 @@ namespace Hyg.Common.JDTools
         }
         #endregion
 
-        #region 获取推广链接
-        public string GetConvertLink(UnionOpenPromotionCommonRequest unionOpenPromotionCommonRequest)
+        #region 关键词商品查询接口【申请】
+        public List<JFGoodsRespRow> Super_GetGoodQueryResultByKeyWord(Super_GoodQueryRequest super_GoodQueryRequest)
         {
-            string result = "";
+            List<JFGoodsRespRow> JFGoodsRespRows = null;
+            try
+            {
+                string resultContent = GetRequestResult(super_GoodQueryRequest.ToJsonStr(), "jd.union.open.goods.query");
+
+                Super_GoodQueryResponse super_GoodQueryResponse = resultContent.ToJsonObject<Super_GoodQueryResponse>();
+                Super_Jd_GoodInfo_Reponse super_Jd_GoodInfo_Reponse = super_GoodQueryResponse.jd_union_open_goods_query_response.result.ToJsonObject<Super_Jd_GoodInfo_Reponse>();
+
+                JFGoodsRespRows = ConvertJFGoods(super_Jd_GoodInfo_Reponse.data);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("Super_GetGoodQueryResultByKeyWord", ex);
+            }
+
+            return JFGoodsRespRows;
+        }
+
+        /// <summary>
+        /// 公用商品接口
+        /// </summary>
+        /// <param name="super_GoodQueryRequest"></param>
+        /// <returns></returns>
+        public List<CommonGoodInfoEntity> Super_GetGoodQueryResultByKeyWord_CommonGoodInfo(Super_GoodQueryRequest super_GoodQueryRequest)
+        {
+            List<CommonGoodInfoEntity> CommonGoodInfoList = null;
+            try
+            {
+                CommonGoodInfoList = ConvertCommonGoodInfo(Super_GetGoodQueryResultByKeyWord(super_GoodQueryRequest));
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("Super_GetGoodQueryResultByKeyWord_CommonGoodInfo", ex);
+            }
+
+            return CommonGoodInfoList;
+        }
+        #endregion
+
+        #region 优惠券领取情况查询接口【申请】
+        public List<Super_QueryCoupon_Detail> Super_QueryCouponInfo(Super_QueryCouponRequest super_QueryCouponRequest)
+        {
+            List<Super_QueryCoupon_Detail> Super_QueryCoupon_DetailList = null;
+            try
+            {
+                string resultContent = GetRequestResult(super_QueryCouponRequest.ToJsonStr(), "jd.union.open.coupon.query");
+
+                Super_QueryCouponResponse super_QueryCouponResponse = resultContent.ToJsonObject<Super_QueryCouponResponse>();
+                Super_QueryCoupon_Result super_QueryCoupon_Result = super_QueryCouponResponse.jd_union_open_coupon_query_response.result.ToJsonObject<Super_QueryCoupon_Result>();
+
+                Super_QueryCoupon_DetailList = super_QueryCoupon_Result.data;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("Super_QueryCouponInfo", ex);
+            }
+
+            return Super_QueryCoupon_DetailList;
+        }
+        #endregion
+
+        #region 网站/APP获取推广链接接口
+        public ConvertLinkResultEntity GetConvertLink(UnionOpenPromotionCommonRequest unionOpenPromotionCommonRequest)
+        {
+            ConvertLinkResultEntity convertLinkResultEntity = null;
             try
             {
                 string resultContent = GetRequestResult(unionOpenPromotionCommonRequest.ToJsonStr(), "jd.union.open.promotion.common.get");
@@ -132,7 +207,7 @@ namespace Hyg.Common.JDTools
                     ConvertLinkResultDetailResponse convertLinkResultDetailResponse = convertLinkResponse.jd_union_open_promotion_common_get_response.result.ToJsonObject<ConvertLinkResultDetailResponse>();
                     if (convertLinkResultDetailResponse.code == 200)
                     {
-                        result = convertLinkResultDetailResponse.data.clickURL;
+                        convertLinkResultEntity = convertLinkResultDetailResponse.data;
                     }
                     else
                     {
@@ -149,7 +224,165 @@ namespace Hyg.Common.JDTools
                 LogHelper.WriteException("GetConvertLink", ex);
             }
 
-            return result;
+            return convertLinkResultEntity;
+        }
+        #endregion
+
+        #region 社交媒体获取推广链接接口【申请】
+        public ConvertLinkResultEntity GetConvertLinkBySubUnionID(Super_PromotionBySubUnionidRequest super_PromotionBySubUnionidRequest)
+        {
+            ConvertLinkResultEntity convertLinkResultEntity = null;
+            try
+            {
+                string resultContent = GetRequestResult(super_PromotionBySubUnionidRequest.ToJsonStr(), "jd.union.open.promotion.bysubunionid.get");
+
+                Super_PromotionBySubUnionidResponse super_PromotionBySubUnionidResponse = resultContent.ToJsonObject<Super_PromotionBySubUnionidResponse>();
+
+
+                if (super_PromotionBySubUnionidResponse.jd_union_open_promotion_bysubunionid_get_response.code == 0)
+                {
+                    Super_PromotionBySubUnionidDetailResponse super_PromotionBySubUnionidDetailResponse = super_PromotionBySubUnionidResponse.jd_union_open_promotion_bysubunionid_get_response.result.ToJsonObject<Super_PromotionBySubUnionidDetailResponse>();
+                    if (super_PromotionBySubUnionidDetailResponse.code == 200)
+                    {
+                        convertLinkResultEntity = super_PromotionBySubUnionidDetailResponse.data;
+                    }
+                    else
+                    {
+                        LogHelper.WriteDebugLog("GetConvertLinkBySubUnionID", resultContent);
+                    }
+                }
+                else
+                {
+                    LogHelper.WriteDebugLog("GetConvertLinkBySubUnionID", resultContent);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("GetConvertLinkBySubUnionID", ex);
+            }
+
+            return convertLinkResultEntity;
+        }
+        #endregion
+
+        #region 工具商获取推广链接接口【申请】
+        public ConvertLinkResultEntity GetConvertLinkByTool(Super_PromotionByToolRequest super_PromotionByToolRequest)
+        {
+            ConvertLinkResultEntity convertLinkResultEntity = null;
+            try
+            {
+                string resultContent = GetRequestResult(super_PromotionByToolRequest.ToJsonStr(), "jd.union.open.promotion.byunionid.get");
+
+                Super_PromotionByUnionidResponse super_PromotionByUnionidResponse = resultContent.ToJsonObject<Super_PromotionByUnionidResponse>();
+
+                if (super_PromotionByUnionidResponse.jd_union_open_promotion_byunionid_get_response.code == 0)
+                {
+                    Super_PromotionByUnionidDetailResponse super_PromotionByUnionidDetailResponse = super_PromotionByUnionidResponse.jd_union_open_promotion_byunionid_get_response.result.ToJsonObject<Super_PromotionByUnionidDetailResponse>();
+                    if (super_PromotionByUnionidDetailResponse.code == 200)
+                    {
+                        convertLinkResultEntity = super_PromotionByUnionidDetailResponse.data;
+                    }
+                    else
+                    {
+                        LogHelper.WriteDebugLog("GetConvertLinkByTool", resultContent);
+                    }
+                }
+                else
+                {
+                    LogHelper.WriteDebugLog("GetConvertLinkByTool", resultContent);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("GetConvertLinkByTool", ex);
+            }
+
+            return convertLinkResultEntity;
+        }
+        #endregion
+
+        #region 查询推广位【申请】
+        public Super_QueryPositionResultInfo Get_PositionList(Super_QueryPositionRequest super_QueryPositionRequest)
+        {
+            Super_QueryPositionResultInfo super_QueryPositionResultInfo = null;
+            try
+            {
+                string resultContent = GetRequestResult(super_QueryPositionRequest.ToJsonStr(), "jd.union.open.position.query");
+
+                Super_QueryPositionResponse super_QueryPositionResponse = resultContent.ToJsonObject<Super_QueryPositionResponse>();
+                if (super_QueryPositionResponse.jd_union_open_position_query_response.code == 0)
+                {
+                    Super_QueryPositionData super_QueryPositionData = super_QueryPositionResponse.jd_union_open_position_query_response.result.ToJsonObject<Super_QueryPositionData>();
+                    if (super_QueryPositionData.code == 200)
+                    {
+                        super_QueryPositionResultInfo = super_QueryPositionData.data;
+                    }
+                    else
+                    {
+                        LogHelper.WriteDebugLog("Get_PositionList", resultContent);
+                    }
+                }
+                else
+                {
+                    LogHelper.WriteDebugLog("Get_PositionList", resultContent);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("Get_PositionList", ex);
+            }
+            return super_QueryPositionResultInfo;
+        }
+        #endregion
+
+        #region 创建推广位【申请】
+        /// <summary>
+        /// 创建推广位【申请】
+        /// </summary>
+        public Super_CreatePositionResult CreatePositionInfo(Super_CreatePositionRequest super_CreatePositionRequest)
+        {
+            Super_CreatePositionResult super_CreatePositionResult = null;
+            try
+            {
+                string resultContent = GetRequestResult(super_CreatePositionRequest.ToJsonStr(), "jd.union.open.position.create");
+                Super_CreatePositionResponse super_CreatePositionResponse = resultContent.ToJsonObject<Super_CreatePositionResponse>();
+                if (super_CreatePositionResponse.jd_union_open_position_create_response.code == 0)
+                {
+                    Super_CreatePositionData super_CreatePositionData = super_CreatePositionResponse.jd_union_open_position_create_response.result.ToJsonObject<Super_CreatePositionData>();
+                    if (super_CreatePositionData.code == 200)
+                    {
+                        super_CreatePositionResult = super_CreatePositionData.data;
+                    }
+                    else
+                    {
+                        LogHelper.WriteDebugLog("CreatePositionInfo", resultContent);
+                    }
+                }
+                else
+                {
+                    LogHelper.WriteDebugLog("CreatePositionInfo", resultContent);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("CreatePositionInfo", ex);
+            }
+
+            return super_CreatePositionResult;
+        }
+        #endregion
+
+        #region 获取PID【申请】 废弃的方法
+        public void QueryPIDList(Super_QueryPIDRequest super_QueryPIDRequest)
+        {
+            try
+            {
+                string resultContent = GetRequestResult(super_QueryPIDRequest.ToJsonStr(), "jd.union.open.user.pid.get");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         #endregion
 
@@ -232,14 +465,14 @@ namespace Hyg.Common.JDTools
         }
         private string GetParam(IDictionary<string, string> dic, string type)
         {
-            dic.Add("app_key", CommonCacheConfig.jd_appkey);
+            dic.Add("app_key", this.jd_appkey);
             //dic.Add("format", "json");
             dic.Add("timestamp", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));//this.ConvertDateTimeToInt(DateTime.Now)//DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
             dic.Add("method", type);
             dic.Add("v", "1.0");
-            //dic.Add("sign_method", "md5");
-            //dic.Add("access_token", this.access_token);
-            string inputText = CommonCacheConfig.jd_appsecret + this.GetSignContent(dic) + CommonCacheConfig.jd_appsecret;
+            dic.Add("sign_method", "md5");
+            dic.Add("access_token", this.jd_accesstoken);
+            string inputText = this.jd_appsecret + this.GetSignContent(dic) + this.jd_appsecret;
             string value = Md5Helper.Md5Hex(inputText).ToUpper();
             IEnumerator<KeyValuePair<string, string>> enumerator = dic.GetEnumerator();
             StringBuilder stringBuilder = new StringBuilder("");
@@ -255,6 +488,55 @@ namespace Hyg.Common.JDTools
                 }
             }
             return stringBuilder.Append("sign").Append("=").Append(value).ToString();
+        }
+        #endregion
+
+        #region 公用商品接口转换
+        List<CommonGoodInfoEntity> ConvertCommonGoodInfo(object WaitConvertGoodInfoList)
+        {
+            List<CommonGoodInfoEntity> commonGoodInfoList = null;
+            try
+            {
+                if (WaitConvertGoodInfoList is List<JFGoodsRespRow>)
+                {
+                    #region 京粉商品查询
+                    List<JFGoodsRespRow> JFGoodsRespRowList = WaitConvertGoodInfoList as List<JFGoodsRespRow>;
+                    foreach (JFGoodsRespRow item in JFGoodsRespRowList)
+                    {
+                        string[] images = item.images;
+                        commonGoodInfoList.Add(new CommonGoodInfoEntity
+                        {
+                            skuid = item.skuId,
+                            title = item.skuName,
+                            shopId = item.shopId,
+                            shopName = item.shopName,
+                            coupon_after_price = (item.price - item.discount).ToString(),
+                            coupon_price = item.discount.ToString(),
+                            origin_price = item.price.ToString(),
+                            coupon_end_time = DateTimeHelper.GetDateTimeFrom1970Ticks(item.getEndTime, true).ToString("yyyy-MM-dd HH:mm:ss"),
+                            coupon_start_time = DateTimeHelper.GetDateTimeFrom1970Ticks(item.getStartTime, true).ToString("yyyy-MM-dd HH:mm:ss"),
+                            detail_images = images,
+                            images = images,
+                            image = images != null ? images[0] : "",
+                            month_sales = item.inOrderCount30Days,
+                            TotalCommission = item.discount > 0 ? item.couponCommission : item.commission,
+                            PlaformType = 3,
+                            afterServiceScore = "4.9",
+                            logisticsLvyueScore = "4.85",
+                            userEvaluateScore = "4.8",
+                            remark = item.brandName,
+                            coupon_link = item.link
+                        });
+                    }
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("ConvertCommonGoodInfo", ex);
+            }
+
+            return commonGoodInfoList;
         }
         #endregion
     }

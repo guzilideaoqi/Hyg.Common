@@ -6,6 +6,7 @@
 备注说明 : 直播好货接口
 
  =====================================End=======================================================*/
+using Hyg.Common.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Hyg.Common.DTKTools.DTKRequest
     /// <summary>
     /// 直播好货接口
     /// </summary>
-    public class DTK_LiveMaterialGoodRequest
+    public class DTK_LiveMaterialGoodRequest : CommonGoodRequestParam
     {
         /// <summary>
         /// 接口版本号

@@ -148,6 +148,10 @@ namespace Hyg.Common.WeChatTools
                     case MessageTypeEnum.MT_USER_LOGOUT:
                         LogoutWeChat logoutWeChat = reponseInfo.data.ToString().ToJsonObject<LogoutWeChat>();
                         CallBackWeChatMessage(logoutWeChat);
+
+                        WeChat_UserInfo exit_wXInfo = CommonCacheConfig.Login_WeChat_UserInfo.Where(t => t.wxid == logoutWeChat.wxid).FirstOrDefault();
+                        if (!exit_wXInfo.IsEmpty())
+                            CommonCacheConfig.Login_WeChat_UserInfo.Remove(exit_wXInfo);
                         break;
                     case MessageTypeEnum.MT_SQL_QUERY:
                         break;

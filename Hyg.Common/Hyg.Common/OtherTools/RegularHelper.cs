@@ -103,7 +103,7 @@ namespace Hyg.Common.OtherTools
                     string str = getValue(jd_rule, content);
                     if (!str.IsEmpty())
                     {
-                        result = getValue(@"(https://u.jd.com/[a-zA-Z0-9]{6})", content);//获取商品短链接
+                        result = getValue(@"(https://u.jd.com/[a-zA-Z0-9]{6,})", content);//获取商品短链接
                         #region 判断是否为京东短链接
                         if (!result.IsEmpty())
                         {

@@ -6,6 +6,7 @@
 备注说明 : 商品查询请求参数
 
  =====================================End=======================================================*/
+using Hyg.Common.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Hyg.Common.PDDTools.PDDRequest
     /// <summary>
     /// 商品查询请求参数
     /// </summary>
-    public class Good_SearchRequest
+    public class Good_SearchRequest: CommonGoodRequestParam
     {
         /// <summary>
         /// 商品活动标记数组，例：[4,7]，4-秒杀，7-百亿补贴，24-品牌高佣，20-行业精选，21-金牌商家，10044-潜力爆品，其他的值请忽略

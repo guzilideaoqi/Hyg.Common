@@ -47,5 +47,14 @@ namespace Hyg.Common.OtherTools.Toast
         {
             return MessageBox.Show(text, "提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        /// <summary>
+        /// 操作确认框
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static DialogResult ConfirmMessage(string text) {
+            return MessageBox.Show( text, "操作确认", MessageBoxButtons.YesNo,MessageBoxIcon.Information);
+        }
     }
 }

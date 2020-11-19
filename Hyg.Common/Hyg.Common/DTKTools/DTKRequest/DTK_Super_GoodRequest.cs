@@ -6,6 +6,7 @@
 备注说明 : 超级搜索
 
  =====================================End=======================================================*/
+using Hyg.Common.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Hyg.Common.DTKTools.DTKRequest
     /// <summary>
     /// 超级搜索
     /// </summary>
-    public class DTK_Super_GoodRequest
+    public class DTK_Super_GoodRequest : CommonGoodRequestParam
     {
         /// <summary>
         /// 接口版本号

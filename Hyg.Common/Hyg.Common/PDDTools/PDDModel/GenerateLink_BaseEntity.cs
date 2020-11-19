@@ -3,7 +3,7 @@
 文件类名 : GenerateLink_BaseEntity.cs
 创建人员 : Mr.Hu
 创建时间 : 2020-09-22 16:33:51 
-备注说明 : 
+备注说明 : 转链结果基类
 
  =====================================End=======================================================*/
 using System;
@@ -14,7 +14,7 @@ using System.Text;
 namespace Hyg.Common.PDDTools.PDDModel
 {
     /// <summary>
-    /// GenerateLink_BaseEntity
+    /// 转链结果基类
     /// </summary>
     public class GenerateLink_BaseEntity
     {

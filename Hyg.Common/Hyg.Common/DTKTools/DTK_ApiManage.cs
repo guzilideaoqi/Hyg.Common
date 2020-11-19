@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Hyg.Common.OtherTools;
+using Hyg.Common.Model;
+using Hyg.Common.DTKTools.DTKModel;
 
 namespace Hyg.Common.DTKTools
 {
@@ -42,6 +44,13 @@ namespace Hyg.Common.DTKTools
         string api_get_collection_list = CommonCacheConfig.dtk_api_host + "api/goods/get-collection-list";//我的收藏
         string api_get_livematerial = CommonCacheConfig.dtk_api_host + "api/goods/liveMaterial-goods-list";//直播好货
         #endregion
+
+        string dtk_appkey = "", dtk_appsecret = "";
+        public DTK_ApiManage(string d_appkey, string d_appsecret)
+        {
+            this.dtk_appkey = d_appkey;
+            this.dtk_appsecret = d_appsecret;
+        }
 
         #region 获取商品详情
         public DTK_Get_Good_DetailsResponse GetGoodDetail(DTK_Get_Good_DetailsRequest dTK_Get_Good_DetailsRequest)
@@ -117,6 +126,11 @@ namespace Hyg.Common.DTKTools
             {
                 string resultContent = GeneralApiParam(api_ranking_list, dTK_Ranking_ListRequest.ModelToUriParam());
                 dTK_Ranking_ListResponse = resultContent.ToJsonObject<DTK_Ranking_ListResponse>();
+                //转换公用商品信息
+                if (dTK_Ranking_ListRequest.IsReturnCommonInfo)
+                {
+                    dTK_Ranking_ListResponse.CommonGoodInfoList = ConvertCommonGoodInfo(dTK_Ranking_ListResponse.data);
+                }
             }
             catch (Exception ex)
             {
@@ -164,6 +178,12 @@ namespace Hyg.Common.DTKTools
                 string resultContent = GeneralApiParam(api_super_goods, dTK_Super_GoodRequest.ModelToUriParam());
                 dTK_Super_GoodResponse = resultContent.ToJsonObject<DTK_Super_GoodResponse>();
 
+                //转换公用商品信息
+                if (dTK_Super_GoodRequest.IsReturnCommonInfo)
+                {
+                    dTK_Super_GoodResponse.CommonGoodInfoList = ConvertCommonGoodInfo(dTK_Super_GoodResponse.data.list);
+                }
+
                 return dTK_Super_GoodResponse;
             }
             catch (Exception ex)
@@ -187,6 +207,12 @@ namespace Hyg.Common.DTKTools
             {
                 string resultContent = GeneralApiParam(api_get_dtk_search_goods, dTK_Get_Dtk_Search_GoodRequest.ModelToUriParam());
                 dTK_Super_GoodResponse = resultContent.ToJsonObject<DTK_Get_dtk_Search_GoodResponse>();
+
+                //转换公用商品信息
+                if (dTK_Get_Dtk_Search_GoodRequest.IsReturnCommonInfo)
+                {
+                    dTK_Super_GoodResponse.CommonGoodInfoList = ConvertCommonGoodInfo(dTK_Super_GoodResponse.data.list);
+                }
             }
             catch (Exception ex)
             {
@@ -210,7 +236,11 @@ namespace Hyg.Common.DTKTools
                 string resultContent = GeneralApiParam(api_op_goods_list, dTK_OP_ListRequest.ModelToUriParam());
                 dTK_OP_ListResponse = resultContent.ToJsonObject<DTK_OP_ListResponse>();
 
-                return dTK_OP_ListResponse;
+                //转换公用商品信息
+                if (dTK_OP_ListRequest.IsReturnCommonInfo)
+                {
+                    dTK_OP_ListResponse.CommonGoodInfoList = ConvertCommonGoodInfo(dTK_OP_ListResponse.data.list);
+                }
             }
             catch (Exception ex)
             {
@@ -278,6 +308,12 @@ namespace Hyg.Common.DTKTools
             {
                 string resultContent = GeneralApiParam(api_activity_goodlist, dTK_Activity_GoodListRequest.ModelToUriParam());
                 dTK_Activity_GoodListResponse = resultContent.ToJsonObject<DTK_Activity_GoodListResponse>();
+
+                //转换公用商品信息
+                if (dTK_Activity_GoodListRequest.IsReturnCommonInfo)
+                {
+                    dTK_Activity_GoodListResponse.CommonGoodInfoList = ConvertCommonGoodInfo(dTK_Activity_GoodListResponse.data.list);
+                }
             }
             catch (Exception ex)
             {
@@ -319,7 +355,11 @@ namespace Hyg.Common.DTKTools
                 string resultContent = GeneralApiParam(api_topic_goodlist, dTK_Activity_GoodListRequest.ModelToUriParam());
                 dTK_Topic_GoodListResponse = resultContent.ToJsonObject<DTK_Topic_GoodListResponse>();
 
-                return dTK_Topic_GoodListResponse;
+                //转换公用商品信息
+                if (dTK_Activity_GoodListRequest.IsReturnCommonInfo)
+                {
+                    dTK_Topic_GoodListResponse.CommonGoodInfoList = ConvertCommonGoodInfo(dTK_Topic_GoodListResponse.data.list);
+                }
             }
             catch (Exception ex)
             {
@@ -423,6 +463,13 @@ namespace Hyg.Common.DTKTools
             {
                 string resultContent = GeneralApiParam(api_get_livematerial, dTK_LiveMaterialGoodRequest.ModelToUriParam());
                 dTK_LiveMaterialGoodResponse = resultContent.ToJsonObject<DTK_LiveMaterialGoodResponse>();
+
+                //转换公用商品信息
+                if (dTK_LiveMaterialGoodRequest.IsReturnCommonInfo)
+                {
+                    dTK_LiveMaterialGoodResponse.CommonGoodInfoList = ConvertCommonGoodInfo(dTK_LiveMaterialGoodResponse.data.list);
+                }
+
             }
             catch (Exception ex)
             {
@@ -439,8 +486,8 @@ namespace Hyg.Common.DTKTools
             try
             {
                 api_url = api_url.EndsWith("?") ? api_url : api_url + "?";
-                api_params += string.Format("&appKey={0}", CommonCacheConfig.dtk_appkey);
-                api_url += api_params + "&sign=" + makeSign(api_params, CommonCacheConfig.dtk_appsecret);
+                api_params += string.Format("&appKey={0}", this.dtk_appkey);
+                api_url += api_params + "&sign=" + makeSign(api_params, this.dtk_appsecret);
                 resultContent = AjaxRequest.HttpGet(api_url, "");
             }
             catch (Exception ex)
@@ -464,6 +511,296 @@ namespace Hyg.Common.DTKTools
             rst += string.Format("key={0}", app_secret);
 
             return Md5Helper.Md5(rst);
+        }
+        #endregion
+
+        #region 公用商品接口转换
+        List<CommonGoodInfoEntity> ConvertCommonGoodInfo(object WaitConvertGoodInfoList)
+        {
+            List<CommonGoodInfoEntity> commonGoodInfoList = null;
+            try
+            {
+                if (WaitConvertGoodInfoList is List<RankingItem>)
+                {
+                    #region 各大榜单商品转换信息
+                    List<RankingItem> rankingItemList = WaitConvertGoodInfoList as List<RankingItem>;
+                    foreach (RankingItem item in rankingItemList)
+                    {
+                        string[] images = new string[] { GetImage(item.mainPic) };
+                        commonGoodInfoList.Add(new CommonGoodInfoEntity
+                        {
+                            skuid = item.goodsId.ToString(),
+                            title = item.title,
+                            shopId = item.sellerId,
+                            shopLogo = item.shopLogo,//"https://wwc.alicdn.com/avatar/getAvatar.do?userId=" + item.sellerId,
+                            shopName = item.shopName,
+                            coupon_after_price = item.actualPrice.ToString(),
+                            coupon_price = item.couponPrice.ToString(),
+                            origin_price = item.originalPrice.ToString(),
+                            coupon_end_time = item.couponEndTime,
+                            coupon_start_time = item.couponStartTime,
+                            detail_images = images,
+                            images = images,
+                            image = GetImage(item.mainPic),
+                            month_sales = item.monthSales,
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            PlaformType = 1,
+                            afterServiceScore = GetScore(null),
+                            logisticsLvyueScore = GetScore(null),
+                            userEvaluateScore = GetScore(null),
+                            remark = item.desc,
+                            coupon_link = item.couponLink
+                        });
+                    }
+                    #endregion
+                }
+                else if (WaitConvertGoodInfoList is List<SuperGoodItem>)
+                {
+                    #region 超级搜索(大淘客+联盟)
+                    List<SuperGoodItem> superGoodItemList = WaitConvertGoodInfoList as List<SuperGoodItem>;
+                    foreach (SuperGoodItem item in superGoodItemList)
+                    {
+                        string[] images = new string[] { GetImage(item.mainPic) };
+                        commonGoodInfoList.Add(new CommonGoodInfoEntity
+                        {
+                            skuid = item.goodsId.ToString(),
+                            title = item.title,
+                            shopId = item.sellerId,
+                            shopLogo = item.shopLogo,
+                            shopName = item.shopName,
+                            coupon_after_price = item.actualPrice.ToString(),
+                            coupon_price = item.couponPrice.ToString(),
+                            origin_price = item.originalPrice.ToString(),
+                            coupon_end_time = item.couponEndTime,
+                            coupon_start_time = item.couponStartTime,
+                            detail_images = images,
+                            images = images,
+                            image = GetImage(item.mainPic),
+                            month_sales = item.monthSales,
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            PlaformType = 1,
+                            afterServiceScore = GetScore(item.shipScore.ToString()),
+                            logisticsLvyueScore = GetScore(item.serviceScore.ToString()),
+                            userEvaluateScore = GetScore(item.descScore.ToString()),
+                            remark = item.desc,
+                            coupon_link = item.couponLink
+                        });
+                    }
+                    #endregion
+                }
+                else if (WaitConvertGoodInfoList is List<DTK_SearchGoodItem>)
+                {
+                    #region 获取大淘客商品
+                    List<DTK_SearchGoodItem> dTK_SearchGoodItemList = WaitConvertGoodInfoList as List<DTK_SearchGoodItem>;
+                    foreach (DTK_SearchGoodItem item in dTK_SearchGoodItemList)
+                    {
+                        string[] images = new string[] { GetImage(item.mainPic) };
+                        commonGoodInfoList.Add(new CommonGoodInfoEntity
+                        {
+                            skuid = item.goodsId.ToString(),
+                            title = item.title,
+                            shopId = item.sellerId,
+                            shopLogo = item.shopLogo,
+                            shopName = item.shopName,
+                            coupon_after_price = item.actualPrice.ToString(),
+                            coupon_price = item.couponPrice.ToString(),
+                            origin_price = item.originalPrice.ToString(),
+                            coupon_end_time = item.couponEndTime,
+                            coupon_start_time = item.couponStartTime,
+                            detail_images = images,
+                            images = images,
+                            image = GetImage(item.mainPic),
+                            month_sales = item.monthSales,
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            PlaformType = 1,
+                            afterServiceScore = GetScore(item.shipScore.ToString()),
+                            logisticsLvyueScore = GetScore(item.serviceScore.ToString()),
+                            userEvaluateScore = GetScore(item.descScore.ToString()),
+                            remark = item.desc,
+                            coupon_link = item.couponLink
+                        });
+                    }
+                    #endregion
+                }
+                else if (WaitConvertGoodInfoList is List<OPGoodItem>)
+                {
+                    #region 9.9包邮精选
+                    List<OPGoodItem> oPGoodItemList = WaitConvertGoodInfoList as List<OPGoodItem>;
+                    foreach (OPGoodItem item in oPGoodItemList)
+                    {
+                        string[] images = new string[] { GetImage(item.mainPic) };
+                        commonGoodInfoList.Add(new CommonGoodInfoEntity
+                        {
+                            skuid = item.goodsId.ToString(),
+                            title = item.title,
+                            shopId = item.sellerId,
+                            shopLogo = item.shopLogo,
+                            shopName = item.shopName,
+                            coupon_after_price = item.actualPrice.ToString(),
+                            coupon_price = item.couponPrice.ToString(),
+                            origin_price = item.originalPrice.ToString(),
+                            coupon_end_time = item.couponEndTime,
+                            coupon_start_time = item.couponStartTime,
+                            detail_images = images,
+                            images = images,
+                            image = GetImage(item.mainPic),
+                            month_sales = item.monthSales,
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            PlaformType = 1,
+                            afterServiceScore = GetScore(item.shipScore.ToString()),
+                            logisticsLvyueScore = GetScore(item.serviceScore.ToString()),
+                            userEvaluateScore = GetScore(item.descScore.ToString()),
+                            remark = item.desc,
+                            coupon_link = item.couponLink
+                        });
+                    }
+                    #endregion
+                }
+                else if (WaitConvertGoodInfoList is List<ActivityGoodItem>)
+                {
+                    #region 热门活动对应商品
+                    List<ActivityGoodItem> activityGoodItemList = WaitConvertGoodInfoList as List<ActivityGoodItem>;
+                    foreach (ActivityGoodItem item in activityGoodItemList)
+                    {
+                        string[] images = new string[] { GetImage(item.mainPic) };
+                        commonGoodInfoList.Add(new CommonGoodInfoEntity
+                        {
+                            skuid = item.goodsId.ToString(),
+                            title = item.title,
+                            shopId = item.sellerId,
+                            shopLogo = item.shopLogo,
+                            shopName = item.shopName,
+                            coupon_after_price = item.actualPrice.ToString(),
+                            coupon_price = item.couponPrice.ToString(),
+                            origin_price = item.originalPrice.ToString(),
+                            coupon_end_time = item.couponEndTime,
+                            coupon_start_time = item.couponStartTime,
+                            detail_images = images,
+                            images = images,
+                            image = GetImage(item.mainPic),
+                            month_sales = item.monthSales,
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            PlaformType = 1,
+                            afterServiceScore = GetScore(item.shipScore.ToString()),
+                            logisticsLvyueScore = GetScore(item.serviceScore.ToString()),
+                            userEvaluateScore = GetScore(item.descScore.ToString()),
+                            remark = item.desc,
+                            coupon_link = item.couponLink
+                        });
+                    }
+                    #endregion
+                }
+                else if (WaitConvertGoodInfoList is List<TopicGoodItem>)
+                {
+                    #region 专辑商品列表
+                    List<TopicGoodItem> topicGoodItemList = WaitConvertGoodInfoList as List<TopicGoodItem>;
+                    foreach (TopicGoodItem item in topicGoodItemList)
+                    {
+                        string[] images = new string[] { GetImage(item.mainPic) };
+                        commonGoodInfoList.Add(new CommonGoodInfoEntity
+                        {
+                            skuid = item.goodsId.ToString(),
+                            title = item.title,
+                            shopId = item.sellerId,
+                            shopLogo = item.shopLogo,
+                            shopName = item.shopName,
+                            coupon_after_price = item.actualPrice.ToString(),
+                            coupon_price = item.couponPrice.ToString(),
+                            origin_price = item.originalPrice.ToString(),
+                            coupon_end_time = item.couponEndTime,
+                            coupon_start_time = item.couponStartTime,
+                            detail_images = images,
+                            images = images,
+                            image = GetImage(item.mainPic),
+                            month_sales = item.monthSales,
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            PlaformType = 1,
+                            afterServiceScore = GetScore(item.shipScore.ToString()),
+                            logisticsLvyueScore = GetScore(item.serviceScore.ToString()),
+                            userEvaluateScore = GetScore(item.descScore.ToString()),
+                            remark = item.desc,
+                            coupon_link = item.couponLink
+                        });
+                    }
+                    #endregion
+                }
+                else if (WaitConvertGoodInfoList is List<DTK_LiveMaterialGood>)
+                {
+                    #region 直播好货商品
+                    List<DTK_LiveMaterialGood> DTK_LiveMaterialGoodList = WaitConvertGoodInfoList as List<DTK_LiveMaterialGood>;
+                    foreach (DTK_LiveMaterialGood item in DTK_LiveMaterialGoodList)
+                    {
+                        string[] images = new string[] { GetImage(item.mainPic) };
+                        commonGoodInfoList.Add(new CommonGoodInfoEntity
+                        {
+                            skuid = item.goodsId.ToString(),
+                            title = item.title,
+                            shopId = item.sellerId,
+                            shopLogo = item.shopLogo,
+                            shopName = item.shopName,
+                            coupon_after_price = item.actualPrice.ToString(),
+                            coupon_price = item.couponPrice.ToString(),
+                            origin_price = item.originalPrice.ToString(),
+                            coupon_end_time = item.couponEndTime,
+                            coupon_start_time = item.couponStartTime,
+                            detail_images = images,
+                            images = images,
+                            image = GetImage(item.mainPic),
+                            month_sales = item.monthSales,
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            PlaformType = 1,
+                            afterServiceScore = GetScore(item.shipScore.ToString()),
+                            logisticsLvyueScore = GetScore(item.serviceScore.ToString()),
+                            userEvaluateScore = GetScore(item.descScore.ToString()),
+                            remark = item.desc,
+                            coupon_link = item.couponLink
+                        });
+                    }
+                    #endregion
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("ConvertCommonGoodInfo", ex);
+            }
+
+            return commonGoodInfoList;
+        }
+
+        string GetScore(string score)
+        {
+            if (score == null)
+            {
+                string[] scoreList = new string[] { "4.8", "4.9", "5.0" };
+                return scoreList[new Random().Next(scoreList.Length)];
+            }
+            else
+            {
+                decimal scoreValue = 0;
+
+                if (decimal.TryParse(score, out scoreValue))
+                {
+                    if (scoreValue <= 0)
+                        return "低";
+                    else if (scoreValue >= 10)
+                        return "高";
+                    else
+                        return score;
+                }
+                else
+                {
+                    return score;
+                }
+            }
+        }
+
+        string GetImage(string img)
+        {
+            if (!img.StartsWith("http"))
+            {
+                img = "http:" + img;
+            }
+            return img;
         }
         #endregion
     }

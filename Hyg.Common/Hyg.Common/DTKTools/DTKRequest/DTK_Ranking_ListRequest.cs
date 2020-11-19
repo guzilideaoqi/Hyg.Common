@@ -6,6 +6,7 @@
 备注说明 : 
 
  =====================================End=======================================================*/
+using Hyg.Common.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Hyg.Common.DTKTools.DTKRequest
     /// <summary>
     /// 各大榜单
     /// </summary>
-    public class DTK_Ranking_ListRequest
+    public class DTK_Ranking_ListRequest: CommonGoodRequestParam
     {
         /// <summary>
         /// 接口版本号

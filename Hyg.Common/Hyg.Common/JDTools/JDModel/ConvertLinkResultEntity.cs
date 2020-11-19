@@ -22,5 +22,10 @@ namespace Hyg.Common.JDTools.JDModel
         /// 生成的目标推广链接，长期有效
         /// </summary>
         public string clickURL { get; set; }
+
+        /// <summary>
+        /// 短链接
+        /// </summary>
+        public string shortURL { get; set; }
     }
 }

@@ -6,6 +6,7 @@
 备注说明 : 
 
  =====================================End=======================================================*/
+using Hyg.Common.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Hyg.Common.DTKTools.DTKRequest
     /// <summary>
     /// 9.9包邮精选
     /// </summary>
-    public class DTK_OP_ListRequest
+    public class DTK_OP_ListRequest : CommonGoodRequestParam
     {
         /// <summary>
         /// 接口版本号

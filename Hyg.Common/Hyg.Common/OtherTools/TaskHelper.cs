@@ -16,13 +16,17 @@ namespace Hyg.Common.OtherTools
 {
     public class TaskHelper
     {
-        public static void ExcuteNewTask(Action action, int sleep)
+        public static Thread ExcuteNewTask(Action action, int sleep)
         {
-            new Thread(() =>
-            {
-                Thread.Sleep(sleep);
-                action();
-            }).Start();
+            Thread thread = new Thread(() =>
+             {
+                 Thread.Sleep(sleep);
+                 action();
+             });
+            thread.IsBackground = true;
+            thread.Start();
+
+            return thread;
         }
 
         public static void Sleep(int time) {

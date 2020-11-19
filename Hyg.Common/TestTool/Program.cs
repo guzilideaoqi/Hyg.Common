@@ -2,6 +2,8 @@
 using Hyg.Common.DTKTools;
 using Hyg.Common.DTKTools.DTKRequest;
 using Hyg.Common.DTKTools.DTKResponse;
+using Hyg.Common.HaoDanKu;
+using Hyg.Common.HaoDanKu.HaoDanKuRequest;
 using Hyg.Common.JDTools;
 using Hyg.Common.JDTools.JDRequest;
 using Hyg.Common.OtherTools;
@@ -19,7 +21,7 @@ namespace TestTool
 {
     class Program
     {
-        const int plaformType = 1;//1=淘宝  2=京东  3=拼多多
+        const int plaformType = 1;//1=淘宝  2=京东  3=拼多多 4=好单库
         static void Main(string[] args)
         {
             try
@@ -30,13 +32,14 @@ namespace TestTool
 
                 CommonCacheConfig.dtk_appkey = "5d2fd0a674e69"; CommonCacheConfig.dtk_appsecret = "7ac9d649468d3603ef506224c9298497";
                 CommonCacheConfig.pdd_appkey = "ac48d84bf6064db4be917cd26d71f9bb"; CommonCacheConfig.pdd_appsecret = "ec47368867643a48b5beab50dd97ebaf7fe96f55";
-                CommonCacheConfig.jd_appkey = "a666eb66d3c749e4857354b69476efab"; CommonCacheConfig.jd_appsecret = "2c6e68722c4047de9a95f0ef9519ea14"; CommonCacheConfig.jd_accesstoken = "e4209eac5db9f8e2762718c5ab2212e8fc9d5c76edce579ab144095bbb95ce392c3b86569f18f09a";
-
+                //CommonCacheConfig.jd_appkey = "a666eb66d3c749e4857354b69476efab"; CommonCacheConfig.jd_appsecret = "2c6e68722c4047de9a95f0ef9519ea14"; CommonCacheConfig.jd_accesstoken = "e4209eac5db9f8e2762718c5ab2212e8fc9d5c76edce579ab144095bbb95ce392c3b86569f18f09a";
+                CommonCacheConfig.jd_appkey = "3251e372f6fc4d29bdadaf6c711bd4ea"; CommonCacheConfig.jd_appsecret = "48931357c8ed4c7fbd05698f3db9aae9"; CommonCacheConfig.jd_accesstoken = "e4209eac5db9f8e2762718c5ab2212e8fc9d5c76edce579ab144095bbb95ce392c3b86569f18f09a";
+                CommonCacheConfig.haodanku_apikey = "guzilideaoqi";
 
                 if (plaformType == 1)
                 {
-                    DTK_ApiManage dTK_ApiManage = new DTK_ApiManage();
-                    int apiType = 19;
+                    DTK_ApiManage dTK_ApiManage = new DTK_ApiManage(CommonCacheConfig.dtk_appkey, CommonCacheConfig.dtk_appsecret);
+                    int apiType = 13;
                     object apiData = null;
                     switch (apiType)
                     {
@@ -139,7 +142,7 @@ namespace TestTool
                             #region 获取商品详情
                             DTK_Get_Good_DetailsRequest dTK_Get_Good_DetailsRequest = new DTK_Get_Good_DetailsRequest();
                             dTK_Get_Good_DetailsRequest.id = "";
-                            dTK_Get_Good_DetailsRequest.goodsId = "585956006662";
+                            dTK_Get_Good_DetailsRequest.goodsId = "584654276169";
                             apiData = dTK_ApiManage.GetGoodDetail(dTK_Get_Good_DetailsRequest);
                             #endregion
                             break;
@@ -193,7 +196,7 @@ namespace TestTool
                 }
                 else if (plaformType == 2)
                 {
-                    JD_ApiManage jD_ApiManage = new JD_ApiManage();
+                    JD_ApiManage jD_ApiManage = new JD_ApiManage(CommonCacheConfig.jd_appkey, CommonCacheConfig.jd_appsecret, CommonCacheConfig.jd_accesstoken);
 
                     UnionOpenOrderRowQueryRequest unionOpenOrderRowQueryRequest = new UnionOpenOrderRowQueryRequest();
                     UnionOpenOrderRowQueryDetailRequest unionOpenOrderRowQueryDetailRequest = new UnionOpenOrderRowQueryDetailRequest();
@@ -205,6 +208,46 @@ namespace TestTool
                     Console.WriteLine("共获取到" + jD_ApiManage.UnionOpenOrderRowQuery(unionOpenOrderRowQueryRequest).Count + "条数据!");
                     return;
 
+                    Super_CreatePositionRequest super_CreatePositionRequest = new Super_CreatePositionRequest();
+                    super_CreatePositionRequest.positionReq = new Super_CreatePosition_Param
+                    {
+                        key = CommonCacheConfig.jd_accesstoken,
+                        type = 4,
+                        spaceNameList = new string[] { "张晓晓" },
+                        unionId = 1000534528,
+                        unionType = 4
+                    };
+                    jD_ApiManage.CreatePositionInfo(super_CreatePositionRequest); return;
+
+                    Super_QueryPositionRequest super_QueryPositionRequest = new Super_QueryPositionRequest();
+                    super_QueryPositionRequest.positionReq = new Super_QueryPosition_Param
+                    {
+                        key = CommonCacheConfig.jd_accesstoken,
+                        unionId = 1000534528,
+                        unionType = 4
+                    };
+                    jD_ApiManage.Get_PositionList(super_QueryPositionRequest); return;
+
+                    Super_PromotionByToolRequest super_PromotionByToolRequest = new Super_PromotionByToolRequest();
+                    super_PromotionByToolRequest.promotionCodeReq = new Super_PromotionByTool
+                    {
+                        chainType = 3,
+                        couponUrl = "http://coupon.m.jd.com/coupons/show.action?key=8dc19f8890cd435cb27527c3bf0e4594&roleId=39852538&to=item.jd.com/71694691599.html#crumb-wrap".ToUrlEncode(),
+                        materialId = "http://item.jd.com/71694691599.html",
+                        positionId = "1962857866",
+                        unionId = "1000534528"
+                    };
+                    jD_ApiManage.GetConvertLinkByTool(super_PromotionByToolRequest); return;
+
+                    Super_PromotionBySubUnionidRequest super_PromotionBySubUnionidRequest = new Super_PromotionBySubUnionidRequest();
+                    super_PromotionBySubUnionidRequest.promotionCodeReq = new Super_PromotionBySubUnionid
+                    {
+                        chainType = 3,
+                        couponUrl = "http://coupon.m.jd.com/coupons/show.action?key=8dc19f8890cd435cb27527c3bf0e4594&roleId=39852538&to=item.jd.com/71694691599.html#crumb-wrap".ToUrlEncode(),
+                        materialId = "http://item.jd.com/71694691599.html",
+                        positionId = "1962857866"
+                    };
+                    jD_ApiManage.GetConvertLinkBySubUnionID(super_PromotionBySubUnionidRequest); return;
 
                     UnionOpenPromotionCommonRequest unionOpenPromotionCommonRequest = new UnionOpenPromotionCommonRequest();
                     PromotionCodeReq promotionCodeReq = new PromotionCodeReq();
@@ -216,15 +259,38 @@ namespace TestTool
                     Console.WriteLine("转链结果：" + jD_ApiManage.GetConvertLink(unionOpenPromotionCommonRequest));
                     return;
 
+                    Super_QueryCouponRequest super_QueryCouponRequest = new Super_QueryCouponRequest();
+                    super_QueryCouponRequest.couponUrls = new string[] { "http://coupon.m.jd.com/coupons/show.action?key=8dc19f8890cd435cb27527c3bf0e4594&roleId=39852538&to=item.jd.com/71694691599.html#crumb-wrap".ToUrlEncode() };
+                    jD_ApiManage.Super_QueryCouponInfo(super_QueryCouponRequest); return;
+
+                    /*超级接口查询京东商品*/
+                    Super_GoodQueryRequest super_GoodQueryRequest = new Super_GoodQueryRequest();
+                    Super_GoodQueryDetailReq super_GoodQueryDetailReq = new Super_GoodQueryDetailReq();
+                    super_GoodQueryRequest.goodsReqDTO = super_GoodQueryDetailReq;
+                    jD_ApiManage.Super_GetGoodQueryResultByKeyWord(super_GoodQueryRequest); return;
+
+
+                    Super_QueryPIDRequest super_QueryPIDRequest = new Super_QueryPIDRequest();
+                    super_QueryPIDRequest.pidReq = new Super_QueryPID_Param
+                    {
+                        childUnionId = 0,
+                        unionId = 1000534528,
+                        positionName = "美嘛_1668656".ToUrlEncode(),
+                        promotionType = 2
+                    };
+                    jD_ApiManage.QueryPIDList(super_QueryPIDRequest); return;
+
+
                     GoodQueryRequest goodQueryRequest = new GoodQueryRequest();
                     GoodQueryDetailReq goodQueryDetailReq = new GoodQueryDetailReq();
                     goodQueryDetailReq.eliteId = 1;
                     goodQueryRequest.goodsReq = goodQueryDetailReq;
-                    Console.WriteLine("共获取到" + jD_ApiManage.GetGoodQueryResult(goodQueryRequest).Count + "条数据!");
+                    Console.WriteLine("共获取到" + jD_ApiManage.GetGoodQueryResultByKeyWord(goodQueryRequest).Count + "条数据!");
                     return;
                 }
-                else if (plaformType == 3) {
-                    PDD_ApiManage pDD_ApiManage = new PDD_ApiManage();
+                else if (plaformType == 3)
+                {
+                    PDD_ApiManage pDD_ApiManage = new PDD_ApiManage(CommonCacheConfig.pdd_appkey, CommonCacheConfig.pdd_appsecret, "5512f86f18904fa3b879f9b622c9c03467a2e340");
                     //Goods_Zs_UnitGenerateRequest goods_Zs_UnitGenerateRequest = new Goods_Zs_UnitGenerateRequest();
                     //goods_Zs_UnitGenerateRequest.custom_parameters = "666";
                     //goods_Zs_UnitGenerateRequest.pid = "1912666_125576394";
@@ -263,13 +329,130 @@ namespace TestTool
                     //rp_Prom_Url_GenerateRequest.generate_short_url = true;
                     //Rp_Prom_Url_GenerateResponse rp_Prom_Url_GenerateResponse = pDD_ApiManage.Get_Rp_Prom_Url_Generate(rp_Prom_Url_GenerateRequest);
 
+                    Super_WeApp_Qrcode_UrlRequest super_WeApp_Qrcode_UrlRequest = new Super_WeApp_Qrcode_UrlRequest();
+                    super_WeApp_Qrcode_UrlRequest.custom_parameters = "guzilideaoqi";
+                    super_WeApp_Qrcode_UrlRequest.p_id = "1912666_177495987";
+                    super_WeApp_Qrcode_UrlRequest.zs_duo_id = 1912666;
+                    super_WeApp_Qrcode_UrlRequest.goods_id_list = new List<long> { 187281997372 };
+                    super_WeApp_Qrcode_UrlRequest.generate_mall_collect_coupon = true;
+                    string resultCOntent = super_WeApp_Qrcode_UrlRequest.ToJsonStr();
+                    pDD_ApiManage.Super_WeApp_Qrcode_Url(super_WeApp_Qrcode_UrlRequest); return;
+
+                    Super_General_Theme_Prom_UrlRequest super_General_Theme_Prom_UrlRequest = new Super_General_Theme_Prom_UrlRequest();
+                    super_General_Theme_Prom_UrlRequest.generate_short_url = true;
+                    super_General_Theme_Prom_UrlRequest.custom_parameters = "guzilideaoqi";
+                    super_General_Theme_Prom_UrlRequest.pid = "1912666_177495987";
+                    super_General_Theme_Prom_UrlRequest.theme_id_list = new long[] { 5 };
+                    pDD_ApiManage.Super_General_Theme_Prom_Url(super_General_Theme_Prom_UrlRequest); return;
+
+                    Super_General_RP_Prom_UrlRequest super_General_RP_Prom_UrlRequest = new Super_General_RP_Prom_UrlRequest();
+                    super_General_RP_Prom_UrlRequest.channel_type = 10;
+                    super_General_RP_Prom_UrlRequest.p_id_list = new string[] { "1912666_177495987" };
+                    super_General_RP_Prom_UrlRequest.generate_short_url = true;
+                    pDD_ApiManage.Super_General_RP_Prom_Url(super_General_RP_Prom_UrlRequest); return;
+
+                    Super_General_Resource_UrlRequest super_General_Resource_UrlRequest = new Super_General_Resource_UrlRequest();
+                    super_General_Resource_UrlRequest.pid = "1912666_177495987";
+                    super_General_Resource_UrlRequest.custom_parameters = "guzilideaoqi";
+                    super_General_Resource_UrlRequest.resource_type = 39996;
+                    pDD_ApiManage.Super_General_Resource_Url(super_General_Resource_UrlRequest); return;
+
+                    Super_Query_Member_AuthorityRequest super_Query_Member_AuthorityRequest = new Super_Query_Member_AuthorityRequest();
+                    super_Query_Member_AuthorityRequest.pid = "1912666_177495987";
+                    super_Query_Member_AuthorityRequest.custom_parameters = "guzilideaoqi";
+                    pDD_ApiManage.Super_Query_Member_Authority(super_Query_Member_AuthorityRequest); return;
+
+                    Super_General_Lottery_UrlRequest super_General_Lottery_UrlRequest = new Super_General_Lottery_UrlRequest();
+                    super_General_Lottery_UrlRequest.custom_parameters = "guzilideaoqi";
+                    super_General_Lottery_UrlRequest.pid_list = new string[] { "1912666_177495987" };
+                    super_General_Lottery_UrlRequest.generate_short_url = true;
+                    super_General_Lottery_UrlRequest.multi_group = true;
+                    super_General_Lottery_UrlRequest.generate_weapp_webview = true;
+                    pDD_ApiManage.Super_General_Lottery_Url(super_General_Lottery_UrlRequest); return;
+
+                    Super_General_ZS_Unit_UrlRequest super_General_ZS_Unit_UrlRequest = new Super_General_ZS_Unit_UrlRequest();
+                    super_General_ZS_Unit_UrlRequest.custom_parameters = "guzilideaoqi";
+                    super_General_ZS_Unit_UrlRequest.pid = "1912666_177495987";
+                    super_General_ZS_Unit_UrlRequest.source_url = "https://p.pinduoduo.com/WCHbe8ZL";
+                    pDD_ApiManage.Super_General_ZS_Unit_Url(super_General_ZS_Unit_UrlRequest); return;
+
+                    Super_QueryRecommendGoodRequest super_QueryRecommendGoodRequest = new Super_QueryRecommendGoodRequest();
+                    pDD_ApiManage.Super_GetRecommendGoodList(super_QueryRecommendGoodRequest); return;
+
+                    Super_GeneralGoodPromUrlRequest super_GeneralGoodPromUrlRequest = new Super_GeneralGoodPromUrlRequest();
+                    super_GeneralGoodPromUrlRequest.goods_id_list = new string[] { "187281997372" };
+                    super_GeneralGoodPromUrlRequest.zs_duo_id = "1912666";
+                    super_GeneralGoodPromUrlRequest.p_id = "1912666_177495987";
+                    super_GeneralGoodPromUrlRequest.custom_parameters = "guzilideaoqi";
+                    pDD_ApiManage.Super_GeneralGoodPromUrl(super_GeneralGoodPromUrlRequest); return;
+
+                    Super_QueryGoodPIDRequest super_QueryGoodPIDRequest = new Super_QueryGoodPIDRequest();
+                    super_QueryGoodPIDRequest.page = 1;
+                    super_QueryGoodPIDRequest.page_size = 50;
+                    super_QueryGoodPIDRequest.pid_list = new string[] { "1912666_177599033" };
+                    pDD_ApiManage.Super_QueryGoodPID(super_QueryGoodPIDRequest); return;
+
+                    Super_GeneralGoodPIDRequest super_GeneralGoodPIDRequest = new Super_GeneralGoodPIDRequest();
+                    super_GeneralGoodPIDRequest.number = 1;
+                    super_GeneralGoodPIDRequest.p_id_name_list = new string[] { "张晓晓" };
+                    pDD_ApiManage.Super_GeneralGoodPID(super_GeneralGoodPIDRequest); return;
+
+                    Super_General_CMS_Prom_UrlRequest super_General_CMS_Prom_UrlRequest = new Super_General_CMS_Prom_UrlRequest();
+                    super_General_CMS_Prom_UrlRequest.channel_type = 4;
+                    super_General_CMS_Prom_UrlRequest.p_id_list = new string[] { "1912666_177495987" };
+                    super_General_CMS_Prom_UrlRequest.generate_we_app = true;
+                    super_General_CMS_Prom_UrlRequest.generate_short_url = true;
+                    super_General_CMS_Prom_UrlRequest.generate_mobile = true;
+                    super_General_CMS_Prom_UrlRequest.generate_schema_url = true;
+                    pDD_ApiManage.Super_General_CMS_Prom_Url(super_General_CMS_Prom_UrlRequest); return;
+
+                    Goods_Zs_UnitGenerateRequest goods_Zs_UnitGenerateRequest = new Goods_Zs_UnitGenerateRequest();
+                    goods_Zs_UnitGenerateRequest.custom_parameters = "guzilideaoqi";
+                    goods_Zs_UnitGenerateRequest.pid = "1912666_177495987";
+                    goods_Zs_UnitGenerateRequest.source_url = "https://p.pinduoduo.com/WCHbe8ZL";
+                    pDD_ApiManage.Super_Good_Convert_Link(goods_Zs_UnitGenerateRequest); return;
+
+                    Super_GetAllIncrementOrderRequest super_GetAllIncrementOrderRequest = new Super_GetAllIncrementOrderRequest();
+                    super_GetAllIncrementOrderRequest.start_update_time = DateTimeHelper.ConvertDateTimeToInt(DateTime.Now.AddDays(-1));
+                    super_GetAllIncrementOrderRequest.end_update_time = DateTimeHelper.ConvertDateTimeToInt(DateTime.Now);
+                    pDD_ApiManage.Super_GetAllIncrementOrder(super_GetAllIncrementOrderRequest); return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    
                     Good_SearchRequest good_SearchRequest = new Good_SearchRequest();
                     //good_SearchRequest.goods_id_list = new string[] { "177521731055" };
                     good_SearchRequest.keyword = "https://p.pinduoduo.com/doXbmz4V";
                     good_SearchRequest.pid = "1912666_125576394";
+
                     //good_SearchRequest.custom_parameters= "{\"uid\":\"123\",\"sid\":\"666\"}";
                     Good_Search_ListResponse good_Search_ListResponse = pDD_ApiManage.Good_Search_List(good_SearchRequest);
                     return;
+                }
+                else if (plaformType == 4)
+                {
+                    HaoDanKu_GetOrienteeringItemsRequest haoDanKu_GetOrienteeringItemsRequest = new HaoDanKu_GetOrienteeringItemsRequest();
+                    haoDanKu_GetOrienteeringItemsRequest.apikey = CommonCacheConfig.haodanku_apikey;
+                    haoDanKu_GetOrienteeringItemsRequest.back = 20;
+                    haoDanKu_GetOrienteeringItemsRequest.min_id = 1;
+                    HaoDanKu_ApiManage haoDanKu_ApiManage = new HaoDanKu_ApiManage();
+                    haoDanKu_ApiManage.GetOrienteeringItems(haoDanKu_GetOrienteeringItemsRequest);
                 }
             }
             catch (Exception ex)

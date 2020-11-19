@@ -20,29 +20,14 @@ namespace Hyg.Common.JDTools.JDResponse
         public ConvertLinkResultResponse jd_union_open_promotion_common_get_response { get; set; }
     }
 
-    public class ConvertLinkResultResponse
-    {
-        public int code { get; set; }
-
-        public string result { get; set; }
-    }
+    public class ConvertLinkResultResponse : JD_Common_First_ResponseBase { }
 
 
     /// <summary>
     /// ConvertLinkResultResponse
     /// </summary>
-    public class ConvertLinkResultDetailResponse
+    public class ConvertLinkResultDetailResponse:JD_Common_Two_ResponseBase
     {
-        /// <summary>
-        /// 返回码
-        /// </summary>
-        public int code { get; set; }
-
-        /// <summary>
-        /// 返回消息
-        /// </summary>
-        public string message { get; set; }
-
         public ConvertLinkResultEntity data { get; set; }
     }
 }

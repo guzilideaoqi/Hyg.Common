@@ -41,6 +41,8 @@ namespace Hyg.Common.WeChatTools
                 WeChat_UserInfo wXInfo = ConvertObjToModel<WeChat_UserInfo>(data);
                 wXInfo.wx_clientid = ClientId;
 
+                CommonCacheConfig.Login_WeChat_UserInfo.Add(wXInfo);
+
                 return wXInfo;
             }
             catch (Exception ex)
@@ -99,7 +101,14 @@ namespace Hyg.Common.WeChatTools
             {
                 chatRoomInfoList = ConvertObjToModel<List<ChatRoomInfoEntity>>(data);
 
-                CommonCacheConfig.chatRoomInfoList = chatRoomInfoList;
+                if (CommonCacheConfig.chatRoomInfoList.ContainsKey(sourcewxid))
+                {
+                    CommonCacheConfig.chatRoomInfoList[sourcewxid] = chatRoomInfoList;
+                }
+                else
+                {
+                    CommonCacheConfig.chatRoomInfoList.Add(sourcewxid, chatRoomInfoList);
+                }
             }
             catch (Exception ex)
             {

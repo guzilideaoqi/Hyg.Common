@@ -6,6 +6,7 @@
 备注说明 : 
 
  =====================================End=======================================================*/
+using Hyg.Common.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,5 +31,10 @@ namespace Hyg.Common.DTKTools.DTKModel
         /// 接口返回消息
         /// </summary>
         public string msg { get; set; }
+
+        /// <summary>
+        /// 公用商品信息列表
+        /// </summary>
+        public List<CommonGoodInfoEntity> CommonGoodInfoList { get; set; }
     }
 }

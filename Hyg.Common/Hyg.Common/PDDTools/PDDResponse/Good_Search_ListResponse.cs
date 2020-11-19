@@ -6,6 +6,7 @@
 备注说明 : 
 
  =====================================End=======================================================*/
+using Hyg.Common.Model;
 using Hyg.Common.PDDTools.PDDModel;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,10 @@ namespace Hyg.Common.PDDTools.PDDResponse
     public class Good_Search_ListResponse
     {
        public Good_Search_ListEntity goods_search_response { get; set; }
+
+        /// <summary>
+        /// 公用商品信息
+        /// </summary>
+        public List<CommonGoodInfoEntity> CommonGoodInfoList { get; set; }
     }
 }

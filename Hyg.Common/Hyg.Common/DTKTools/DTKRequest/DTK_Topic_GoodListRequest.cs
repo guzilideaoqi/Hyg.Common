@@ -6,6 +6,7 @@
 备注说明 : 精选专辑商品
 
  =====================================End=======================================================*/
+using Hyg.Common.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Hyg.Common.DTKTools.DTKRequest
     /// <summary>
     /// 精选专辑商品
     /// </summary>
-    public class DTK_Topic_GoodListRequest
+    public class DTK_Topic_GoodListRequest : CommonGoodRequestParam
     {
         /// <summary>
         /// 接口版本号

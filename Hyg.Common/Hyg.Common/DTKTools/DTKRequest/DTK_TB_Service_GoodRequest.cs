@@ -26,12 +26,12 @@ namespace Hyg.Common.DTKTools.DTKRequest
         /// <summary>
         /// 第几页，默认1
         /// </summary>
-        public int pageNo { get; set; }
+        public int pageNo { get; set; } = 1;
 
         /// <summary>
         /// 每页条数， 默认20，范围值1~100
         /// </summary>
-        public int pageSize { get; set; }
+        public int pageSize { get; set; } = 20;
 
         /// <summary>
         /// 关键词

@@ -54,7 +54,7 @@ namespace Hyg.Common
         /// <summary>
         /// 微信群组列表
         /// </summary>
-        public static List<ChatRoomInfoEntity> chatRoomInfoList = new List<ChatRoomInfoEntity>();
+        public static Dictionary<string, List<ChatRoomInfoEntity>> chatRoomInfoList = new Dictionary<string, List<ChatRoomInfoEntity>>();
 
         /// <summary>
         /// 新好友队列
@@ -74,7 +74,7 @@ namespace Hyg.Common
         /// <summary>
         /// 大淘客api域名地址
         /// </summary>
-        public static string dtk_api_host = "https://openapi.dataoke.com/";
+        public const string dtk_api_host = "https://openapi.dataoke.com/";
         #endregion
 
         #region 京东账号配置
@@ -93,7 +93,7 @@ namespace Hyg.Common
         /// <summary>
         /// 京东接口域名地址
         /// </summary>
-        public static string jd_api_host = "https://router.jd.com/api";
+        public const string jd_api_host = "https://router.jd.com/api";
         #endregion
 
         #region 拼多多账号配置
@@ -112,7 +112,15 @@ namespace Hyg.Common
         /// <summary>
         /// 拼多多接口域名地址
         /// </summary>
-        public static string pdd_api_host = "http://gw-api.pinduoduo.com/api/router";
+        public const string pdd_api_host = "http://gw-api.pinduoduo.com/api/router";
+        #endregion
+
+        #region 好单库配置
+        /// <summary>
+        /// 好单库apikey
+        /// </summary>
+        public static string haodanku_apikey = "";
+        public const string haodanku_api_host = "https://v2.api.haodanku.com/";
         #endregion
     }
 }
