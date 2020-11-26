@@ -38,7 +38,7 @@ namespace Hyg.Common.WeChatTools
         // 基于上面的委托定义事件
         public event AddLogsHandler AddLogs;
 
-        public delegate void CallBackWeChatMessageHandler(object WeChatMessage);
+        public delegate void CallBackWeChatMessageHandler(object WeChatMessage, uint dwClient);
         public event CallBackWeChatMessageHandler CallBackWeChatMessage;
         #endregion
 
@@ -115,7 +115,7 @@ namespace Hyg.Common.WeChatTools
                         break;
                     case MessageTypeEnum.MT_USER_LOGIN:
                         WeChat_UserInfo wXInfo = weChatParseHelper.ParseCurrentUserInfo(reponseInfo.data, dwClient);
-                        CallBackWeChatMessage(wXInfo);
+                        CallBackWeChatMessage(wXInfo,dwClient);
                         logText = "【" + wXInfo.nickname + "】登录成功!";
 
                         #region 提交微信信息
@@ -147,7 +147,7 @@ namespace Hyg.Common.WeChatTools
                         break;
                     case MessageTypeEnum.MT_USER_LOGOUT:
                         LogoutWeChat logoutWeChat = reponseInfo.data.ToString().ToJsonObject<LogoutWeChat>();
-                        CallBackWeChatMessage(logoutWeChat);
+                        CallBackWeChatMessage(logoutWeChat, dwClient);
 
                         WeChat_UserInfo exit_wXInfo = CommonCacheConfig.Login_WeChat_UserInfo.Where(t => t.wxid == logoutWeChat.wxid).FirstOrDefault();
                         if (!exit_wXInfo.IsEmpty())
@@ -160,16 +160,16 @@ namespace Hyg.Common.WeChatTools
                     case MessageTypeEnum.MT_DATA_WXID_MSG:
                         break;
                     case MessageTypeEnum.MT_DATA_FRIENDS_MSG:
-                        TaskHelper.ExcuteNewTask(() => { List<FriendInfoEntity> friendInfoList = weChatParseHelper.ParseCurrentFriendList(reponseInfo.data, dwClient.GetWxidByClientID()); CallBackWeChatMessage(friendInfoList); }, 500);
+                        TaskHelper.ExcuteNewTask(() => { List<FriendInfoEntity> friendInfoList = weChatParseHelper.ParseCurrentFriendList(reponseInfo.data, dwClient.GetWxidByClientID()); CallBackWeChatMessage(friendInfoList, dwClient); }, 500);
                         break;
                     case MessageTypeEnum.MT_DATA_CHATROOMS_MSG:
-                        TaskHelper.ExcuteNewTask(() => { List<ChatRoomInfoEntity> chatRoomInfoList = weChatParseHelper.ParseCurrentChatRoomList(reponseInfo.data, dwClient.GetWxidByClientID()); CallBackWeChatMessage(chatRoomInfoList); }, 500);
+                        TaskHelper.ExcuteNewTask(() => { List<ChatRoomInfoEntity> chatRoomInfoList = weChatParseHelper.ParseCurrentChatRoomList(reponseInfo.data, dwClient.GetWxidByClientID()); CallBackWeChatMessage(chatRoomInfoList, dwClient); }, 500);
                         break;
                     case MessageTypeEnum.MT_DATA_CHATROOM_MEMBERS_MSG:
                         TaskHelper.ExcuteNewTask(() =>
                         {
                             GroupMemberResponseEntity groupMemberResponseEntity = WeChatParseHelper.ConvertObjToModel<GroupMemberResponseEntity>(reponseInfo.data);
-                            CallBackWeChatMessage(groupMemberResponseEntity);
+                            CallBackWeChatMessage(groupMemberResponseEntity,dwClient);
                             //GroupMemberService.BatchUpdateGroupMember(groupMemberResponseEntity);
                         }, 50);
                         break;
@@ -203,7 +203,7 @@ namespace Hyg.Common.WeChatTools
                         {
                             if (!recv_Text_MsgEntity.from_wxid.IsSelf(dwClient) && !recv_Text_MsgEntity.from_wxid.FilterMessage())
                             {
-                                CallBackWeChatMessage(recv_Text_MsgEntity);
+                                CallBackWeChatMessage(recv_Text_MsgEntity, dwClient);
                             }
                         }, 20);
                         break;
@@ -222,7 +222,7 @@ namespace Hyg.Common.WeChatTools
                         NewFriendInfo newFriendInfo = weChatParseHelper.ParseAcceptFriend(reponseInfo.data);
                         newFriendInfo.sourcewxid = dwClient.GetWxidByClientID();//保存该条数据来源于哪条微信
 
-                        CallBackWeChatMessage(newFriendInfo);
+                        CallBackWeChatMessage(newFriendInfo, dwClient);
                         //NewFriendService.AddNewFriend(newFriendInfo);
                         break;
                     case MessageTypeEnum.MT_RECV_CARD_MSG:
@@ -234,7 +234,7 @@ namespace Hyg.Common.WeChatTools
                             return;
                         TaskHelper.ExcuteNewTask((() =>
                         {
-                            CallBackWeChatMessage(recv_Video_MsgEntity);
+                            CallBackWeChatMessage(recv_Video_MsgEntity, dwClient);
                             /*string video_url = RequstDataOperate.UploadFile(recv_Video_MsgEntity.video);
                             logText = "视频地址:" + video_url;
                             recv_Video_MsgEntity.video = video_url;
@@ -256,7 +256,7 @@ namespace Hyg.Common.WeChatTools
                             CardInfoEntity cardInfoEntity = weChatParseHelper.ParseRecvCard(reponseInfo.data);
                             recv_Text_MsgEntity_card.msg = cardInfoEntity.url;
 
-                            CallBackWeChatMessage(recv_Text_MsgEntity_card);
+                            CallBackWeChatMessage(recv_Text_MsgEntity_card, dwClient);
 
                             //MessageOperateHelper.OperateMessage(recv_Text_MsgEntity_card, dwClient, GetWxidByClientID(dwClient));
                             logText = "卡牌标题:" + cardInfoEntity.title;
@@ -271,7 +271,7 @@ namespace Hyg.Common.WeChatTools
                             //string file_url = RequstDataOperate.UploadFile(recv_File_MsgEntity.file);
                             //logText = "文件地址:" + file_url;
                             //recv_File_MsgEntity.file = file_url;
-                            CallBackWeChatMessage(recv_File_MsgEntity);
+                            CallBackWeChatMessage(recv_File_MsgEntity, dwClient);
                         }), 500);
                         break;
                     case MessageTypeEnum.MT_RECV_MINIAPP_MSG:
@@ -282,7 +282,7 @@ namespace Hyg.Common.WeChatTools
                         TaskHelper.ExcuteNewTask(() =>
                         {
                             Recv_System_MsgEntity recv_System_MsgEntity = JsonConvert.DeserializeObject<Recv_System_MsgEntity>(reponseInfo.data.ToString());
-                            CallBackWeChatMessage(recv_System_MsgEntity);
+                            CallBackWeChatMessage(recv_System_MsgEntity, dwClient);
                             string raw_msg = recv_System_MsgEntity.raw_msg.Trim();
                             if (recv_System_MsgEntity.wx_type == 10000 && ((raw_msg.Contains("邀请") && raw_msg.Contains("加入了群聊")) || (raw_msg.Contains("通过扫描") && raw_msg.Contains("分享的二维码加入群聊"))))
                             {
@@ -372,7 +372,7 @@ namespace Hyg.Common.WeChatTools
                             Recv_Decrypt_ImageEntity decrypt_ImageEntity = weChatParseHelper.ParseDecryptImage(reponseInfo.data);
                             if (decrypt_ImageEntity.status == 1)
                             {
-                                CallBackWeChatMessage(decrypt_ImageEntity);
+                                CallBackWeChatMessage(decrypt_ImageEntity, dwClient);
                                 //recv_Image_MsgEntity.image_url = decrypt_ImageEntity.dest_file;
                                 //logText = "图片地址:" + AjaxRequest.UploadFile(recv_Image_MsgEntity.image_url);
                             }

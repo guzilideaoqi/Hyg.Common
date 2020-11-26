@@ -43,6 +43,7 @@
       <HintPath>bin\Debug\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Net" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
@@ -168,6 +169,7 @@
     <Compile Include="OtherTools\OtherModel\RandomTimeEntity.cs" />
     <Compile Include="OtherTools\RandomHelper.cs" />
     <Compile Include="OtherTools\RegularHelper.cs" />
+    <Compile Include="OtherTools\SystemInfoHelper.cs" />
     <Compile Include="OtherTools\TaskHelper.cs" />
     <Compile Include="OtherTools\Toast\MessageBoxExtend.cs" />
     <Compile Include="OtherTools\UnicodeHelper.cs" />
