@@ -387,9 +387,10 @@ namespace Hyg.Common.JDTools
         #endregion
 
         #region 订单行查询接口
-        public List<UnionOpenOrderRowQueryInfo> UnionOpenOrderRowQuery(UnionOpenOrderRowQueryRequest unionOpenOrderRowQueryRequest)
+        public UnionOpenOrderRowQueryResultDetail UnionOpenOrderRowQuery(UnionOpenOrderRowQueryRequest unionOpenOrderRowQueryRequest)
         {
-            List<UnionOpenOrderRowQueryInfo> UnionOpenOrderRowQueryInfoList = new List<UnionOpenOrderRowQueryInfo>();
+            //List<UnionOpenOrderRowQueryInfo> UnionOpenOrderRowQueryInfoList = new List<UnionOpenOrderRowQueryInfo>();
+            UnionOpenOrderRowQueryResultDetail unionOpenOrderRowQueryResultDetail = null;
             try
             {
                 string resultContent = GetRequestResult(unionOpenOrderRowQueryRequest.ToJsonStr(), "jd.union.open.order.row.query");
@@ -397,7 +398,8 @@ namespace Hyg.Common.JDTools
                 UnionOpenOrderRowQueryResponse unionOpenOrderRowQueryResponse = resultContent.ToJsonObject<UnionOpenOrderRowQueryResponse>();
                 if (!unionOpenOrderRowQueryResponse.jd_union_open_order_row_query_response.IsEmpty() && unionOpenOrderRowQueryResponse.jd_union_open_order_row_query_response.code == 0)
                 {
-                    UnionOpenOrderRowQueryResultDetail unionOpenOrderRowQueryResultDetail = unionOpenOrderRowQueryResponse.jd_union_open_order_row_query_response.result.ToJsonObject<UnionOpenOrderRowQueryResultDetail>();
+                    unionOpenOrderRowQueryResultDetail = unionOpenOrderRowQueryResponse.jd_union_open_order_row_query_response.result.ToJsonObject<UnionOpenOrderRowQueryResultDetail>();
+                    /*UnionOpenOrderRowQueryResultDetail unionOpenOrderRowQueryResultDetail = unionOpenOrderRowQueryResponse.jd_union_open_order_row_query_response.result.ToJsonObject<UnionOpenOrderRowQueryResultDetail>();
                     if (!unionOpenOrderRowQueryResultDetail.IsEmpty() && unionOpenOrderRowQueryResultDetail.code == 200)
                     {
                         UnionOpenOrderRowQueryInfoList = unionOpenOrderRowQueryResultDetail.data;
@@ -405,7 +407,7 @@ namespace Hyg.Common.JDTools
                     else
                     {
                         LogHelper.WriteDebugLog("UnionOpenOrderRowQuery", resultContent);
-                    }
+                    }*/
                 }
                 else
                 {
@@ -417,7 +419,7 @@ namespace Hyg.Common.JDTools
                 LogHelper.WriteException("UnionOpenOrderRowQuery", ex);
             }
 
-            return UnionOpenOrderRowQueryInfoList;
+            return unionOpenOrderRowQueryResultDetail;
         }
         #endregion
 

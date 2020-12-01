@@ -41,6 +41,6 @@ namespace Hyg.Common.PDDTools.PDDRequest
         /// <summary>
         /// 订单类型：1-推广订单；2-直播间订单
         /// </summary>
-        public int query_order_type { get; set; }
+        public int? query_order_type { get; set; }
     }
 }

@@ -251,7 +251,7 @@ namespace TestTool
                     unionOpenOrderRowQueryDetailRequest.endTime = "2020-10-11 14:30:00";
                     unionOpenOrderRowQueryRequest.orderReq = unionOpenOrderRowQueryDetailRequest;
 
-                    Console.WriteLine("共获取到" + jD_ApiManage.UnionOpenOrderRowQuery(unionOpenOrderRowQueryRequest).Count + "条数据!");
+                    Console.WriteLine("共获取到" + jD_ApiManage.UnionOpenOrderRowQuery(unionOpenOrderRowQueryRequest).data.Count + "条数据!");
                     return;
 
                     Super_CreatePositionRequest super_CreatePositionRequest = new Super_CreatePositionRequest();
