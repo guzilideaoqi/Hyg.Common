@@ -115,7 +115,7 @@ namespace Hyg.Common.WeChatTools
                         break;
                     case MessageTypeEnum.MT_USER_LOGIN:
                         WeChat_UserInfo wXInfo = weChatParseHelper.ParseCurrentUserInfo(reponseInfo.data, dwClient);
-                        CallBackWeChatMessage(wXInfo,dwClient);
+                        CallBackWeChatMessage(wXInfo, dwClient);
                         logText = "【" + wXInfo.nickname + "】登录成功!";
 
                         #region 提交微信信息
@@ -124,8 +124,6 @@ namespace Hyg.Common.WeChatTools
                         //    RequstDataOperate.SubmitWeChatInfo(wXInfo);
                         //}, 50);
                         #endregion
-
-
 
                         #region 获取当前微信未自动同意的好友信息
                         /*List<NewFriendInfo> newFriendInfoList = NewFriendService.GetNewFriendList(wXInfo.wxid);
@@ -169,7 +167,7 @@ namespace Hyg.Common.WeChatTools
                         TaskHelper.ExcuteNewTask(() =>
                         {
                             GroupMemberResponseEntity groupMemberResponseEntity = WeChatParseHelper.ConvertObjToModel<GroupMemberResponseEntity>(reponseInfo.data);
-                            CallBackWeChatMessage(groupMemberResponseEntity,dwClient);
+                            CallBackWeChatMessage(groupMemberResponseEntity, dwClient);
                             //GroupMemberService.BatchUpdateGroupMember(groupMemberResponseEntity);
                         }, 50);
                         break;
@@ -211,8 +209,12 @@ namespace Hyg.Common.WeChatTools
                         Recv_Image_MsgEntity recv_Image_MsgEntity = weChatParseHelper.ParseImageMsg(reponseInfo.data);
                         if (recv_Image_MsgEntity.from_wxid.IsSelf(dwClient))
                             return;
-                        //间隔500毫秒下载图片
-                        TaskHelper.ExcuteNewTask((() => { WeChatTools.SendDecryptImage(dwClient, recv_Image_MsgEntity.image); }), 500);
+                        if (!CommonCacheConfig.WeChat_ImageList.ContainsKey(recv_Image_MsgEntity.image))
+                        {
+                            CommonCacheConfig.WeChat_ImageList.Add(recv_Image_MsgEntity.image, recv_Image_MsgEntity);
+                            //间隔500毫秒下载图片
+                            TaskHelper.ExcuteNewTask((() => { WeChatTools.SendDecryptImage(dwClient, recv_Image_MsgEntity.image); }), 500);
+                        }
                         break;
                     case MessageTypeEnum.MT_RECV_VOICE_MSG:
                         //Recv_Video_MsgEntity recv_Video_MsgEntity = weChatParseHelper.ParseRecvVideo(reponseInfo.data);
@@ -244,6 +246,14 @@ namespace Hyg.Common.WeChatTools
                         }), 500);
                         break;
                     case MessageTypeEnum.MT_RECV_EMOJI_MSG:
+                        Recv_Emoji_MsgEntity recv_Emoji_MsgEntity = weChatParseHelper.ParseRecvEmoji(reponseInfo.data);
+                        if (!recv_Emoji_MsgEntity.IsEmpty())
+                        {
+                            if (recv_Emoji_MsgEntity.from_wxid.IsSelf(dwClient))
+                                return;
+                            CallBackWeChatMessage(recv_Emoji_MsgEntity, dwClient);
+                        }
+
                         break;
                     case MessageTypeEnum.MT_RECV_LOCATION_MSG:
                         break;
@@ -367,16 +377,17 @@ namespace Hyg.Common.WeChatTools
                     case MessageTypeEnum.MT_AUTO_ACCPET_CARD_MSG:
                         break;
                     case MessageTypeEnum.MT_DECRYPT_IMG_MSG:
-                        TaskHelper.ExcuteNewTask(() =>
+                        Recv_Decrypt_ImageEntity decrypt_ImageEntity = weChatParseHelper.ParseDecryptImage(reponseInfo.data);
+                        if (decrypt_ImageEntity.status == 1)
                         {
-                            Recv_Decrypt_ImageEntity decrypt_ImageEntity = weChatParseHelper.ParseDecryptImage(reponseInfo.data);
-                            if (decrypt_ImageEntity.status == 1)
+                            if (CommonCacheConfig.WeChat_ImageList.ContainsKey(decrypt_ImageEntity.src_file))
                             {
-                                CallBackWeChatMessage(decrypt_ImageEntity, dwClient);
-                                //recv_Image_MsgEntity.image_url = decrypt_ImageEntity.dest_file;
-                                //logText = "图片地址:" + AjaxRequest.UploadFile(recv_Image_MsgEntity.image_url);
+                                Recv_Image_MsgEntity recv_Image_MsgEntity_decry = CommonCacheConfig.WeChat_ImageList[decrypt_ImageEntity.src_file];
+                                recv_Image_MsgEntity_decry.image_url = decrypt_ImageEntity.dest_file;
+
+                                CallBackWeChatMessage(recv_Image_MsgEntity_decry, dwClient);
                             }
-                        }, 50);
+                        }
                         break;
                     case MessageTypeEnum.MT_OPEN_BROWSER_MSG:
                         break;

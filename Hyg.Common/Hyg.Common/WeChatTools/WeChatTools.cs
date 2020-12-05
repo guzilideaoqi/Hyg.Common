@@ -98,7 +98,12 @@ namespace Hyg.Common.WeChatTools
                 string image_name = Guid.NewGuid().ToString();
                 string filePath = dirPath + "\\" + image_name + ".jpg";
 
-                string strMsg = "{\"data\":{\"src_file\":\"" + src_file.Replace(@"\", @"/\") + "\",\"dest_file\":\"" + filePath.Replace(@"\", @"/\") + "\"},\"type\":" + (int)MessageTypeEnum.MT_DECRYPT_IMG_MSG + "}";
+                dynamic dy = new
+                {
+                    data = new { src_file = src_file, dest_file = filePath },
+                    type = (int)MessageTypeEnum.MT_DECRYPT_IMG_MSG
+                };
+                string strMsg = Newtonsoft.Json.JsonConvert.SerializeObject(dy);
                 SendWeChatData(WxClientId, strMsg);
             }
             catch (Exception ex)

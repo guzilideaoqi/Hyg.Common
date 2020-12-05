@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -372,11 +373,13 @@ namespace Hyg.Common.OtherTools
         #endregion
 
         #region UrlEncode编码
-        public static string ToUrlEncode(this string text) {
+        public static string ToUrlEncode(this string text)
+        {
             return HttpUtility.UrlEncode(text);
         }
 
-        public static string ToUrlDecode(this string text) {
+        public static string ToUrlDecode(this string text)
+        {
             return HttpUtility.UrlDecode(text);
         }
         #endregion
@@ -399,7 +402,6 @@ namespace Hyg.Common.OtherTools
                 WebResponse responsePic = requestPic.GetResponse();
 
                 Image webImage = Image.FromStream(responsePic.GetResponseStream()); // Error
-
                 webImage.Save(result);
             }
             catch (Exception ex)
@@ -409,15 +411,48 @@ namespace Hyg.Common.OtherTools
             return result;
         }
 
+        public static string DownGif(this string url)
+        {
+            string result = "";
+            try
+            {
+                if (File.Exists(url))
+                    return url;
+                string dirPath = System.IO.Directory.GetCurrentDirectory() + "\\cache\\gif\\";
+                if (!Directory.Exists(dirPath))
+                    Directory.CreateDirectory(dirPath);
+
+                result = dirPath + Guid.NewGuid().ToString() + ".gif";
+
+                byte[] fileData;
+                using (WebClient client = new WebClient())
+                {
+                    fileData = client.DownloadData(url);
+                }
+                using (FileStream fs =
+                      new FileStream(result, FileMode.OpenOrCreate))
+                {
+                    fs.Write(fileData, 0, fileData.Length);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("DownGif", ex, url);
+            }
+            return result;
+        }
+
         #region Url参数解析
-        public static string ToUrlParam(this string url, string paramname) {
+        public static string ToUrlParam(this string url, string paramname)
+        {
             string result = "";
             try
             {
                 Uri uri = new Uri(url);
                 string queryString = uri.Query;
                 NameValueCollection col = GetQueryString(queryString);
-                if (col.HasKeys()) {
+                if (col.HasKeys())
+                {
                     result = col[paramname];
                 }
             }

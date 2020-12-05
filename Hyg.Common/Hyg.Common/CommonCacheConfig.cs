@@ -60,6 +60,9 @@ namespace Hyg.Common
         /// 新好友队列
         /// </summary>
         public static Queue<NewFriendInfo> newFriendInfoList = new Queue<NewFriendInfo>();
+
+        //图片列表(用于存储异步的图片接收)
+        public static Dictionary<string, Recv_Image_MsgEntity> WeChat_ImageList = new Dictionary<string, Recv_Image_MsgEntity>();
         #endregion
 
         #region 大淘客账号配置

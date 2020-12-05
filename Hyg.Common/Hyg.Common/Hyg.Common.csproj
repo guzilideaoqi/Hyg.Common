@@ -153,11 +153,13 @@
     <Compile Include="JDTools\JDResponse\Super_QueryPositionResponse.cs" />
     <Compile Include="JDTools\JDResponse\UnionOpenOrderRowQueryResponse.cs" />
     <Compile Include="JDTools\JD_ApiManage.cs" />
+    <Compile Include="Model\CollectMessageEntity.cs" />
     <Compile Include="Model\CommonGoodInfoEntity.cs" />
     <Compile Include="Model\CommonGoodRequestParam.cs" />
     <Compile Include="Model\CommonOrderInfoEntity.cs" />
     <Compile Include="OtherTools\AjaxRequest.cs" />
     <Compile Include="OtherTools\Base64Helper.cs" />
+    <Compile Include="OtherTools\CollectHelper.cs" />
     <Compile Include="OtherTools\DataConvertHelper.cs" />
     <Compile Include="OtherTools\FileHelper.cs" />
     <Compile Include="OtherTools\HashHelper.cs" />
@@ -255,6 +257,7 @@
     <Compile Include="WeChatTools\WeChatModel\MessageTypeEnum.cs" />
     <Compile Include="WeChatTools\WeChatModel\Recv_Accept_Friend_MsgEntity.cs" />
     <Compile Include="WeChatTools\WeChatModel\Recv_Decrypt_ImageEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\Recv_Emoji_MsgEntity.cs" />
     <Compile Include="WeChatTools\WeChatModel\Recv_File_MsgEntity.cs" />
     <Compile Include="WeChatTools\WeChatModel\Recv_Image_MsgEntity.cs" />
     <Compile Include="WeChatTools\WeChatModel\Recv_Link_MsgEntity.cs" />

@@ -211,6 +211,26 @@ namespace Hyg.Common.WeChatTools
         }
         #endregion
 
+
+        #region 解析emoji数据
+        public Recv_Emoji_MsgEntity ParseRecvEmoji(object data)
+        {
+            try
+            {
+                Recv_Emoji_MsgEntity emojiInfoEntity = ConvertObjToModel<Recv_Emoji_MsgEntity>(data);
+                XmlAttribute xmlAttribute = XMLHelper.ResolveXML(emojiInfoEntity.raw_msg, "msg/emoji", false).Attributes["cdnurl"];
+                if (xmlAttribute.IsEmpty())
+                    return null;
+                emojiInfoEntity.ImageUrl = xmlAttribute.Value;
+                return emojiInfoEntity;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        #endregion
+
         #region 解析小程序数据
 
         #endregion
