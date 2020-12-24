@@ -369,21 +369,24 @@ namespace Hyg.Common.PDDTools
         #endregion
 
         #region 多多进宝推广位创建接口(工具商)
-        public P_id_generate_response Super_GeneralGoodPID(Super_GeneralGoodPIDRequest super_GeneralGoodPIDRequest)
+        public Super_GeneralGoodPIDResponse Super_GeneralGoodPID(Super_GeneralGoodPIDRequest super_GeneralGoodPIDRequest)
         {
-            P_id_generate_response p_Id_Generate_Response = null;
+            Super_GeneralGoodPIDResponse super_GeneralGoodPIDResponse = null;
             try
             {
                 string resultContent = GetRequestResult(super_GeneralGoodPIDRequest.ModelToUriParamByDic(), "pdd.ddk.oauth.goods.pid.generate");
-                Super_GeneralGoodPIDResponse super_GeneralGoodPIDResponse = resultContent.ToJsonObject<Super_GeneralGoodPIDResponse>();
-                p_Id_Generate_Response = super_GeneralGoodPIDResponse.p_id_generate_response;
+                super_GeneralGoodPIDResponse = resultContent.ToJsonObject<Super_GeneralGoodPIDResponse>();
+                if (super_GeneralGoodPIDResponse.IsEmpty())
+                {
+                    LogHelper.WriteLog("Super_GeneralGoodPID", resultContent);
+                }
             }
             catch (Exception ex)
             {
                 LogHelper.WriteException("Super_GeneralGoodPID", ex);
             }
 
-            return p_Id_Generate_Response;
+            return super_GeneralGoodPIDResponse;
         }
         #endregion
 

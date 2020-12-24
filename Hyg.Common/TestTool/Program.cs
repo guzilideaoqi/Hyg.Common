@@ -6,6 +6,8 @@ using Hyg.Common.HaoDanKu;
 using Hyg.Common.HaoDanKu.HaoDanKuRequest;
 using Hyg.Common.JDTools;
 using Hyg.Common.JDTools.JDRequest;
+using Hyg.Common.JTT_Tools;
+using Hyg.Common.JTT_Tools.JTTRequest;
 using Hyg.Common.OtherTools;
 using Hyg.Common.OtherTools.OtherModel;
 using Hyg.Common.PDDTools;
@@ -22,13 +24,13 @@ namespace TestTool
 {
     class Program
     {
-        const int plaformType = 1;//1=淘宝  2=京东  3=拼多多 4=好单库
+        const int plaformType = 1;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推
         static void Main(string[] args)
         {
             try
             {
                 //获取当前进程对象
-                Process cur = Process.GetCurrentProcess();
+                /*Process cur = Process.GetCurrentProcess();
 
                 PerformanceCounter curpcp = new PerformanceCounter("Process", "Working Set - Private", cur.ProcessName);
                 PerformanceCounter curpc = new PerformanceCounter("Process", "Working Set", cur.ProcessName);
@@ -71,7 +73,7 @@ namespace TestTool
                     System.Threading.Thread.Sleep(interval);
                 }
 
-                Console.ReadLine();return;
+                Console.ReadLine();return;*/
                 //string str = "<msg fromusername=\"wxid_54foqo0ljj8o22\" encryptusername=\"v3_020b3826fd030100000000000820218c94415f000000501ea9a3dba12f95f6b60a0536a1adb638b49bee2336de06a68d500849630220d5d551dcf955e29006ee779c5c42d39231eae976a7661b1df69e336e26e7606ce25ebbc530a51c9c6955388459@stranger\" fromnickname=\"pretty girl\" content=\"陈涛\" fullpy=\"prettygirl\" shortpy=\"PRETTYGIRL\" imagestatus=\"3\" scene=\"17\" country=\"AE\" province=\"Al Fujayrah\" city=\"\" sign=\"涛少\" percard=\"1\" sex=\"1\" alias=\"aawjwj\" weibo=\"\" albumflag=\"0\" albumstyle=\"0\" albumbgimgid=\"\" snsflag=\"257\" snsbgimgid=\"http://szmmsns.qpic.cn/mmsns/PDHwiaPWZh0fPh5YzXyH5IS9uvUC4O4omVa3h9SCGGhadEKlJgv9BPsibtCKcJx7cP9iaA0Z2tzUlI/0\" snsbgobjectid=\"13391932798898090074\" mhash=\"b607b1a83276a3be0e0aa7974445022a\" mfullhash=\"b607b1a83276a3be0e0aa7974445022a\" bigheadimgurl=\"http://wx.qlogo.cn/mmhead/ver_1/xQUKJxs4mQrJNzhYsOMqn1LjBr3uhNbBoIfYbQbHJ26dmTMv09gb5qcYZnc5QEib0TaX6QzVmibjNpzgibicJWB8vtEBD7mFfhCOMn5jKdy2JLk/0\" smallheadimgurl=\"http://wx.qlogo.cn/mmhead/ver_1/xQUKJxs4mQrJNzhYsOMqn1LjBr3uhNbBoIfYbQbHJ26dmTMv09gb5qcYZnc5QEib0TaX6QzVmibjNpzgibicJWB8vtEBD7mFfhCOMn5jKdy2JLk/96\" ticket=\"v4_000b708f0b040000010000000000ffe375e707cbd824f3d77246745f1000000050ded0b020927e3c97896a09d47e6e9e288fd4394783ba8b82f3b8c372064c0a5d30fae7976a7d4fa49fba9b7e83ef0fb48d3c5ec017fa72b6ee868cff77fadc2b9133c2d75f792b1530aa960709438df7d0d7a8b7058d5324b543e81acc349da850e9b4bd2d773f5a8d29f40db6e437a885ae8dd57038434b23bc0baf605942b847b844a495c6286f2d148a314e51515744c5dffe6d735799ab4e722cc718dcc77671380fc435cf3dd95f721cf9aec35d33d40d7fdf349c3e173a77b0210f35047f156f46f3edbffd17c6c0e366e3a237255d66611b701691ce9590aaacfea9ae67d5e8d156674788c2e51133bfa89d9f8aa63360130d2ddc7960a4a602e4f02905ccc88026accb72c0ca7d280a79528a5914d710fc12eb7bfc223ef5dd5498fd7a969078bdfb7cf8@stranger\" opcode=\"2\" googlecontact=\"\" qrticket=\"\" chatroomusername=\"\" sourceusername=\"wxid_z7rjwki6i9yk22\" sourcenickname=\"心凉&她\" sharecardusername=\"wxid_z7rjwki6i9yk22\" sharecardnickname=\"心凉&amp;她\" cardversion=\"0\"><brandlist count=\"0\" ver=\"657547423\"></brandlist></msg>";
 
                 //System.Xml.XmlNode xmlList = XMLHelper.ResolveXML(str, "msg", true);
@@ -85,7 +87,7 @@ namespace TestTool
                 if (plaformType == 1)
                 {
                     DTK_ApiManage dTK_ApiManage = new DTK_ApiManage(CommonCacheConfig.dtk_appkey, CommonCacheConfig.dtk_appsecret);
-                    int apiType = 13;
+                    int apiType = 20;
                     object apiData = null;
                     switch (apiType)
                     {
@@ -235,6 +237,15 @@ namespace TestTool
                         case 19:
                             DTK_LiveMaterialGoodRequest dTK_LiveMaterialGoodRequest = new DTK_LiveMaterialGoodRequest();
                             apiData = dTK_ApiManage.GetDTK_LiveMaterialGood(dTK_LiveMaterialGoodRequest);
+                            break;
+                        case 20:
+                            DTK_Explosive_Goods_ListRequest dTK_Explosive_Goods_ListRequest = new DTK_Explosive_Goods_ListRequest();
+                            dTK_Explosive_Goods_ListRequest.cids = "4";
+                            dTK_Explosive_Goods_ListRequest.IsReturnCommonInfo = true;
+                            //dTK_Explosive_Goods_ListRequest.pageId = "1";
+                            dTK_Explosive_Goods_ListRequest.PriceCid = 1;
+                            //dTK_Explosive_Goods_ListRequest.pageSize = 20;
+                            apiData = dTK_ApiManage.GetDTK_ExplosiveGoods(dTK_Explosive_Goods_ListRequest);
                             break;
                     }
 
@@ -481,7 +492,7 @@ namespace TestTool
 
 
 
-                    
+
                     Good_SearchRequest good_SearchRequest = new Good_SearchRequest();
                     //good_SearchRequest.goods_id_list = new string[] { "177521731055" };
                     good_SearchRequest.keyword = "https://p.pinduoduo.com/doXbmz4V";
@@ -499,6 +510,28 @@ namespace TestTool
                     haoDanKu_GetOrienteeringItemsRequest.min_id = 1;
                     HaoDanKu_ApiManage haoDanKu_ApiManage = new HaoDanKu_ApiManage();
                     haoDanKu_ApiManage.GetOrienteeringItems(haoDanKu_GetOrienteeringItemsRequest);
+                }
+                else if (plaformType == 5) {
+                    JTT_ApiManage jTT_ApiManage = new JTT_ApiManage("2004222117227673", "4ded804729f2b7eb389895e51ffafc5a");
+
+                    int apiType = 2;
+                    switch (apiType)
+                    {
+                        case 0:
+                            JTT_SuperCategoryRequest jTT_SuperCategoryRequest = new JTT_SuperCategoryRequest();
+
+                            jTT_ApiManage.GetSuperCategory(jTT_SuperCategoryRequest);
+                            break;
+                        case 1:
+                            JTT_CollectionGoodsRequest jTT_CollectionGoodsRequest = new JTT_CollectionGoodsRequest();
+                            jTT_ApiManage.GetCollection_Goods(jTT_CollectionGoodsRequest);
+                            break;
+                        case 2:
+                            JTT_BugGoodsRequest jTT_BugGoodsRequest = new JTT_BugGoodsRequest();
+                            jTT_ApiManage.GetBug_GoodsList(jTT_BugGoodsRequest);
+                            break;
+                    }
+
                 }
             }
             catch (Exception ex)

@@ -125,5 +125,11 @@ namespace Hyg.Common
         public static string haodanku_apikey = "";
         public const string haodanku_api_host = "https://v2.api.haodanku.com/";
         #endregion
+
+        #region 京推推配置
+        public const string jingtuitui_api_host = "http://japi.jingtuitui.com/";
+        #endregion
+
+        public static bool Log_Debug = false;//debug日志模式
     }
 }

@@ -340,7 +340,9 @@ namespace Hyg.Common.OtherTools
                 sb.Append(v.ToString());
                 sb.Append("&");
             }
-            sb.Remove(sb.Length - 1, 1);
+
+            if (sb.Length > 0)
+                sb.Remove(sb.Length - 1, 1);
 
             return sb.ToString();
         }
@@ -407,6 +409,45 @@ namespace Hyg.Common.OtherTools
             catch (Exception ex)
             {
                 LogHelper.WriteException("DownFile", ex, url);
+            }
+            return result;
+        }
+
+        public static string DownMp4File(this string url)
+        {
+            string result = "";
+            try
+            {
+                if (File.Exists(url))
+                    return url;
+                string dirPath = System.IO.Directory.GetCurrentDirectory() + "\\cache\\video\\";
+                if (!Directory.Exists(dirPath))
+                    Directory.CreateDirectory(dirPath);
+
+                WebClient mywebclient = new WebClient();
+                byte[] Bytes = mywebclient.DownloadData(url);
+
+                string fileName = Guid.NewGuid().ToString();
+
+                if (Bytes.Length > 2)
+                {
+                    string extenValue = Bytes[0].ToString() + Bytes[1].ToString();
+
+                    string fileUrl = dirPath + fileName + "." + Enum.GetName(typeof(FileExtension), int.Parse(extenValue));
+
+                    using (FileStream fs = new FileStream(fileUrl, FileMode.Create, FileAccess.Write))
+                    {
+                        fs.Write(Bytes, 0, Bytes.Length);
+                        fs.Close();
+                    }
+
+                    result = fileUrl;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("DownMp4File", ex, url);
             }
             return result;
         }

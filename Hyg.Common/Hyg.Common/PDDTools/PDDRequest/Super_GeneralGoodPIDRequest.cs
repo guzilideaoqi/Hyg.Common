@@ -27,5 +27,10 @@ namespace Hyg.Common.PDDTools.PDDRequest
         /// 推广位名称，例如["1","2"]
         /// </summary>
         public string[] p_id_name_list { get; set; }
+
+        /// <summary>
+        /// 媒体id
+        /// </summary>
+        public long media_id { get; set; }
     }
 }

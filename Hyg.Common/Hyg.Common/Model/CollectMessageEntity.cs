@@ -18,6 +18,11 @@ namespace Hyg.Common.Model
     /// </summary>
     public class CollectMessageEntity
     {
+        public string Xid { get; set; }
+        /// <summary>
+        /// 采集群ID
+        /// </summary>
+        public string CollectQunID { get; set; }
         /// <summary>
         /// 平台类型  1==淘宝  2==京东  3==拼多多  4==其他类型
         /// </summary>
@@ -29,7 +34,7 @@ namespace Hyg.Common.Model
         public CollectMessageType MessageType { get; set; }
 
         /// <summary>
-        /// 消息内容  PlaformType==1：原始文本消息    PlaformType==2：图片地址  PlaformType==3：视频地址  PlaformType==4：gif地址  
+        /// 消息内容  MessageType==1：原始文本消息    MessageType==2：图片地址  MessageType==3：视频地址  MessageType==4：gif地址  
         /// </summary>
         public string MessageContent { get; set; }
 

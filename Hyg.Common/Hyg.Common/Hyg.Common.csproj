@@ -60,6 +60,7 @@
     <Compile Include="DTKTools\DTKModel\CommonResponseBase.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_Collect_GoodDetail.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_Collect_GoodResult.cs" />
+    <Compile Include="DTKTools\DTKModel\DTK_Explosive_GoodsListResult.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_Good_DetailsItem.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_LiveMaterialGoodTemplate.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_OrderItem.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="DTKTools\DTKModel\TopicCatalogueItem.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Activity_CatalogueRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Activity_GoodListRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_Explosive_Goods_ListRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Get_CollectRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Get_dtk_Search_GoodRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Get_Good_DetailsRequest.cs" />
@@ -100,6 +102,7 @@
     <Compile Include="DTKTools\DTKResponse\DTK_Activity_CatalogueResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Activity_GoodListResponse.cs" />
     <Compile Include="DTKTools\DTKModel\GoodInfoBase.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_Explosive_Goods_ListResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Get_CollectResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Get_dtk_Search_GoodResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Get_Good_DetailsResponse.cs" />
@@ -153,6 +156,19 @@
     <Compile Include="JDTools\JDResponse\Super_QueryPositionResponse.cs" />
     <Compile Include="JDTools\JDResponse\UnionOpenOrderRowQueryResponse.cs" />
     <Compile Include="JDTools\JD_ApiManage.cs" />
+    <Compile Include="JTT_Tools\JTTModel\JTT_BugGoodsEntity.cs" />
+    <Compile Include="JTT_Tools\JTTModel\JTT_BugGoodsResult.cs" />
+    <Compile Include="JTT_Tools\JTTModel\JTT_CollectionGoodsEntity.cs" />
+    <Compile Include="JTT_Tools\JTTModel\JTT_CommonGoodsInfo.cs" />
+    <Compile Include="JTT_Tools\JTTRequest\JTT_BugGoodsRequest.cs" />
+    <Compile Include="JTT_Tools\JTTRequest\JTT_CollectionGoodsRequest.cs" />
+    <Compile Include="JTT_Tools\JTTRequest\JTT_CommonRequest.cs" />
+    <Compile Include="JTT_Tools\JTTRequest\JTT_SuperCategoryRequest.cs" />
+    <Compile Include="JTT_Tools\JTTResponse\JTT_BugGoodsResponse.cs" />
+    <Compile Include="JTT_Tools\JTTResponse\JTT_CollectionGoodsResponse.cs" />
+    <Compile Include="JTT_Tools\JTTResponse\JTT_CommonResponse.cs" />
+    <Compile Include="JTT_Tools\JTTResponse\JTT_SuperCategoryResponse.cs" />
+    <Compile Include="JTT_Tools\JTT_ApiManage.cs" />
     <Compile Include="Model\CollectMessageEntity.cs" />
     <Compile Include="Model\CommonGoodInfoEntity.cs" />
     <Compile Include="Model\CommonGoodRequestParam.cs" />
@@ -161,6 +177,8 @@
     <Compile Include="OtherTools\Base64Helper.cs" />
     <Compile Include="OtherTools\CollectHelper.cs" />
     <Compile Include="OtherTools\DataConvertHelper.cs" />
+    <Compile Include="OtherTools\DescryptHelper.cs" />
+    <Compile Include="OtherTools\FileExtension.cs" />
     <Compile Include="OtherTools\FileHelper.cs" />
     <Compile Include="OtherTools\HashHelper.cs" />
     <Compile Include="OtherTools\ImageHelper.cs" />

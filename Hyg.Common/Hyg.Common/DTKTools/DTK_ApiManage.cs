@@ -43,6 +43,7 @@ namespace Hyg.Common.DTKTools
         string api_order_data = CommonCacheConfig.dtk_api_host + "api/tb-service/get-order-details";//淘宝客订单数据
         string api_get_collection_list = CommonCacheConfig.dtk_api_host + "api/goods/get-collection-list";//我的收藏
         string api_get_livematerial = CommonCacheConfig.dtk_api_host + "api/goods/liveMaterial-goods-list";//直播好货
+        string api_get_explosivegoods = CommonCacheConfig.dtk_api_host + "api/goods/explosive-goods-list";//每日爆品推荐
         #endregion
 
         string dtk_appkey = "", dtk_appsecret = "";
@@ -479,6 +480,31 @@ namespace Hyg.Common.DTKTools
         }
         #endregion
 
+        #region 每日爆品推荐
+        public DTK_Explosive_Goods_ListResponse GetDTK_ExplosiveGoods(DTK_Explosive_Goods_ListRequest dTK_Explosive_Goods_ListRequest)
+        {
+            DTK_Explosive_Goods_ListResponse dTK_Explosive_Goods_ListResponse = null;
+            try
+            {
+                string resultContent = GeneralApiParam(api_get_explosivegoods, dTK_Explosive_Goods_ListRequest.ModelToUriParam());
+                dTK_Explosive_Goods_ListResponse = resultContent.ToJsonObject<DTK_Explosive_Goods_ListResponse>();
+
+                if (!dTK_Explosive_Goods_ListResponse.data.IsEmpty()) {
+                    //转换公用商品信息
+                    if (dTK_Explosive_Goods_ListRequest.IsReturnCommonInfo)
+                    {
+                        dTK_Explosive_Goods_ListResponse.CommonGoodInfoList = ConvertCommonGoodInfo(dTK_Explosive_Goods_ListResponse.data.list);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("GetDTK_ExplosiveGoods", ex);
+            }
+            return dTK_Explosive_Goods_ListResponse;
+        }
+        #endregion
+
         #region 大淘客接口请求签名
         string GeneralApiParam(string api_url, string api_params)
         {
@@ -517,7 +543,7 @@ namespace Hyg.Common.DTKTools
         #region 公用商品接口转换
         List<CommonGoodInfoEntity> ConvertCommonGoodInfo(object WaitConvertGoodInfoList)
         {
-            List<CommonGoodInfoEntity> commonGoodInfoList = null;
+            List<CommonGoodInfoEntity> commonGoodInfoList = new List<CommonGoodInfoEntity>();
             try
             {
                 if (WaitConvertGoodInfoList is List<RankingItem>)
@@ -757,6 +783,38 @@ namespace Hyg.Common.DTKTools
                         });
                     }
                     #endregion
+                }
+                else if (WaitConvertGoodInfoList is List<DTK_Explosive_GoodsItem>)
+                {
+                    List<DTK_Explosive_GoodsItem> DTK_ExplosiveGoodList = WaitConvertGoodInfoList as List<DTK_Explosive_GoodsItem>;
+                    foreach (DTK_Explosive_GoodsItem item in DTK_ExplosiveGoodList)
+                    {
+                        string[] images = new string[] { GetImage(item.mainPic) };
+                        commonGoodInfoList.Add(new CommonGoodInfoEntity
+                        {
+                            skuid = item.goodsId.ToString(),
+                            title = item.title,
+                            shopId = item.sellerId,
+                            shopLogo = item.shopLogo,
+                            shopName = item.shopName,
+                            coupon_after_price = item.actualPrice.ToString(),
+                            coupon_price = item.couponPrice.ToString(),
+                            origin_price = item.originalPrice.ToString(),
+                            coupon_end_time = item.couponEndTime,
+                            coupon_start_time = item.couponStartTime,
+                            detail_images = images,
+                            images = images,
+                            image = GetImage(item.mainPic),
+                            month_sales = item.monthSales,
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            PlaformType = 1,
+                            afterServiceScore = GetScore(item.shipScore.ToString()),
+                            logisticsLvyueScore = GetScore(item.serviceScore.ToString()),
+                            userEvaluateScore = GetScore(item.descScore.ToString()),
+                            remark = item.desc,
+                            coupon_link = item.couponLink
+                        });
+                    }
                 }
             }
             catch (Exception ex)

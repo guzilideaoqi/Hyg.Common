@@ -23,10 +23,13 @@ namespace Hyg.Common.OtherTools.OtherModel
         /// </summary>
         /// <param name="time"></param>
         /// <returns></returns>
-        public static string ConvertDateTimeToInt(DateTime time)
+        public static string ConvertDateTimeToInt(DateTime CurrentTime,bool IsMillSecond=false)
         {
-            DateTime dateTime = TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1, 0, 0, 0, 0));
-            return ((time.Ticks - dateTime.Ticks) / 10000000L).ToString();
+            TimeSpan ts = CurrentTime - new DateTime(1970, 1, 1, 8, 0, 0, 0);
+            if (IsMillSecond)
+                return Convert.ToInt64(ts.TotalMilliseconds).ToString();
+            else
+                return Convert.ToInt64(ts.TotalSeconds).ToString();
         }
 
 
