@@ -13,6 +13,7 @@ using Hyg.Common.OtherTools.OtherModel;
 using Hyg.Common.PDDTools;
 using Hyg.Common.PDDTools.PDDRequest;
 using Hyg.Common.PDDTools.PDDResponse;
+using Hyg.Common.TaobaoTools;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,7 +25,7 @@ namespace TestTool
 {
     class Program
     {
-        const int plaformType = 1;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推
+        const int plaformType = 6;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推 6=淘宝官方
         static void Main(string[] args)
         {
             try
@@ -386,6 +387,15 @@ namespace TestTool
                     //rp_Prom_Url_GenerateRequest.generate_short_url = true;
                     //Rp_Prom_Url_GenerateResponse rp_Prom_Url_GenerateResponse = pDD_ApiManage.Get_Rp_Prom_Url_Generate(rp_Prom_Url_GenerateRequest);
 
+                    Good_SearchRequest good_SearchRequest = new Good_SearchRequest();
+                    //good_SearchRequest.goods_id_list = new string[] { "177521731055" };
+                    //good_SearchRequest.keyword = "https://p.pinduoduo.com/doXbmz4V";
+                    good_SearchRequest.pid = "1912666_125576394";
+                    good_SearchRequest.IsReturnCommonInfo = true;
+                    good_SearchRequest.custom_parameters = "{\"uid\":\"123\",\"sid\":\"666\"}";
+                    Good_Search_ListResponse good_Search_ListResponse = pDD_ApiManage.Good_Search_List(good_SearchRequest);
+                    return;
+
                     Super_WeApp_Qrcode_UrlRequest super_WeApp_Qrcode_UrlRequest = new Super_WeApp_Qrcode_UrlRequest();
                     super_WeApp_Qrcode_UrlRequest.custom_parameters = "guzilideaoqi";
                     super_WeApp_Qrcode_UrlRequest.p_id = "1912666_177495987";
@@ -473,34 +483,6 @@ namespace TestTool
                     super_GetAllIncrementOrderRequest.start_update_time = DateTimeHelper.ConvertDateTimeToInt(DateTime.Now.AddDays(-1));
                     super_GetAllIncrementOrderRequest.end_update_time = DateTimeHelper.ConvertDateTimeToInt(DateTime.Now);
                     pDD_ApiManage.Super_GetAllIncrementOrder(super_GetAllIncrementOrderRequest); return;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    Good_SearchRequest good_SearchRequest = new Good_SearchRequest();
-                    //good_SearchRequest.goods_id_list = new string[] { "177521731055" };
-                    good_SearchRequest.keyword = "https://p.pinduoduo.com/doXbmz4V";
-                    good_SearchRequest.pid = "1912666_125576394";
-
-                    //good_SearchRequest.custom_parameters= "{\"uid\":\"123\",\"sid\":\"666\"}";
-                    Good_Search_ListResponse good_Search_ListResponse = pDD_ApiManage.Good_Search_List(good_SearchRequest);
-                    return;
                 }
                 else if (plaformType == 4)
                 {
@@ -511,7 +493,8 @@ namespace TestTool
                     HaoDanKu_ApiManage haoDanKu_ApiManage = new HaoDanKu_ApiManage();
                     haoDanKu_ApiManage.GetOrienteeringItems(haoDanKu_GetOrienteeringItemsRequest);
                 }
-                else if (plaformType == 5) {
+                else if (plaformType == 5)
+                {
                     JTT_ApiManage jTT_ApiManage = new JTT_ApiManage("2004222117227673", "4ded804729f2b7eb389895e51ffafc5a");
 
                     int apiType = 2;
@@ -532,6 +515,10 @@ namespace TestTool
                             break;
                     }
 
+                }
+                else if (plaformType == 6) {
+                    TB_ApiManage tB_ApiManage = new TB_ApiManage("24625691", "9f852d35d2dc24028be48f99bf9bcf8a");
+                    tB_ApiManage.DgOptimusMaterial();
                 }
             }
             catch (Exception ex)

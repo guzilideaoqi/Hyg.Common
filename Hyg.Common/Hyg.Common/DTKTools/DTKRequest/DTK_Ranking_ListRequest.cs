@@ -32,6 +32,16 @@ namespace Hyg.Common.DTKTools.DTKRequest
         /// <summary>
         /// 仅对实时榜单、全天榜单有效
         /// </summary>
-        public int cid { get; set; }
+        public int? cid { get; set; }
+
+        /// <summary>
+        /// 页码
+        /// </summary>
+        public int pageId { get; set; } = 1;
+
+        /// <summary>
+        /// 每页条数返回条数（支持10,20.50，默认返回20条）
+        /// </summary>
+        public int pageSize { get; set; } = 20;
     }
 }

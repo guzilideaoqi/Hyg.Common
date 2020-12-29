@@ -688,7 +688,7 @@ namespace Hyg.Common.PDDTools
         #region 公用商品接口转换
         List<CommonGoodInfoEntity> ConvertCommonGoodInfo(object WaitConvertGoodInfoList)
         {
-            List<CommonGoodInfoEntity> commonGoodInfoList = null;
+            List<CommonGoodInfoEntity> commonGoodInfoList = new List<CommonGoodInfoEntity>();
             try
             {
                 if (WaitConvertGoodInfoList is List<Good_Search_Item>)

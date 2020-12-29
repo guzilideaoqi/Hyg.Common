@@ -496,7 +496,7 @@ namespace Hyg.Common.JDTools
         #region 公用商品接口转换
         List<CommonGoodInfoEntity> ConvertCommonGoodInfo(object WaitConvertGoodInfoList)
         {
-            List<CommonGoodInfoEntity> commonGoodInfoList = null;
+            List<CommonGoodInfoEntity> commonGoodInfoList = new List<CommonGoodInfoEntity>();
             try
             {
                 if (WaitConvertGoodInfoList is List<JFGoodsRespRow>)

@@ -400,7 +400,8 @@ namespace Hyg.Common.WeChatTools
                 if (logText != "")
                     AddLogs(logText);
 
-                if (CommonCacheConfig.Log_Debug) {
+                if (CommonCacheConfig.Log_Debug)
+                {
                     LogHelper.WriteLog("微信消息", new_RecvData);
                 }
             }

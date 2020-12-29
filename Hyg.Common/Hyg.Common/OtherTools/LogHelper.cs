@@ -67,6 +67,12 @@ namespace Hyg.Common.OtherTools
             WriteLog(3, string.Format(errorInfo, "Exception", fnName, excuteParam, CommonCacheConfig.token, ex.Message, ex.StackTrace));
         }
 
+        public static void WriteException(Exception ex, string excuteParam = "")
+        {
+            string methodName = new System.Diagnostics.StackTrace().GetFrame(1).GetMethod().Name;
+            WriteException(methodName, ex, excuteParam);
+        }
+
         /// <summary>
         /// 记录接口异常信息
         /// </summary>
