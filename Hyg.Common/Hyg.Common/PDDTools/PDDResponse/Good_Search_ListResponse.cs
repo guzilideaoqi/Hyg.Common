@@ -18,7 +18,7 @@ namespace Hyg.Common.PDDTools.PDDResponse
     /// <summary>
     /// Good_Search_ListResponse
     /// </summary>
-    public class Good_Search_ListResponse
+    public class Good_Search_ListResponse: CommonResponse
     {
        public Good_Search_ListEntity goods_search_response { get; set; }
 

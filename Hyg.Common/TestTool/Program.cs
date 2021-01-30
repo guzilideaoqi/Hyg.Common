@@ -13,7 +13,6 @@ using Hyg.Common.OtherTools.OtherModel;
 using Hyg.Common.PDDTools;
 using Hyg.Common.PDDTools.PDDRequest;
 using Hyg.Common.PDDTools.PDDResponse;
-using Hyg.Common.TaobaoTools;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,7 +24,7 @@ namespace TestTool
 {
     class Program
     {
-        const int plaformType = 6;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推 6=淘宝官方
+        const int plaformType = 2;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推 6=淘宝官方
         static void Main(string[] args)
         {
             try
@@ -83,6 +82,7 @@ namespace TestTool
                 CommonCacheConfig.pdd_appkey = "ac48d84bf6064db4be917cd26d71f9bb"; CommonCacheConfig.pdd_appsecret = "ec47368867643a48b5beab50dd97ebaf7fe96f55";
                 //CommonCacheConfig.jd_appkey = "a666eb66d3c749e4857354b69476efab"; CommonCacheConfig.jd_appsecret = "2c6e68722c4047de9a95f0ef9519ea14"; CommonCacheConfig.jd_accesstoken = "e4209eac5db9f8e2762718c5ab2212e8fc9d5c76edce579ab144095bbb95ce392c3b86569f18f09a";
                 CommonCacheConfig.jd_appkey = "3251e372f6fc4d29bdadaf6c711bd4ea"; CommonCacheConfig.jd_appsecret = "48931357c8ed4c7fbd05698f3db9aae9"; CommonCacheConfig.jd_accesstoken = "e4209eac5db9f8e2762718c5ab2212e8fc9d5c76edce579ab144095bbb95ce392c3b86569f18f09a";
+                CommonCacheConfig.jd_appkey = "d6c73647bca31ee72a71c43ba62e3e8e"; CommonCacheConfig.jd_appsecret = "e1744cac6dca4e39b251900ec207d25c"; CommonCacheConfig.jd_accesstoken = "e4209eac5db9f8e26105759966271e486daa066e20b05e7469fd24a2f405573bd9b9ed950fc96e0e";
                 CommonCacheConfig.haodanku_apikey = "guzilideaoqi";
 
                 if (plaformType == 1)
@@ -256,6 +256,12 @@ namespace TestTool
                 {
                     JD_ApiManage jD_ApiManage = new JD_ApiManage(CommonCacheConfig.jd_appkey, CommonCacheConfig.jd_appsecret, CommonCacheConfig.jd_accesstoken);
 
+                    /*超级接口查询京东商品*/
+                    Super_GoodQueryRequest super_GoodQueryRequest = new Super_GoodQueryRequest();
+                    Super_GoodQueryDetailReq super_GoodQueryDetailReq = new Super_GoodQueryDetailReq();
+                    super_GoodQueryRequest.goodsReqDTO = super_GoodQueryDetailReq;
+                    jD_ApiManage.Super_GetGoodQueryResultByKeyWord(super_GoodQueryRequest); return;
+
                     UnionOpenOrderRowQueryRequest unionOpenOrderRowQueryRequest = new UnionOpenOrderRowQueryRequest();
                     UnionOpenOrderRowQueryDetailRequest unionOpenOrderRowQueryDetailRequest = new UnionOpenOrderRowQueryDetailRequest();
                     unionOpenOrderRowQueryDetailRequest.fields = "goodsInfo";
@@ -321,11 +327,7 @@ namespace TestTool
                     super_QueryCouponRequest.couponUrls = new string[] { "http://coupon.m.jd.com/coupons/show.action?key=8dc19f8890cd435cb27527c3bf0e4594&roleId=39852538&to=item.jd.com/71694691599.html#crumb-wrap".ToUrlEncode() };
                     jD_ApiManage.Super_QueryCouponInfo(super_QueryCouponRequest); return;
 
-                    /*超级接口查询京东商品*/
-                    Super_GoodQueryRequest super_GoodQueryRequest = new Super_GoodQueryRequest();
-                    Super_GoodQueryDetailReq super_GoodQueryDetailReq = new Super_GoodQueryDetailReq();
-                    super_GoodQueryRequest.goodsReqDTO = super_GoodQueryDetailReq;
-                    jD_ApiManage.Super_GetGoodQueryResultByKeyWord(super_GoodQueryRequest); return;
+
 
 
                     Super_QueryPIDRequest super_QueryPIDRequest = new Super_QueryPIDRequest();
@@ -343,7 +345,7 @@ namespace TestTool
                     GoodQueryDetailReq goodQueryDetailReq = new GoodQueryDetailReq();
                     goodQueryDetailReq.eliteId = 1;
                     goodQueryRequest.goodsReq = goodQueryDetailReq;
-                    Console.WriteLine("共获取到" + jD_ApiManage.GetGoodQueryResultByKeyWord(goodQueryRequest).Count + "条数据!");
+                    Console.WriteLine("共获取到" + jD_ApiManage.GetGoodQueryResultByKeyWord(goodQueryRequest).jFGoodsRespRows.Count + "条数据!");
                     return;
                 }
                 else if (plaformType == 3)
@@ -515,10 +517,6 @@ namespace TestTool
                             break;
                     }
 
-                }
-                else if (plaformType == 6) {
-                    TB_ApiManage tB_ApiManage = new TB_ApiManage("24625691", "9f852d35d2dc24028be48f99bf9bcf8a");
-                    tB_ApiManage.DgOptimusMaterial();
                 }
             }
             catch (Exception ex)

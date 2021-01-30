@@ -33,23 +33,34 @@ namespace Hyg.Common.JDTools
         }
 
         #region 京粉精选商品查询接口
-        public List<JFGoodsRespRow> GetGoodQueryResultByKeyWord(GoodQueryRequest goodQueryRequest)
+        public Jd_GoodInfo_Reponse GetGoodQueryResultByKeyWord(GoodQueryRequest goodQueryRequest)
         {
-            List<JFGoodsRespRow> JFGoodsRespRows = null;
+            Jd_GoodInfo_Reponse jd_GoodInfo_Reponse = null;
             try
             {
                 string resultContent = GetRequestResult(goodQueryRequest.ToJsonStr(), "jd.union.open.goods.jingfen.query");
 
                 GoodQueryResponse jdGoodInfoReponse = resultContent.ToJsonObject<GoodQueryResponse>();
-                Jd_GoodInfo_Reponse jd_GoodInfo_Reponse = jdGoodInfoReponse.jd_union_open_goods_jingfen_query_response.result.ToJsonObject<Jd_GoodInfo_Reponse>();
+                jd_GoodInfo_Reponse = jdGoodInfoReponse.jd_union_open_goods_jingfen_query_response.result.ToJsonObject<Jd_GoodInfo_Reponse>();
 
-                JFGoodsRespRows = ConvertJFGoods(jd_GoodInfo_Reponse.data);
+                if (jd_GoodInfo_Reponse.code == 200)
+                {
+                    if (jd_GoodInfo_Reponse.data.IsEmpty() || jd_GoodInfo_Reponse.data.Length <= 0)
+                        jd_GoodInfo_Reponse.jFGoodsRespRows = new List<JFGoodsRespRow>();
+                    else
+                        jd_GoodInfo_Reponse.jFGoodsRespRows = ConvertJFGoods(jd_GoodInfo_Reponse.data);
+                    jd_GoodInfo_Reponse.IsError = false;
+                }
+                else
+                {
+                    jd_GoodInfo_Reponse.IsError = true;
+                }
             }
             catch (Exception ex)
             {
                 LogHelper.WriteException("GetGoodQueryResult", ex);
             }
-            return JFGoodsRespRows;
+            return jd_GoodInfo_Reponse;
         }
 
         List<JFGoodsRespRow> ConvertJFGoods(JFGoodsResp[] jFGoodsResps)
@@ -130,24 +141,34 @@ namespace Hyg.Common.JDTools
         #endregion
 
         #region 关键词商品查询接口【申请】
-        public List<JFGoodsRespRow> Super_GetGoodQueryResultByKeyWord(Super_GoodQueryRequest super_GoodQueryRequest)
+        public Super_Jd_GoodInfo_Reponse Super_GetGoodQueryResultByKeyWord(Super_GoodQueryRequest super_GoodQueryRequest)
         {
-            List<JFGoodsRespRow> JFGoodsRespRows = null;
+            Super_Jd_GoodInfo_Reponse super_Jd_GoodInfo_Reponse = null;
             try
             {
                 string resultContent = GetRequestResult(super_GoodQueryRequest.ToJsonStr(), "jd.union.open.goods.query");
 
                 Super_GoodQueryResponse super_GoodQueryResponse = resultContent.ToJsonObject<Super_GoodQueryResponse>();
-                Super_Jd_GoodInfo_Reponse super_Jd_GoodInfo_Reponse = super_GoodQueryResponse.jd_union_open_goods_query_response.result.ToJsonObject<Super_Jd_GoodInfo_Reponse>();
-
-                JFGoodsRespRows = ConvertJFGoods(super_Jd_GoodInfo_Reponse.data);
+                super_Jd_GoodInfo_Reponse = super_GoodQueryResponse.jd_union_open_goods_query_response.result.ToJsonObject<Super_Jd_GoodInfo_Reponse>();
+                if (super_Jd_GoodInfo_Reponse.code == 200)
+                {
+                    if (super_Jd_GoodInfo_Reponse.data.IsEmpty() || super_Jd_GoodInfo_Reponse.data.Length <= 0)
+                        super_Jd_GoodInfo_Reponse.jFGoodsRespRows = new List<JFGoodsRespRow>();
+                    else
+                        super_Jd_GoodInfo_Reponse.jFGoodsRespRows = ConvertJFGoods(super_Jd_GoodInfo_Reponse.data);
+                    super_Jd_GoodInfo_Reponse.IsError = false;
+                }
+                else
+                {
+                    super_Jd_GoodInfo_Reponse.IsError = true;
+                }
             }
             catch (Exception ex)
             {
                 LogHelper.WriteException("Super_GetGoodQueryResultByKeyWord", ex);
             }
 
-            return JFGoodsRespRows;
+            return super_Jd_GoodInfo_Reponse;
         }
 
         /// <summary>

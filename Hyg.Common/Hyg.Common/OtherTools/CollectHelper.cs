@@ -7,10 +7,12 @@
 
  =====================================End=======================================================*/
 using Hyg.Common.Model;
+using Hyg.Common.WeChatTools.WeChatModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 namespace Hyg.Common.OtherTools
 {
@@ -26,7 +28,7 @@ namespace Hyg.Common.OtherTools
         /// <param name="collectMessageType"></param>
         /// <param name="FileUrl"></param>
         /// <returns></returns>
-        public static CollectMessageEntity CollectOtherMessage(CollectMessageType collectMessageType, string TextContent)
+        public static CollectMessageEntity CollectOtherMessage(CollectMessageType collectMessageType, string TextContent, object recv_MsgEntity = null)
         {
             CollectMessageEntity collectMessageEntity = null;
             try
@@ -35,6 +37,37 @@ namespace Hyg.Common.OtherTools
                 collectMessageEntity.PlaformType = CollectPlaformType.Other;
                 collectMessageEntity.MessageType = collectMessageType;
                 collectMessageEntity.MessageContent = TextContent;
+
+                if (collectMessageType == CollectMessageType.Image&& !recv_MsgEntity.IsEmpty() && recv_MsgEntity is Recv_Image_MsgEntity)
+                {
+                    Recv_Image_MsgEntity recv_Image_MsgEntity = recv_MsgEntity as Recv_Image_MsgEntity;
+                    if (!recv_Image_MsgEntity.IsEmpty())
+                    {
+                        string raw_msg = recv_Image_MsgEntity.raw_msg;
+                        collectMessageEntity.raw_msg = raw_msg;
+
+                        XmlNode xmlNode = XMLHelper.ResolveXML(raw_msg, "msg/img", false);
+                        ImageEncrptData imageEncrptData = new ImageEncrptData
+                        {
+                            aeskey = XMLHelper.GetAttribute(xmlNode, "aeskey"),
+                            cdnhdheight = XMLHelper.GetAttribute(xmlNode, "cdnhdheight"),
+                            cdnhdwidth = XMLHelper.GetAttribute(xmlNode, "cdnhdwidth"),
+                            cdnmidheight = XMLHelper.GetAttribute(xmlNode, "cdnmidheight"),
+                            cdnmidimgurl = XMLHelper.GetAttribute(xmlNode, "cdnmidimgurl"),
+                            cdnmidwidth = XMLHelper.GetAttribute(xmlNode, "cdnmidwidth"),
+                            cdnthumbaeskey = XMLHelper.GetAttribute(xmlNode, "cdnthumbaeskey"),
+                            cdnthumbheight = XMLHelper.GetAttribute(xmlNode, "cdnthumbheight"),
+                            cdnthumblength = XMLHelper.GetAttribute(xmlNode, "cdnthumblength"),
+                            cdnthumburl = XMLHelper.GetAttribute(xmlNode, "cdnthumburl"),
+                            cdnthumbwidth = XMLHelper.GetAttribute(xmlNode, "cdnthumbwidth"),
+                            length = XMLHelper.GetAttribute(xmlNode, "length"),
+                            encryver = XMLHelper.GetAttribute(xmlNode, "encryver"),
+                            md5 = XMLHelper.GetAttribute(xmlNode, "md5")
+                        };
+
+                        collectMessageEntity.imageencrptdata = imageEncrptData;
+                    }
+                }
             }
             catch (Exception ex)
             {

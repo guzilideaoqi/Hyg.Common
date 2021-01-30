@@ -242,6 +242,7 @@
     <Compile Include="PDDTools\PDDRequest\Super_Query_Good_DetailRequest.cs" />
     <Compile Include="PDDTools\PDDRequest\Super_Query_Member_AuthorityRequest.cs" />
     <Compile Include="PDDTools\PDDRequest\Super_WeApp_Qrcode_UrlRequest.cs" />
+    <Compile Include="PDDTools\PDDResponse\CommonErrorResponse.cs" />
     <Compile Include="PDDTools\PDDResponse\Goods_Promotion_Url_GenerateResponse.cs" />
     <Compile Include="PDDTools\PDDResponse\Goods_Zs_UnitGenerateResponse.cs" />
     <Compile Include="PDDTools\PDDResponse\Good_Search_ListResponse.cs" />

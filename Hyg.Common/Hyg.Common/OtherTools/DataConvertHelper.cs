@@ -375,8 +375,24 @@ namespace Hyg.Common.OtherTools
         #endregion
 
         #region UrlEncode编码
-        public static string ToUrlEncode(this string text)
+        public static string ToUrlEncode(this string text, bool IsUpper = false)
         {
+            if (IsUpper)
+            {
+                StringBuilder builder = new StringBuilder();
+                foreach (char c in text)
+                {
+                    if (HttpUtility.UrlEncode(c.ToString()).Length > 1)
+                    {
+                        builder.Append(HttpUtility.UrlEncode(c.ToString()).ToUpper());
+                    }
+                    else
+                    {
+                        builder.Append(c);
+                    }
+                }
+                return builder.ToString();
+            }
             return HttpUtility.UrlEncode(text);
         }
 

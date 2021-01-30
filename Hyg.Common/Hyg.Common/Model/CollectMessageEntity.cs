@@ -42,6 +42,16 @@ namespace Hyg.Common.Model
         /// 采集商品列表(为了兼容多商品模式)
         /// </summary>
         public List<CollectGoodInfo> CollectGoodList { get; set; }
+
+        /// <summary>
+        /// 图片加密数据
+        /// </summary>
+        public ImageEncrptData imageencrptdata { get; set; }
+
+        /// <summary>
+        /// 微信原格式
+        /// </summary>
+        public string raw_msg { get; set; }
     }
 
     /// <summary>
@@ -129,5 +139,23 @@ namespace Hyg.Common.Model
         /// 链接模式
         /// </summary>
         Mode_Link = 3
+    }
+
+    public class ImageEncrptData
+    {
+        public string aeskey { get; set; }
+        public string encryver { get; set; }
+        public string cdnthumbaeskey { get; set; }
+        public string cdnthumburl { get; set; }
+        public string cdnthumblength { get; set; }
+        public string cdnthumbheight { get; set; }
+        public string cdnthumbwidth { get; set; }
+        public string cdnmidheight { get; set; }
+        public string cdnmidwidth { get; set; }
+        public string cdnhdheight { get; set; }
+        public string cdnhdwidth { get; set; }
+        public string cdnmidimgurl { get; set; }
+        public string length { get; set; }
+        public string md5 { get; set; }
     }
 }

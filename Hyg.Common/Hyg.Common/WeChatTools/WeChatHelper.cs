@@ -57,6 +57,9 @@ namespace Hyg.Common.WeChatTools
         [DllImport(@"dll\WxLoader.dll")]
         public static extern uint InjectWeChat(String strDllPath);
         [DllImport(@"dll\WxLoader.dll")]
+        public static extern uint InjectWeChat(String strDllPath,String strWeChatExePath);
+
+        [DllImport(@"dll\WxLoader.dll")]
         public static extern bool SendWeChatData(uint dwClienId, String strJsonData);
         [DllImport(@"dll\WxLoader.dll")]
         public static extern bool DestroyWeChat();
@@ -117,26 +120,6 @@ namespace Hyg.Common.WeChatTools
                         WeChat_UserInfo wXInfo = weChatParseHelper.ParseCurrentUserInfo(reponseInfo.data, dwClient);
                         CallBackWeChatMessage(wXInfo, dwClient);
                         logText = "【" + wXInfo.nickname + "】登录成功!";
-
-                        #region 提交微信信息
-                        //TaskHelper.ExcuteNewTask(() =>
-                        //{
-                        //    RequstDataOperate.SubmitWeChatInfo(wXInfo);
-                        //}, 50);
-                        #endregion
-
-                        #region 获取当前微信未自动同意的好友信息
-                        /*List<NewFriendInfo> newFriendInfoList = NewFriendService.GetNewFriendList(wXInfo.wxid);
-                        if (newFriendInfoList.Count > 0)
-                        {
-                            logText += "当前有" + newFriendInfoList.Count + "个好友未执行自动同意!";
-
-                            foreach (NewFriendInfo item in newFriendInfoList)
-                            {
-                                CommonCache.newFriendInfoList.Enqueue(item);
-                            }
-                        }*/
-                        #endregion
 
                         #region 获取好友和群组消息
                         WeChatTools.GetFriendInfoList(dwClient);
@@ -443,20 +426,26 @@ namespace Hyg.Common.WeChatTools
             AddLogs("正在启动微信...");
             new Thread(() =>
             {
-                CheckRegistryKey();
-                // 注入并多开                                                                                                                                                      
-                String dllPath = System.IO.Directory.GetCurrentDirectory() + "\\dll\\WeChatHelper_2.8.0.121.dll";
-                InjectWeChat(dllPath);
+                string dllDir = System.IO.Directory.GetCurrentDirectory() + "\\dll\\";
+                string dllPath = dllDir + "WeChatHelper_2.9.5.41.dll";
+                int operate_type = 1;
+                if (!File.Exists(dllPath))
+                {
+                    dllPath = dllDir + "WeChatHelper_2.8.0.121.dll";
+                    operate_type = 0;
+                }
+                // 注入并多开           
+                InjectWeChat(dllPath, CheckRegistryKey(operate_type));
             }).Start();
         }
 
         /// <summary>
         /// 检测注册表信息
         /// </summary>
-        void CheckRegistryKey()
+        string CheckRegistryKey(int operate_type)
         {
             string InstallPath = Directory.GetCurrentDirectory() + "\\WeChat";
-            string Version = "1644691577";
+            string Version = operate_type == 1 ? "1644758313" : "1644691577";//2.8.0.121
 
             RegistryKey currentUser = Registry.CurrentUser;
             RegistryKey registryKey = currentUser.OpenSubKey("Software\\Tencent\\WeChat", true);
@@ -486,6 +475,8 @@ namespace Hyg.Common.WeChatTools
                     registryKey.SetValue("CrashVersion", Version, RegistryValueKind.DWord);
                 }
             }
+
+            return InstallPath;
         }
         #endregion
     }

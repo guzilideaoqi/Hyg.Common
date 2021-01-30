@@ -29,6 +29,8 @@ namespace Hyg.Common.JDTools.JDResponse
     {
         public int totalCount { get; set; }
         public JFGoodsResp[] data { get; set; }
+
+        public List<JFGoodsRespRow> jFGoodsRespRows { get; set; }
     }
     public class JFGoodsResp: JD_GoodBaseEntity
     {

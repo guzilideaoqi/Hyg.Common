@@ -30,5 +30,7 @@ namespace Hyg.Common.JDTools.JDModel
         /// 请求id
         /// </summary>
         public string requestId { get; set; }
+
+        public bool IsError { get; set; }
     }
 }

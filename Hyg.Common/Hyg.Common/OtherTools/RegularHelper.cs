@@ -442,7 +442,7 @@ namespace Hyg.Common.OtherTools
             try
             {
                 #region 采集商品短链接
-                List<string> strs = getValues(@"(https://p.pinduoduo.com/[a-zA-Z0-9]{8})", content);
+                List<string> strs = getValues(@"(https|http)(://p.pinduoduo.com/[a-zA-Z0-9]{8})", content);
                 if (strs.Count > 0)
                 {
                     for (int i = 0; i < strs.Count; i++)
