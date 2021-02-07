@@ -57,7 +57,7 @@ namespace Hyg.Common.WeChatTools
         [DllImport(@"dll\WxLoader.dll")]
         public static extern uint InjectWeChat(String strDllPath);
         [DllImport(@"dll\WxLoader.dll")]
-        public static extern uint InjectWeChat(String strDllPath,String strWeChatExePath);
+        public static extern uint InjectWeChat(String strDllPath, String strWeChatExePath);
 
         [DllImport(@"dll\WxLoader.dll")]
         public static extern bool SendWeChatData(uint dwClienId, String strJsonData);
@@ -403,6 +403,11 @@ namespace Hyg.Common.WeChatTools
                 if (wXInfo != null)
                 {
                     CommonCacheConfig.Login_WeChat_UserInfo.Remove(wXInfo);
+                    LogoutWeChat logoutWeChat = new LogoutWeChat()
+                    {
+                        wxid = wXInfo.wxid
+                    };
+                    CallBackWeChatMessage(logoutWeChat, dwClient);
                     AddLogs("【" + wXInfo.nickname + "】退出成功!");
                 }
             }
@@ -427,12 +432,19 @@ namespace Hyg.Common.WeChatTools
             new Thread(() =>
             {
                 string dllDir = System.IO.Directory.GetCurrentDirectory() + "\\dll\\";
-                string dllPath = dllDir + "WeChatHelper_2.9.5.41.dll";
-                int operate_type = 1;
+                int operate_type = 2;//0=WeChatHelper_2.8.0.121  1=WeChatHelper_2.9.5.41  2=WeChatHelper_3.1.0.41
+
+                string dllPath = dllDir + "WeChatHelper_3.1.0.41.dll";
                 if (!File.Exists(dllPath))
                 {
-                    dllPath = dllDir + "WeChatHelper_2.8.0.121.dll";
-                    operate_type = 0;
+                    dllPath = dllDir + "WeChatHelper_2.9.5.41.dll";
+                    operate_type = 1;
+
+                    if (!File.Exists(dllPath))
+                    {
+                        dllPath = dllDir + "WeChatHelper_2.8.0.121.dll";
+                        operate_type = 0;
+                    }
                 }
                 // 注入并多开           
                 InjectWeChat(dllPath, CheckRegistryKey(operate_type));
@@ -445,7 +457,17 @@ namespace Hyg.Common.WeChatTools
         string CheckRegistryKey(int operate_type)
         {
             string InstallPath = Directory.GetCurrentDirectory() + "\\WeChat";
-            string Version = operate_type == 1 ? "1644758313" : "1644691577";//2.8.0.121
+
+            string Version = "1644758313";
+            switch (operate_type)
+            {
+                case 1:
+                    Version = "1644758313";
+                    break;
+                case 0:
+                    Version = "1644691577";
+                    break;
+            }
 
             RegistryKey currentUser = Registry.CurrentUser;
             RegistryKey registryKey = currentUser.OpenSubKey("Software\\Tencent\\WeChat", true);

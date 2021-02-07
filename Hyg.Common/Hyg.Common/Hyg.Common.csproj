@@ -65,6 +65,7 @@
     <Compile Include="DTKTools\DTKModel\DTK_Collect_GoodResult.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_Explosive_GoodsListResult.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_Good_DetailsItem.cs" />
+    <Compile Include="DTKTools\DTKModel\DTK_History_Low_Price_GoodListResult.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_LiveMaterialGoodTemplate.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_OrderItem.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_Order_DataPaging.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="DTKTools\DTKRequest\DTK_Get_CollectRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Get_dtk_Search_GoodRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Get_Good_DetailsRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_History_Low_Price_ListRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_LiveMaterialGoodRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_OP_ListRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Order_DataRequest.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="DTKTools\DTKResponse\DTK_Get_CollectResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Get_dtk_Search_GoodResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Get_Good_DetailsResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_History_Low_Price_ListResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_LiveMaterialGoodResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_OP_ListResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Order_DataResponse.cs" />

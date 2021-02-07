@@ -44,6 +44,7 @@ namespace Hyg.Common.DTKTools
         string api_get_collection_list = CommonCacheConfig.dtk_api_host + "api/goods/get-collection-list";//我的收藏
         string api_get_livematerial = CommonCacheConfig.dtk_api_host + "api/goods/liveMaterial-goods-list";//直播好货
         string api_get_explosivegoods = CommonCacheConfig.dtk_api_host + "api/goods/explosive-goods-list";//每日爆品推荐
+        string api_get_history_low_price_good= CommonCacheConfig.dtk_api_host + "api/goods/get-history-low-price-list";//历史最低价商品
         #endregion
 
         string dtk_appkey = "", dtk_appsecret = "";
@@ -489,7 +490,8 @@ namespace Hyg.Common.DTKTools
                 string resultContent = GeneralApiParam(api_get_explosivegoods, dTK_Explosive_Goods_ListRequest.ModelToUriParam());
                 dTK_Explosive_Goods_ListResponse = resultContent.ToJsonObject<DTK_Explosive_Goods_ListResponse>();
 
-                if (!dTK_Explosive_Goods_ListResponse.data.IsEmpty()) {
+                if (!dTK_Explosive_Goods_ListResponse.data.IsEmpty())
+                {
                     //转换公用商品信息
                     if (dTK_Explosive_Goods_ListRequest.IsReturnCommonInfo)
                     {
@@ -502,6 +504,32 @@ namespace Hyg.Common.DTKTools
                 LogHelper.WriteException("GetDTK_ExplosiveGoods", ex);
             }
             return dTK_Explosive_Goods_ListResponse;
+        }
+        #endregion
+
+        #region 获取历史最低价商品
+        public DTK_History_Low_Price_ListResponse GetHistoryLowPriceListResponse(DTK_History_Low_Price_ListRequest dTK_History_Low_Price_ListRequest)
+        {
+            DTK_History_Low_Price_ListResponse dTK_History_Low_Price_ListResponse = null;
+            try
+            {
+                string resultContent = GeneralApiParam(api_get_history_low_price_good, dTK_History_Low_Price_ListRequest.ModelToUriParam());
+                dTK_History_Low_Price_ListResponse = resultContent.ToJsonObject<DTK_History_Low_Price_ListResponse>();
+
+                if (!dTK_History_Low_Price_ListResponse.data.IsEmpty())
+                {
+                    //转换公用商品信息
+                    if (dTK_History_Low_Price_ListRequest.IsReturnCommonInfo)
+                    {
+                        dTK_History_Low_Price_ListResponse.CommonGoodInfoList = ConvertCommonGoodInfo(dTK_History_Low_Price_ListResponse.data.list);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("GetHistoryLowPriceListResponse", ex);
+            }
+            return dTK_History_Low_Price_ListResponse;
         }
         #endregion
 

@@ -24,7 +24,7 @@ namespace TestTool
 {
     class Program
     {
-        const int plaformType = 2;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推 6=淘宝官方
+        const int plaformType = 1;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推 6=淘宝官方
         static void Main(string[] args)
         {
             try
@@ -88,7 +88,7 @@ namespace TestTool
                 if (plaformType == 1)
                 {
                     DTK_ApiManage dTK_ApiManage = new DTK_ApiManage(CommonCacheConfig.dtk_appkey, CommonCacheConfig.dtk_appsecret);
-                    int apiType = 20;
+                    int apiType = 21;
                     object apiData = null;
                     switch (apiType)
                     {
@@ -248,6 +248,14 @@ namespace TestTool
                             //dTK_Explosive_Goods_ListRequest.pageSize = 20;
                             apiData = dTK_ApiManage.GetDTK_ExplosiveGoods(dTK_Explosive_Goods_ListRequest);
                             break;
+                        case 21:
+                            DTK_History_Low_Price_ListRequest dTK_History_Low_Price_ListRequest = new DTK_History_Low_Price_ListRequest();
+                            dTK_History_Low_Price_ListRequest.pageId = "1";
+                            dTK_History_Low_Price_ListRequest.pageSize = 20;
+                            dTK_History_Low_Price_ListRequest.IsReturnCommonInfo = true;
+                            apiData = dTK_ApiManage.GetHistoryLowPriceListResponse(dTK_History_Low_Price_ListRequest);
+                            break;
+
                     }
 
                     Console.WriteLine(apiData.ToJsonStr());

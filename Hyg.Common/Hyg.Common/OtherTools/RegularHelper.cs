@@ -367,6 +367,13 @@ namespace Hyg.Common.OtherTools
             return returnStatus;
         }
 
+        public static bool HasJDMutipleLink(string content)
+        {
+            List<string> strs = getValues(@"(https://u.jd.com/[a-zA-Z0-9]{6,})", content);
+
+            return strs.Count > 1;
+        }
+
         /// <summary>
         /// 拼多多商品正则校验
         /// </summary>
