@@ -20,7 +20,8 @@ namespace Hyg.Common.OtherTools
     /// </summary>
     public class RegularHelper
     {
-        public const string tb_rule = @"((http|https)(://detail.tmall.com|://detail.tmall.hk|://item.taobao.com|://chaoshi.detail.tmall.com)|[^a-zA-Z=\\d@<\u4E00-\u9FA51-9\s]([a-zA-Z0-9]{11})[^a-zA-Z=.\\d@>\u4E00-\u9FA51-9\s])";
+        //public const string tb_rule = @"((http|https)(://detail.tmall.com|://detail.tmall.hk|://item.taobao.com|://chaoshi.detail.tmall.com)|[^a-zA-Z=\\d@<\u4E00-\u9FA51-9\s]([a-zA-Z0-9]{11})[^a-zA-Z=.\\d@>\u4E00-\u9FA51-9\s])";
+        public const string tb_rule = @"((http|https)(://detail.tmall.com|://detail.tmall.hk|://item.taobao.com|://chaoshi.detail.tmall.com)|((^\s*)|[^a-zA-Z])([a-zA-Z0-9]{11})($|[^a-zA-Z]))";
         public const string jd_rule = "(http|https)(://item.jd.com|://item.m.jd.com|://m.yiyaojd.com|://mitem.jkcsjd.com|://u.jd.com)";
         public const string pdd_rule = "((http|https)(://mobile.yangkeduo.com|://p.pinduoduo.com|://yangkeduo.com))";
 

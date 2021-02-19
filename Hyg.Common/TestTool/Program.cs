@@ -2,6 +2,9 @@
 using Hyg.Common.DTKTools;
 using Hyg.Common.DTKTools.DTKRequest;
 using Hyg.Common.DTKTools.DTKResponse;
+using Hyg.Common.DuoMaiTools;
+using Hyg.Common.DuoMaiTools.DuoMaiModel;
+using Hyg.Common.DuoMaiTools.DuoMaiRequest;
 using Hyg.Common.HaoDanKu;
 using Hyg.Common.HaoDanKu.HaoDanKuRequest;
 using Hyg.Common.JDTools;
@@ -24,7 +27,7 @@ namespace TestTool
 {
     class Program
     {
-        const int plaformType = 1;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推 6=淘宝官方
+        const int plaformType = 7;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推 6=淘宝官方 7=多麦商城
         static void Main(string[] args)
         {
             try
@@ -525,6 +528,54 @@ namespace TestTool
                             break;
                     }
 
+                }
+                else if (plaformType == 7) {
+                    DuoMai_ApiManage duoMai_ApiManage = new DuoMai_ApiManage("437579", "227f424324003391b6880f04b5d66d9d");
+
+                    ///订单结算变动查询
+                    Get_Open_Order_SettlementRequest get_Open_Order_SettlementRequest = new Get_Open_Order_SettlementRequest();
+                    get_Open_Order_SettlementRequest.stime = "1613446000";
+                    get_Open_Order_SettlementRequest.etime = "1613448000";
+                    duoMai_ApiManage.Get_Open_Order_SettlementList(get_Open_Order_SettlementRequest);
+
+                    ///订单详情明细查询
+                    Query_Open_Order_DetailRequest query_Open_Order_DetailRequest = new Query_Open_Order_DetailRequest();
+                    query_Open_Order_DetailRequest.order_sn = "111";
+                    query_Open_Order_DetailRequest.ads_id = "168";
+                    duoMai_ApiManage.Get_Open_Order_Detail(query_Open_Order_DetailRequest); 
+
+                    Query_Open_Order_ListRequest query_Open_Order_ListRequest = new Query_Open_Order_ListRequest();
+                    query_Open_Order_ListRequest.stime = "1613446000";
+                    query_Open_Order_ListRequest.etime = "1613448000";
+                    duoMai_ApiManage.Query_Open_Order_List(query_Open_Order_ListRequest); return;
+
+                    ///商城列表
+                    Query_CPS_Open_StoreRequest query_CPS_Open_StoreRequest = new Query_CPS_Open_StoreRequest();
+                    duoMai_ApiManage.Get_CPS_Stores_List(query_CPS_Open_StoreRequest);return;
+
+
+
+                    ///推广计划详情
+                    Query_Cps_Stores_PlansDetailRequest query_Cps_Stores_PlansDetailRequest = new Query_Cps_Stores_PlansDetailRequest();
+                    query_Cps_Stores_PlansDetailRequest.ads_id = "168";
+                    duoMai_ApiManage.Get_CPS_Stores_Plans_Detail(query_Cps_Stores_PlansDetailRequest); return;
+
+                    CPS_Convert_LinkRequest cPS_Convert_LinkRequest = new CPS_Convert_LinkRequest();
+                    cPS_Convert_LinkRequest.ads_id = "168";
+                    cPS_Convert_LinkRequest.ext = new CPS_Convert_Link_ext
+                    {
+                        euid = "guzilideaoqi"
+                    };
+                    cPS_Convert_LinkRequest.site_id = "437582";
+                    duoMai_ApiManage.Get_CPS_Convert_Link(cPS_Convert_LinkRequest);return;
+
+
+
+
+
+                    //查询推广计划
+                    Query_CPS_Stores_PlansRequest query_CPS_Stores_PlansRequest = new Query_CPS_Stores_PlansRequest();
+                    duoMai_ApiManage.Query_CPS_Stores_Plans(query_CPS_Stores_PlansRequest);
                 }
             }
             catch (Exception ex)
