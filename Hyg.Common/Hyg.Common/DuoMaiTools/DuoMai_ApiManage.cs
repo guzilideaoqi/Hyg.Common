@@ -158,7 +158,7 @@ namespace Hyg.Common.DuoMaiTools
             try
             {
                 bool IsSuccess = false; string Msg = "";
-                string paramJson = query_Open_Order_ListRequest.ToJsonStr();
+                string paramJson = query_Open_Order_ListRequest.ToJsonStr(true);
                 cPS_Open_Order_ItemList = Convert_TemplateResponse<List<CPS_Open_Order_ItemEntity>>("cps-mesh.open.orders.query.get", paramJson, ref IsSuccess, ref Msg);
             }
             catch (Exception ex)

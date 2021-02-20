@@ -158,11 +158,11 @@ namespace Hyg.Common.DTKTools.DTKModel
         /// <summary>
         /// 淘宝店铺等级	
         /// </summary>
-        public int shopLevel { get; set; }
+        public int? shopLevel { get; set; }
         /// <summary>
         /// 描述分
         /// </summary>
-        public decimal descScore { get; set; }
+        public decimal? descScore { get; set; }
         /// <summary>
         /// 描述相符
         /// </summary>

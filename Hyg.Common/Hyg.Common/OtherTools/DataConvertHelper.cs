@@ -254,9 +254,12 @@ namespace Hyg.Common.OtherTools
         #endregion
 
         #region Json对象转字符串
-        public static string ToJsonStr(this object obj)
+        public static string ToJsonStr(this object obj,bool IgnoreNULL=false)
         {
-            return JsonConvert.SerializeObject(obj);
+            if (IgnoreNULL)
+                return JsonConvert.SerializeObject(obj, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            else
+                return JsonConvert.SerializeObject(obj);
         }
         #endregion
 

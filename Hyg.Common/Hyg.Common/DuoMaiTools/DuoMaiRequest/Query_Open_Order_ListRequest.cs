@@ -51,16 +51,16 @@ namespace Hyg.Common.DuoMaiTools.DuoMaiRequest
         /// <summary>
         /// 查询在多麦联盟结算状态的订单 可选值： -1 无效 0 未确认 1 确认 2 结算
         /// </summary>
-        public int status { get; set; }
+        public int? status { get; set; }
 
         /// <summary>
         /// 页码 默认1
         /// </summary>
-        public int page { get; set; }
+        public int page { get; set; } = 1;
 
         /// <summary>
         /// 分页大小 默认20 最大200
         /// </summary>
-        public int page_size { get; set; }
+        public int page_size { get; set; } = 20;
     }
 }

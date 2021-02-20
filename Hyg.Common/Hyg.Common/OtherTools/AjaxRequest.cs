@@ -24,7 +24,7 @@ namespace Hyg.Common.OtherTools
     public class AjaxRequest
     {
         static HttpWebResponse response = null;
-        public static string HttpPost(string Url, string postDataStr, Dictionary<string, string> header = null, string cookie = "",string contenttype= "application/x-www-form-urlencoded;charset=UTF-8")
+        public static string HttpPost(string Url, string postDataStr, Dictionary<string, string> header = null, string cookie = "", string contenttype = "application/x-www-form-urlencoded;charset=UTF-8")
         {
             string token = "";
             try

@@ -539,14 +539,14 @@ namespace TestTool
                     duoMai_ApiManage.Get_Open_Order_SettlementList(get_Open_Order_SettlementRequest);
 
                     ///订单详情明细查询
-                    Query_Open_Order_DetailRequest query_Open_Order_DetailRequest = new Query_Open_Order_DetailRequest();
+                    /*Query_Open_Order_DetailRequest query_Open_Order_DetailRequest = new Query_Open_Order_DetailRequest();
                     query_Open_Order_DetailRequest.order_sn = "111";
                     query_Open_Order_DetailRequest.ads_id = "168";
-                    duoMai_ApiManage.Get_Open_Order_Detail(query_Open_Order_DetailRequest); 
+                    duoMai_ApiManage.Get_Open_Order_Detail(query_Open_Order_DetailRequest); */
 
                     Query_Open_Order_ListRequest query_Open_Order_ListRequest = new Query_Open_Order_ListRequest();
-                    query_Open_Order_ListRequest.stime = "1613446000";
-                    query_Open_Order_ListRequest.etime = "1613448000";
+                    query_Open_Order_ListRequest.stime = DateTimeHelper.ConvertDateTimeToInt(DateTime.Now.AddHours(-1));
+                    query_Open_Order_ListRequest.etime = DateTimeHelper.ConvertDateTimeToInt(DateTime.Now);
                     duoMai_ApiManage.Query_Open_Order_List(query_Open_Order_ListRequest); return;
 
                     ///商城列表
