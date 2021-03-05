@@ -131,5 +131,10 @@ namespace Hyg.Common
         #endregion
 
         public static bool Log_Debug = false;//debug日志模式
+
+        /// <summary>
+        /// 中转群ID(监听自己发的图片消息)
+        /// </summary>
+        public static string ZhongZhuan_QunID = "";
     }
 }

@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -27,11 +28,117 @@ namespace TestTool
 {
     class Program
     {
+        //寻找目标进程窗口       
+        [DllImport("USER32.DLL")]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+        [DllImport("USER32.DLL", EntryPoint = "FindWindowEx", SetLastError = true)]
+        public static extern IntPtr FindWindowEx(IntPtr hwndParent, uint hwndChildAfter, string lpszClass, string lpszWindow);
+
+        [DllImport("USER32.DLL")]
+        public static extern void keybd_event(Byte bVk, Byte bScan, Int32 dwFlags, Int32 dwExtraInfo);
+        public delegate bool CallBack(IntPtr hwnd, int lParam);
+
+        [DllImport("USER32.DLL")]
+        public static extern int EnumChildWindows(IntPtr hWndParent, CallBack lpfn, int lParam);
+
+        [DllImport("User32.dll", CharSet = CharSet.Auto)]
+        public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int nMaxCount);
+
+        [System.Runtime.InteropServices.DllImport("user32")]
+        private static extern int mouse_event(int dwFlags, int dx, int dy, int dwData, int dwExtraInfo);
+        //移动鼠标 
+        const int MOUSEEVENTF_MOVE = 0x0001;
+        //模拟鼠标左键按下 
+        const int MOUSEEVENTF_LEFTDOWN = 0x0002;
+        //模拟鼠标左键抬起 
+        const int MOUSEEVENTF_LEFTUP = 0x0004;
+        //模拟鼠标右键按下 
+        const int MOUSEEVENTF_RIGHTDOWN = 0x0008;
+        //模拟鼠标右键抬起 
+        const int MOUSEEVENTF_RIGHTUP = 0x0010;
+        //模拟鼠标中键按下 
+        const int MOUSEEVENTF_MIDDLEDOWN = 0x0020;
+        //模拟鼠标中键抬起 
+        const int MOUSEEVENTF_MIDDLEUP = 0x0040;
+        //标示是否采用绝对坐标 
+        const int MOUSEEVENTF_ABSOLUTE = 0x8000;
+        //模拟鼠标滚轮滚动操作，必须配合dwData参数
+        const int MOUSEEVENTF_WHEEL = 0x0800;
+        private static IntPtr FindWindowEx(IntPtr hwnd, string lpszWindow, bool bChild)
+        {
+            IntPtr iResult = IntPtr.Zero;
+            // 首先在父窗体上查找控件
+            iResult = FindWindowEx(hwnd, 0, null, lpszWindow);
+            // 如果找到直接返回控件句柄
+            if (iResult != IntPtr.Zero) return iResult;
+            // 如果设定了不在子窗体中查找
+            if (!bChild) return iResult;
+            // 枚举子窗体，查找控件句柄
+            int i = EnumChildWindows(
+            hwnd,
+            (h, l) =>
+            {
+                IntPtr f1 = FindWindowEx(h, 0, null, lpszWindow);
+                if (f1 == IntPtr.Zero)
+                    return true;
+                else
+                {
+                    iResult = f1;
+                    return false;
+                }
+            },
+            0);
+            // 返回查找结果
+            return iResult;
+        }
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool GetWindowRect(IntPtr hWnd, ref RECT lpRect);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
+        {
+            public int Left; //最左坐标
+            public int Top; //最上坐标
+            public int Right; //最右坐标
+            public int Bottom; //最下坐标
+        }
+
+        private static void ExcuteClick()
+        {
+            //mouse_event(MOUSEEVENTF_MOVE,)
+        }
+
+        private static readonly object _object = new object();
+        static void excute_lock()
+        {
+            lock (_object)
+            {
+                Console.WriteLine("开始执行!");
+
+                for (int i = 0; i < 10; i++)
+                {
+                    Console.WriteLine(i.ToString());
+                }
+            }
+        }
         const int plaformType = 7;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推 6=淘宝官方 7=多麦商城
         static void Main(string[] args)
         {
             try
             {
+
+
+                for (int i = 0; i < 3; i++)
+                {
+                    TaskHelper.ExcuteNewTask(() =>
+                    {
+                        excute_lock();
+                    }, 30);
+                }
+                Console.ReadKey();
+                return;
                 //获取当前进程对象
                 /*Process cur = Process.GetCurrentProcess();
 
@@ -529,8 +636,14 @@ namespace TestTool
                     }
 
                 }
-                else if (plaformType == 7) {
+                else if (plaformType == 7)
+                {
                     DuoMai_ApiManage duoMai_ApiManage = new DuoMai_ApiManage("437579", "227f424324003391b6880f04b5d66d9d");
+
+                    //查询推广计划
+                    Query_CPS_Stores_PlansRequest query_CPS_Stores_PlansRequest = new Query_CPS_Stores_PlansRequest();
+                    query_CPS_Stores_PlansRequest.is_apply = 0;
+                    duoMai_ApiManage.Query_CPS_Stores_Plans(query_CPS_Stores_PlansRequest); return;
 
                     ///订单结算变动查询
                     Get_Open_Order_SettlementRequest get_Open_Order_SettlementRequest = new Get_Open_Order_SettlementRequest();
@@ -551,7 +664,7 @@ namespace TestTool
 
                     ///商城列表
                     Query_CPS_Open_StoreRequest query_CPS_Open_StoreRequest = new Query_CPS_Open_StoreRequest();
-                    duoMai_ApiManage.Get_CPS_Stores_List(query_CPS_Open_StoreRequest);return;
+                    duoMai_ApiManage.Get_CPS_Stores_List(query_CPS_Open_StoreRequest); return;
 
 
 
@@ -567,15 +680,13 @@ namespace TestTool
                         euid = "guzilideaoqi"
                     };
                     cPS_Convert_LinkRequest.site_id = "437582";
-                    duoMai_ApiManage.Get_CPS_Convert_Link(cPS_Convert_LinkRequest);return;
+                    duoMai_ApiManage.Get_CPS_Convert_Link(cPS_Convert_LinkRequest); return;
 
 
 
 
 
-                    //查询推广计划
-                    Query_CPS_Stores_PlansRequest query_CPS_Stores_PlansRequest = new Query_CPS_Stores_PlansRequest();
-                    duoMai_ApiManage.Query_CPS_Stores_Plans(query_CPS_Stores_PlansRequest);
+
                 }
             }
             catch (Exception ex)

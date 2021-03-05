@@ -80,6 +80,7 @@
     <Compile Include="DTKTools\DTKModel\RankingItem.cs" />
     <Compile Include="DTKTools\DTKModel\SuggestionItem.cs" />
     <Compile Include="DTKTools\DTKModel\SuperGoodList.cs" />
+    <Compile Include="DTKTools\DTKModel\TB_ActivityLinkResult.cs" />
     <Compile Include="DTKTools\DTKModel\TB_TopicItem.cs" />
     <Compile Include="DTKTools\DTKModel\Top100Data.cs" />
     <Compile Include="DTKTools\DTKModel\TopicCatalogueItem.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="DTKTools\DTKRequest\DTK_Search_SuggestionRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Super_CategoryRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Super_GoodRequest.cs" />
+    <Compile Include="DTKTools\DTKRequest\DTK_TB_ActivityLinkRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_TB_Service_GoodRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_TB_Topic_ListRequest.cs" />
     <Compile Include="DTKTools\DTKRequest\DTK_Top100_Request.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="DTKTools\DTKResponse\DTK_Search_SuggestionResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Super_CategoryResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Super_GoodResponse.cs" />
+    <Compile Include="DTKTools\DTKResponse\DTK_TB_ActivityLinkResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_TB_Service_GoodResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_TB_Topic_ListResponse.cs" />
     <Compile Include="DTKTools\DTKResponse\DTK_Top100_Response.cs" />
@@ -197,11 +200,13 @@
     <Compile Include="Model\CommonGoodInfoEntity.cs" />
     <Compile Include="Model\CommonGoodRequestParam.cs" />
     <Compile Include="Model\CommonOrderInfoEntity.cs" />
+    <Compile Include="Model\DouYin\item_video_list_Entity.cs" />
     <Compile Include="OtherTools\AjaxRequest.cs" />
     <Compile Include="OtherTools\Base64Helper.cs" />
     <Compile Include="OtherTools\CollectHelper.cs" />
     <Compile Include="OtherTools\DataConvertHelper.cs" />
     <Compile Include="OtherTools\DescryptHelper.cs" />
+    <Compile Include="OtherTools\DouYinHelper.cs" />
     <Compile Include="OtherTools\FileExtension.cs" />
     <Compile Include="OtherTools\FileHelper.cs" />
     <Compile Include="OtherTools\HashHelper.cs" />

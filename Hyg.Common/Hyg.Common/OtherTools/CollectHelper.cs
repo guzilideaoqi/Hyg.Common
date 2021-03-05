@@ -37,8 +37,9 @@ namespace Hyg.Common.OtherTools
                 collectMessageEntity.PlaformType = CollectPlaformType.Other;
                 collectMessageEntity.MessageType = collectMessageType;
                 collectMessageEntity.MessageContent = TextContent;
+                collectMessageEntity.InitMessageContent = TextContent;
 
-                if (collectMessageType == CollectMessageType.Image&& !recv_MsgEntity.IsEmpty() && recv_MsgEntity is Recv_Image_MsgEntity)
+                if (collectMessageType == CollectMessageType.Image && !recv_MsgEntity.IsEmpty() && recv_MsgEntity is Recv_Image_MsgEntity)
                 {
                     Recv_Image_MsgEntity recv_Image_MsgEntity = recv_MsgEntity as Recv_Image_MsgEntity;
                     if (!recv_Image_MsgEntity.IsEmpty())
@@ -66,6 +67,7 @@ namespace Hyg.Common.OtherTools
                         };
 
                         collectMessageEntity.imageencrptdata = imageEncrptData;
+                        collectMessageEntity.msgid = recv_Image_MsgEntity.msgid;
                     }
                 }
             }
@@ -91,6 +93,7 @@ namespace Hyg.Common.OtherTools
                 collectMessageEntity = new CollectMessageEntity();
                 collectMessageEntity.PlaformType = collectPlaformType;
                 collectMessageEntity.MessageType = CollectMessageType.Text;
+                collectMessageEntity.InitMessageContent = TextContent;//初始消息内容
                 List<CollectGoodInfo> CollectGoodList = new List<CollectGoodInfo>();
 
                 bool returnStatus = false;
@@ -120,6 +123,7 @@ namespace Hyg.Common.OtherTools
                 {
                     collectMessageEntity.MessageContent = TextContent;
                     collectMessageEntity.CollectGoodList = CollectGoodList;
+                    collectMessageEntity.url_list = RegularHelper.GetUrlList(collectMessageEntity.InitMessageContent);
                 }
                 #endregion
             }

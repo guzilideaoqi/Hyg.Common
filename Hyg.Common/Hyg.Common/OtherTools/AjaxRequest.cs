@@ -182,5 +182,76 @@ namespace Hyg.Common.OtherTools
             }
 
         }
+
+
+
+        /// <summary>
+        /// 获取重定向地址
+        /// </summary>
+        /// <param name="Url">原地址</param>
+        /// <param name="type">浏览器类型（0PC/1手机）</param>
+        /// <returns></returns>
+        public static string GetRedirectUrl(string url, int type = 0)
+        {
+            string strResult = "";
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "HEAD";
+                request.AllowAutoRedirect = false;
+                var UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.861.0 Safari/535.2";
+                if (type > 0)
+                {//模拟手机浏览器
+                    UserAgent = "Mozilla/5.0 (Linux; U; Android 2.2; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
+                }
+                request.UserAgent = UserAgent;
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+                using (WebResponse response = request.GetResponse())
+                {
+                    strResult = response.Headers["Location"];      //重定向地址
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("地址重定向错误!");
+            }
+            return strResult;
+        }
+
+        /// <summary>
+        /// 获取页面html
+        /// </summary>
+        /// <param name="Url">页面路径</param>
+        /// <param name="type">浏览器类型（0PC/1手机）</param>
+        /// <returns></returns>
+        public static string GetWebContent(string Url, int type = 0)
+        {
+            string strResult = "";
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
+                //声明一个HttpWebRequest请求 
+                request.Method = "POST";
+                var UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.861.0 Safari/535.2";
+                if (type > 0)
+                {//模拟手机浏览器
+                    UserAgent = "Mozilla/5.0 (Linux; U; Android 2.2; en-us; Nexus One Build/FRF91) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
+                }
+                request.UserAgent = UserAgent;
+
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.GetEncoding("utf-8"));
+                strResult = sr.ReadToEnd();
+                response.Close();
+            }
+            catch
+            {
+                throw new Exception("未获取到Html内容!");
+            }
+            return strResult;
+        }
     }
 }

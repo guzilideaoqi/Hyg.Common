@@ -101,5 +101,22 @@ namespace Hyg.Common.OtherTools
             return O_Image;
         }
         #endregion
+
+        #region 删除指定时间之前的图片
+        public static void DeleteExpireImage(string strFolderPath, DateTime ExpireTime)
+        {//删除两个小时之前的图片
+            DirectoryInfo dyInfo = new DirectoryInfo(strFolderPath);
+
+            //获取文件夹下所有的文件
+            foreach (FileInfo feInfo in dyInfo.GetFiles())
+            {
+                //if (feInfo.Name == "quan.png")
+                //    continue;
+                //判断文件日期是否小于今天，是则删除
+                if (feInfo.CreationTime < ExpireTime)
+                    feInfo.Delete();
+            }
+        }
+        #endregion
     }
 }

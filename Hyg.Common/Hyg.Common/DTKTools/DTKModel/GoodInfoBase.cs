@@ -162,7 +162,7 @@ namespace Hyg.Common.DTKTools.DTKModel
         /// <summary>
         /// 描述分
         /// </summary>
-        public decimal? descScore { get; set; }
+        public decimal descScore { get; set; }
         /// <summary>
         /// 描述相符
         /// </summary>

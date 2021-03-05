@@ -44,7 +44,8 @@ namespace Hyg.Common.DTKTools
         string api_get_collection_list = CommonCacheConfig.dtk_api_host + "api/goods/get-collection-list";//我的收藏
         string api_get_livematerial = CommonCacheConfig.dtk_api_host + "api/goods/liveMaterial-goods-list";//直播好货
         string api_get_explosivegoods = CommonCacheConfig.dtk_api_host + "api/goods/explosive-goods-list";//每日爆品推荐
-        string api_get_history_low_price_good= CommonCacheConfig.dtk_api_host + "api/goods/get-history-low-price-list";//历史最低价商品
+        string api_get_history_low_price_good = CommonCacheConfig.dtk_api_host + "api/goods/get-history-low-price-list";//历史最低价商品
+        string api_get_activity_convert_link = CommonCacheConfig.dtk_api_host + "api/tb-service/activity-link";//官方活动转链
         #endregion
 
         string dtk_appkey = "", dtk_appsecret = "";
@@ -388,6 +389,24 @@ namespace Hyg.Common.DTKTools
         }
         #endregion
 
+        #region 官方活动转链
+        public DTK_TB_ActivityLinkResponse GetTB_ActivityConvertLink(DTK_TB_ActivityLinkRequest dTK_TB_ActivityLinkRequest)
+        {
+            DTK_TB_ActivityLinkResponse dTK_TB_ActivityLinkResponse = null;
+            try
+            {
+                string resultContent = GeneralApiParam(api_get_activity_convert_link, dTK_TB_ActivityLinkRequest.ModelToUriParam());
+                dTK_TB_ActivityLinkResponse = resultContent.ToJsonObject<DTK_TB_ActivityLinkResponse>();
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("GetTB_ActivityConvertLink", ex);
+            }
+            return dTK_TB_ActivityLinkResponse;
+        }
+        #endregion
+
+
         #region 淘口令万能解析
         public DTK_Parse_ContentResponse GetParseContent(DTK_Parse_ContentRequest dTK_Parse_ContentRequest)
         {
@@ -471,7 +490,6 @@ namespace Hyg.Common.DTKTools
                 {
                     dTK_LiveMaterialGoodResponse.CommonGoodInfoList = ConvertCommonGoodInfo(dTK_LiveMaterialGoodResponse.data.list);
                 }
-
             }
             catch (Exception ex)
             {

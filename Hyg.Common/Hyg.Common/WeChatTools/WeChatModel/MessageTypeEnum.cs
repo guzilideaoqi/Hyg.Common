@@ -262,6 +262,22 @@ namespace Hyg.Common.WeChatTools.WeChatModel
         /// <summary>
         /// 获取用户登录二维码，于2019年5月28日新增
         /// </summary>
-        MT_RECV_QRCODE_MSG = 11087
+        MT_RECV_QRCODE_MSG = 11087,
+        /// <summary>
+        /// 发送XML消息
+        /// </summary>
+        MT_SEND_XMLMSG = 11113,
+        /// <summary>
+        /// 发送小程序消息
+        /// </summary>
+        MT_FORWARD_APP_MSG = 11118,
+        /// <summary>
+        /// 发送撤回消息
+        /// </summary>
+        MT_SEND_REVOKE_MSG = 11126,
+        /// <summary>
+        /// 发送任意消息
+        /// </summary>
+        MT_FORWARD_ANY_MSG = 11128,
     }
 }

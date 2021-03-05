@@ -179,10 +179,11 @@ namespace Hyg.Common.WeChatTools
                     case MessageTypeEnum.MT_RECV_TEXT_MSG:
                         Recv_Text_MsgEntity recv_Text_MsgEntity = weChatParseHelper.ParseRecvTextMsg(reponseInfo.data);
                         //logText = "消息文本->" + recv_Text_MsgEntity.from_wxid + "->" + recv_Text_MsgEntity.msg;
-
+                        if ((!recv_Text_MsgEntity.room_wxid.IsQun() && recv_Text_MsgEntity.from_wxid.IsSelf(dwClient)) || (recv_Text_MsgEntity.room_wxid.IsQun() && CommonCacheConfig.ZhongZhuan_QunID != recv_Text_MsgEntity.room_wxid) && recv_Text_MsgEntity.from_wxid.IsSelf(dwClient))
+                            return;
                         TaskHelper.ExcuteNewTask(() =>
                         {
-                            if (!recv_Text_MsgEntity.from_wxid.IsSelf(dwClient) && !recv_Text_MsgEntity.from_wxid.FilterMessage())
+                            if (!recv_Text_MsgEntity.from_wxid.FilterMessage())
                             {
                                 CallBackWeChatMessage(recv_Text_MsgEntity, dwClient);
                             }
@@ -190,13 +191,15 @@ namespace Hyg.Common.WeChatTools
                         break;
                     case MessageTypeEnum.MT_RECV_PICTURE_MSG:
                         Recv_Image_MsgEntity recv_Image_MsgEntity = weChatParseHelper.ParseImageMsg(reponseInfo.data);
-                        if (recv_Image_MsgEntity.from_wxid.IsSelf(dwClient))
+                        //CallBackWeChatMessage(recv_Image_MsgEntity, dwClient);
+                        if ((!recv_Image_MsgEntity.room_wxid.IsQun() && recv_Image_MsgEntity.from_wxid.IsSelf(dwClient)) || (recv_Image_MsgEntity.room_wxid.IsQun() && CommonCacheConfig.ZhongZhuan_QunID != recv_Image_MsgEntity.room_wxid) && recv_Image_MsgEntity.from_wxid.IsSelf(dwClient))
                             return;
+
                         if (!CommonCacheConfig.WeChat_ImageList.ContainsKey(recv_Image_MsgEntity.image))
                         {
                             CommonCacheConfig.WeChat_ImageList.Add(recv_Image_MsgEntity.image, recv_Image_MsgEntity);
-                            //间隔500毫秒下载图片
-                            TaskHelper.ExcuteNewTask((() => { WeChatTools.SendDecryptImage(dwClient, recv_Image_MsgEntity.image); }), 500);
+                            //间隔2500毫秒下载图片
+                            TaskHelper.ExcuteNewTask((() => { WeChatTools.SendDecryptImage(dwClient, recv_Image_MsgEntity.image); }), 2500);
                         }
                         break;
                     case MessageTypeEnum.MT_RECV_VOICE_MSG:
@@ -215,7 +218,7 @@ namespace Hyg.Common.WeChatTools
                         break;
                     case MessageTypeEnum.MT_RECV_VIDEO_MSG:
                         Recv_Video_MsgEntity recv_Video_MsgEntity = weChatParseHelper.ParseRecvVideo(reponseInfo.data);
-                        if (recv_Video_MsgEntity.from_wxid.IsSelf(dwClient))
+                        if ((!recv_Video_MsgEntity.room_wxid.IsQun() && recv_Video_MsgEntity.from_wxid.IsSelf(dwClient)) || (recv_Video_MsgEntity.room_wxid.IsQun() && CommonCacheConfig.ZhongZhuan_QunID != recv_Video_MsgEntity.room_wxid) && recv_Video_MsgEntity.from_wxid.IsSelf(dwClient))
                             return;
                         TaskHelper.ExcuteNewTask((() =>
                         {

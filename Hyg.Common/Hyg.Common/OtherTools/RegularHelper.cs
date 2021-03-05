@@ -21,9 +21,11 @@ namespace Hyg.Common.OtherTools
     public class RegularHelper
     {
         //public const string tb_rule = @"((http|https)(://detail.tmall.com|://detail.tmall.hk|://item.taobao.com|://chaoshi.detail.tmall.com)|[^a-zA-Z=\\d@<\u4E00-\u9FA51-9\s]([a-zA-Z0-9]{11})[^a-zA-Z=.\\d@>\u4E00-\u9FA51-9\s])";
-        public const string tb_rule = @"((http|https)(://detail.tmall.com|://detail.tmall.hk|://item.taobao.com|://chaoshi.detail.tmall.com)|((^\s*)|[^a-zA-Z])([a-zA-Z0-9]{11})($|[^a-zA-Z]))";
+        //public const string tb_rule = @"((http|https)(://detail.tmall.com|://detail.tmall.hk|://item.taobao.com|://chaoshi.detail.tmall.com)|((^\s*)|[^a-zA-Z])([a-zA-Z0-9]{11})($|[^a-zA-Z]))";
+        public const string tb_rule = @"(((http|https)(://uland.taobao.com|://detail.tmall.com|://detail.tmall.hk|://item.taobao.com|://chaoshi.detail.tmall.com)\S+)|((^\s*)|[^a-zA-Z])([a-zA-Z0-9]{11})($|[^a-zA-Z]))";
         public const string jd_rule = "(http|https)(://item.jd.com|://item.m.jd.com|://m.yiyaojd.com|://mitem.jkcsjd.com|://u.jd.com)";
         public const string pdd_rule = "((http|https)(://mobile.yangkeduo.com|://p.pinduoduo.com|://yangkeduo.com))";
+        public const string get_url_link = @"(?:https?://|www\.)\S+";
 
         #region 只判断不获取参数
         /// <summary>
@@ -150,24 +152,34 @@ namespace Hyg.Common.OtherTools
                             {
                                 #region 把文本内容按行隔开
                                 string[] rowData = content.Split("\r\n".ToArray(), StringSplitOptions.RemoveEmptyEntries);
-                                foreach (var item in rowData)
+                                if (rowData.Length == 1)
                                 {
-                                    if (item.Contains("activityId=") && string.IsNullOrEmpty(activityId))//只获取第一个优惠券id
-                                    {
-                                        activityId = getValue("(?<=(activityId=)).*?(?=(\n|$))", item).Replace("\r", "");//优惠券ID
-                                        continue;
-                                    }
-                                    if (string.IsNullOrWhiteSpace(itemid))
-                                    {
-                                        itemid = getValue("(?<=(id=))[0-9]{5,}", item);
-                                        if (!string.IsNullOrWhiteSpace(itemid))
-                                            continue;
-                                    }
-
-                                    if (result != "")
-                                        result += "\r";
-                                    result += item;
+                                    string msg_content = getValue(get_url_link, rowData[0]);
+                                    itemid = getValue("(?<=(id=))[0-9]{5,}", msg_content);
+                                    result = content.Replace(msg_content, "");
                                 }
+                                else
+                                {
+                                    foreach (var item in rowData)
+                                    {
+                                        if (item.Contains("activityId=") && string.IsNullOrEmpty(activityId))//只获取第一个优惠券id
+                                        {
+                                            activityId = getValue("(?<=(activityId=)).*?(?=(\n|$))", item).Replace("\r", "");//优惠券ID
+                                            continue;
+                                        }
+                                        if (string.IsNullOrWhiteSpace(itemid))
+                                        {
+                                            itemid = getValue("(?<=(id=))[0-9]{5,}", item);
+                                            if (!string.IsNullOrWhiteSpace(itemid))
+                                                continue;
+                                        }
+
+                                        if (result != "")
+                                            result += "\r";
+                                        result += item;
+                                    }
+                                }
+
 
                                 if (!itemid.IsEmpty())
                                 {
@@ -235,27 +247,35 @@ namespace Hyg.Common.OtherTools
                             {
                                 string[] rowData = content.Split("\r\n".ToArray(), StringSplitOptions.RemoveEmptyEntries);
                                 content = "";
-                                foreach (var item in rowData)
+                                if (rowData.Length == 1)
                                 {
-                                    if (string.IsNullOrWhiteSpace(activityId))
-                                    {
-                                        activityId = getValue("(?<=(key=)).*?(?=(&|\n|$))", item).Replace("\r", "");//优惠券ID
-                                        if (!string.IsNullOrWhiteSpace(activityId))
-                                            continue;
-                                    }
-
-
-                                    if (string.IsNullOrWhiteSpace(itemid))
-                                    {
-                                        itemid = getValue(@"(?<=(wareId=))([1-9]\d*\.?\d*)|\d+(?=(.html))", item);//获取商品ID
-                                        if (!string.IsNullOrWhiteSpace(itemid))
-                                            continue;
-                                    }
-
-                                    if (content != "")
-                                        content += "\r";
-                                    content += item;
+                                    string msg_content = getValue(@"\b(?:https?://|www\.)\S+\b", rowData[0]);
+                                    content = content.Replace(msg_content, "");
+                                    itemid = getValue(@"(?<=(wareId=))([1-9]\d*\.?\d*)|\d+(?=(.html))", msg_content);//获取商品ID
                                 }
+                                else
+                                {
+                                    foreach (var item in rowData)
+                                    {
+                                        if (string.IsNullOrWhiteSpace(activityId))
+                                        {
+                                            activityId = getValue("(?<=(key=)).*?(?=(&|\n|$))", item).Replace("\r", "");//优惠券ID
+                                            if (!string.IsNullOrWhiteSpace(activityId))
+                                                continue;
+                                        }
+                                        if (string.IsNullOrWhiteSpace(itemid))
+                                        {
+                                            itemid = getValue(@"(?<=(wareId=))([1-9]\d*\.?\d*)|\d+(?=(.html))", item);//获取商品ID
+                                            if (!string.IsNullOrWhiteSpace(itemid))
+                                                continue;
+                                        }
+
+                                        if (content != "")
+                                            content += "\r";
+                                        content += item;
+                                    }
+                                }
+
                                 if (!itemid.IsEmpty())
                                 {
                                     returnStatus = true;
@@ -325,26 +345,36 @@ namespace Hyg.Common.OtherTools
                 {
                     string activityId = "", itemid = "", result = "";
                     string[] rowData = content.Split("\r\n".ToArray(), StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var item in rowData)
+                    if (rowData.Length == 1)
                     {
-                        if (string.IsNullOrWhiteSpace(activityId))
-                        {
-                            activityId = getValue("(?<=(key=)).*?(?=(&|\n|$))", item).Replace("\r", "");//优惠券ID
-                            if (!string.IsNullOrWhiteSpace(activityId))
-                                continue;
-                        }
-
-                        if (string.IsNullOrWhiteSpace(itemid))
-                        {
-                            itemid = getValue(@"(?<=(wareId=))([1-9]\d*\.?\d*)|\d+(?=(.html))", item);//获取商品ID
-                            if (!string.IsNullOrWhiteSpace(itemid))
-                                continue;
-                        }
-
-                        if (result != "")
-                            result += "\r";
-                        result += item;
+                        string msg_content = getValue(get_url_link, rowData[0]);
+                        content = content.Replace(msg_content, "");
+                        itemid = getValue(@"(?<=(wareId=))([1-9]\d*\.?\d*)|\d+(?=(.html))", msg_content);//获取商品ID
                     }
+                    else
+                    {
+                        foreach (var item in rowData)
+                        {
+                            if (string.IsNullOrWhiteSpace(activityId))
+                            {
+                                activityId = getValue("(?<=(key=)).*?(?=(&|\n|$))", item).Replace("\r", "");//优惠券ID
+                                if (!string.IsNullOrWhiteSpace(activityId))
+                                    continue;
+                            }
+
+                            if (string.IsNullOrWhiteSpace(itemid))
+                            {
+                                itemid = getValue(@"(?<=(wareId=))([1-9]\d*\.?\d*)|\d+(?=(.html))", item);//获取商品ID
+                                if (!string.IsNullOrWhiteSpace(itemid))
+                                    continue;
+                            }
+
+                            if (result != "")
+                                result += "\r";
+                            result += item;
+                        }
+                    }
+
 
                     if (!itemid.IsEmpty())
                     {
@@ -470,19 +500,27 @@ namespace Hyg.Common.OtherTools
                 {
                     string activityId = "", itemid = "", result = "";
                     string[] rowData = content.Split("\r\n".ToArray(), StringSplitOptions.RemoveEmptyEntries);
-
-                    foreach (var item in rowData)
+                    if (rowData.Length == 1)
                     {
-                        if (string.IsNullOrWhiteSpace(itemid))
+                        string msg_content = getValue(get_url_link, rowData[0]);
+                        content = content.Replace(msg_content, "");
+                        itemid = getValue(@"(?<=goods_id=)([0-9]{6,15})", msg_content);//获取商品ID
+                    }
+                    else
+                    {
+                        foreach (var item in rowData)
                         {
-                            itemid = getValue(@"(?<=goods_id=)([0-9]{6,15})", item);//获取商品ID
-                            if (!string.IsNullOrWhiteSpace(itemid))
-                                continue;
-                        }
+                            if (string.IsNullOrWhiteSpace(itemid))
+                            {
+                                itemid = getValue(@"(?<=goods_id=)([0-9]{6,15})", item);//获取商品ID
+                                if (!string.IsNullOrWhiteSpace(itemid))
+                                    continue;
+                            }
 
-                        if (result != "")
-                            result += "\r";
-                        result += item;
+                            if (result != "")
+                                result += "\r";
+                            result += item;
+                        }
                     }
 
                     if (!itemid.IsEmpty())
@@ -568,6 +606,10 @@ namespace Hyg.Common.OtherTools
                 values.Add(m.Value);
             }
             return values;
+        }
+
+        public static List<string> GetUrlList(string content) {
+           return getValues(get_url_link, content);
         }
     }
 }

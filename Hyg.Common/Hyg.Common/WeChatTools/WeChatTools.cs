@@ -377,6 +377,75 @@ namespace Hyg.Common.WeChatTools
         }
 
         /// <summary>
+        /// 发送小程序消息
+        /// </summary>
+        /// <param name="WxClientId">微信客户端id</param>
+        /// <param name="to_wxid">接收者的wxid</param>
+        /// <param name="msgid">消息ID</param>
+        public static void SendAppMsg(uint WxClientId, string to_wxid, string msgid)
+        {
+            try
+            {
+                String strMsg = "{\"type\":" + (int)MessageTypeEnum.MT_FORWARD_APP_MSG + ",\"data\":{\"to_wxid\":\"" + to_wxid + "\",\"msgid\":\"" + msgid + "\"}}";
+                SendWeChatData(WxClientId, strMsg);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("SendAppMsg", ex);
+            }
+        }
+
+        /// <summary>
+        /// 发送小程序消息
+        /// </summary>
+        /// <param name="WxClientId">微信客户端id</param>
+        /// <param name="to_wxid">接收者的wxid</param>
+        /// <param name="msgid">消息ID</param>
+        public static void SendAnyMsg(uint WxClientId, string to_wxid, string msgid)
+        {
+            try
+            {
+                String strMsg = "{\"type\":" + (int)MessageTypeEnum.MT_FORWARD_ANY_MSG + ",\"data\":{\"to_wxid\":\"" + to_wxid + "\",\"msgid\":\"" + msgid + "\"}}";
+                SendWeChatData(WxClientId, strMsg);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("SendAnyMsg", ex);
+            }
+        }
+
+        /// <summary>
+        /// 发送撤回消息(未测试)
+        /// </summary>
+        /// <param name="WxClientId">微信客户端id</param>
+        /// <param name="msgid">消息ID</param>
+        public static void SendREVOKEMSG(uint WxClientId, string msgid)
+        {
+            try
+            {
+                String strMsg = "{\"type\":" + (int)MessageTypeEnum.MT_SEND_REVOKE_MSG + ",\"data\":{\"msgid\":\"" + msgid + "\"}}";
+                SendWeChatData(WxClientId, strMsg);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("SendAnyMsg", ex);
+            }
+        }
+
+        public static void SendXMLMSG(uint WxClientId,string to_wxid, string xml) {
+            try
+            {
+                xml = xml.Replace(@"\", @"\\").Replace("\"", "\\\"");
+                String strMsg = "{\"type\":" + (int)MessageTypeEnum.MT_SEND_XMLMSG + ",\"data\":{\"to_wxid\":\"" + to_wxid + "\",\"xml\":\"" + xml + "\"}}";
+                SendWeChatData(WxClientId, strMsg);
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteException("SendXMLMSG", ex);
+            }
+        }
+
+        /// <summary>
         /// 发送群公告
         /// </summary>
         public static void SendRoomNoticeMsg(uint WxClientId, string room_wxid, string notice)

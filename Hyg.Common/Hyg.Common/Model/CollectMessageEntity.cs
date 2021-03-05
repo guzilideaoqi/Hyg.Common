@@ -39,6 +39,11 @@ namespace Hyg.Common.Model
         public string MessageContent { get; set; }
 
         /// <summary>
+        /// 初始消息内容
+        /// </summary>
+        public string InitMessageContent { get; set; }
+
+        /// <summary>
         /// 采集商品列表(为了兼容多商品模式)
         /// </summary>
         public List<CollectGoodInfo> CollectGoodList { get; set; }
@@ -52,6 +57,18 @@ namespace Hyg.Common.Model
         /// 微信原格式
         /// </summary>
         public string raw_msg { get; set; }
+
+        /// <summary>
+        /// 消息ID
+        /// </summary>
+        public string msgid { get; set; }
+
+        public int wx_type { get; set; }
+
+        /// <summary>
+        /// url列表
+        /// </summary>
+        public List<string> url_list { get; set; }
     }
 
     /// <summary>
