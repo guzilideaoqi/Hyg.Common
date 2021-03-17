@@ -113,5 +113,10 @@ namespace Hyg.Common.Model
         /// 所属缓存表的key值
         /// </summary>
         public string cacheKey { get; set; }
+
+        /// <summary>
+        /// 佣金比例
+        /// </summary>
+        public decimal CommissionRate { get; set; }
     }
 }

@@ -539,7 +539,7 @@ namespace Hyg.Common.DTKTools
                     //转换公用商品信息
                     if (dTK_History_Low_Price_ListRequest.IsReturnCommonInfo)
                     {
-                        dTK_History_Low_Price_ListResponse.CommonGoodInfoList = ConvertCommonGoodInfo(dTK_History_Low_Price_ListResponse.data.list);
+                        dTK_History_Low_Price_ListResponse.CommonGoodInfoList = ConvertCommonGoodInfo(dTK_History_Low_Price_ListResponse.data.list, 1);
                     }
                 }
             }
@@ -587,7 +587,13 @@ namespace Hyg.Common.DTKTools
         #endregion
 
         #region 公用商品接口转换
-        List<CommonGoodInfoEntity> ConvertCommonGoodInfo(object WaitConvertGoodInfoList)
+        /// <summary>
+        /// 公用商品接口转换
+        /// </summary>
+        /// <param name="WaitConvertGoodInfoList"></param>
+        /// <param name="IsBaifen">是否需要除以100</param>
+        /// <returns></returns>
+        List<CommonGoodInfoEntity> ConvertCommonGoodInfo(object WaitConvertGoodInfoList, int ChuRate = 100)
         {
             List<CommonGoodInfoEntity> commonGoodInfoList = new List<CommonGoodInfoEntity>();
             try
@@ -615,13 +621,14 @@ namespace Hyg.Common.DTKTools
                             images = images,
                             image = GetImage(item.mainPic),
                             month_sales = item.monthSales,
-                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / ChuRate, 2),
                             PlaformType = 1,
                             afterServiceScore = GetScore(null),
                             logisticsLvyueScore = GetScore(null),
                             userEvaluateScore = GetScore(null),
                             remark = item.desc,
-                            coupon_link = item.couponLink
+                            coupon_link = item.couponLink,
+                            CommissionRate = item.commissionRate
                         });
                     }
                     #endregion
@@ -649,13 +656,14 @@ namespace Hyg.Common.DTKTools
                             images = images,
                             image = GetImage(item.mainPic),
                             month_sales = item.monthSales,
-                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / ChuRate, 2),
                             PlaformType = 1,
                             afterServiceScore = GetScore(item.shipScore.ToString()),
                             logisticsLvyueScore = GetScore(item.serviceScore.ToString()),
                             userEvaluateScore = GetScore(item.descScore.ToString()),
                             remark = item.desc,
-                            coupon_link = item.couponLink
+                            coupon_link = item.couponLink,
+                            CommissionRate = item.commissionRate
                         });
                     }
                     #endregion
@@ -683,13 +691,14 @@ namespace Hyg.Common.DTKTools
                             images = images,
                             image = GetImage(item.mainPic),
                             month_sales = item.monthSales,
-                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / ChuRate, 2),
                             PlaformType = 1,
                             afterServiceScore = GetScore(item.shipScore.ToString()),
                             logisticsLvyueScore = GetScore(item.serviceScore.ToString()),
                             userEvaluateScore = GetScore(item.descScore.ToString()),
                             remark = item.desc,
-                            coupon_link = item.couponLink
+                            coupon_link = item.couponLink,
+                            CommissionRate = item.commissionRate
                         });
                     }
                     #endregion
@@ -717,13 +726,14 @@ namespace Hyg.Common.DTKTools
                             images = images,
                             image = GetImage(item.mainPic),
                             month_sales = item.monthSales,
-                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / ChuRate, 2),
                             PlaformType = 1,
                             afterServiceScore = GetScore(item.shipScore.ToString()),
                             logisticsLvyueScore = GetScore(item.serviceScore.ToString()),
                             userEvaluateScore = GetScore(item.descScore.ToString()),
                             remark = item.desc,
-                            coupon_link = item.couponLink
+                            coupon_link = item.couponLink,
+                            CommissionRate = item.commissionRate
                         });
                     }
                     #endregion
@@ -751,13 +761,14 @@ namespace Hyg.Common.DTKTools
                             images = images,
                             image = GetImage(item.mainPic),
                             month_sales = item.monthSales,
-                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / ChuRate, 2),
                             PlaformType = 1,
                             afterServiceScore = GetScore(item.shipScore.ToString()),
                             logisticsLvyueScore = GetScore(item.serviceScore.ToString()),
                             userEvaluateScore = GetScore(item.descScore.ToString()),
                             remark = item.desc,
-                            coupon_link = item.couponLink
+                            coupon_link = item.couponLink,
+                            CommissionRate = item.commissionRate
                         });
                     }
                     #endregion
@@ -785,13 +796,14 @@ namespace Hyg.Common.DTKTools
                             images = images,
                             image = GetImage(item.mainPic),
                             month_sales = item.monthSales,
-                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / ChuRate, 2),
                             PlaformType = 1,
                             afterServiceScore = GetScore(item.shipScore.ToString()),
                             logisticsLvyueScore = GetScore(item.serviceScore.ToString()),
                             userEvaluateScore = GetScore(item.descScore.ToString()),
                             remark = item.desc,
-                            coupon_link = item.couponLink
+                            coupon_link = item.couponLink,
+                            CommissionRate = item.commissionRate
                         });
                     }
                     #endregion
@@ -819,13 +831,14 @@ namespace Hyg.Common.DTKTools
                             images = images,
                             image = GetImage(item.mainPic),
                             month_sales = item.monthSales,
-                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / ChuRate, 2),
                             PlaformType = 1,
                             afterServiceScore = GetScore(item.shipScore.ToString()),
                             logisticsLvyueScore = GetScore(item.serviceScore.ToString()),
                             userEvaluateScore = GetScore(item.descScore.ToString()),
                             remark = item.desc,
-                            coupon_link = item.couponLink
+                            coupon_link = item.couponLink,
+                            CommissionRate = item.commissionRate
                         });
                     }
                     #endregion
@@ -852,13 +865,14 @@ namespace Hyg.Common.DTKTools
                             images = images,
                             image = GetImage(item.mainPic),
                             month_sales = item.monthSales,
-                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / 100, 2),
+                            TotalCommission = Math.Round((double)(item.actualPrice * item.commissionRate) / ChuRate, 2),
                             PlaformType = 1,
                             afterServiceScore = GetScore(item.shipScore.ToString()),
                             logisticsLvyueScore = GetScore(item.serviceScore.ToString()),
                             userEvaluateScore = GetScore(item.descScore.ToString()),
                             remark = item.desc,
-                            coupon_link = item.couponLink
+                            coupon_link = item.couponLink,
+                            CommissionRate = item.commissionRate
                         });
                     }
                 }

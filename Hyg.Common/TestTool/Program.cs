@@ -123,22 +123,11 @@ namespace TestTool
                 }
             }
         }
-        const int plaformType = 7;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推 6=淘宝官方 7=多麦商城
+        const int plaformType = 2;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推 6=淘宝官方 7=多麦商城
         static void Main(string[] args)
         {
             try
             {
-
-
-                for (int i = 0; i < 3; i++)
-                {
-                    TaskHelper.ExcuteNewTask(() =>
-                    {
-                        excute_lock();
-                    }, 30);
-                }
-                Console.ReadKey();
-                return;
                 //获取当前进程对象
                 /*Process cur = Process.GetCurrentProcess();
 
@@ -378,6 +367,10 @@ namespace TestTool
                     Super_GoodQueryRequest super_GoodQueryRequest = new Super_GoodQueryRequest();
                     Super_GoodQueryDetailReq super_GoodQueryDetailReq = new Super_GoodQueryDetailReq();
                     super_GoodQueryRequest.goodsReqDTO = super_GoodQueryDetailReq;
+                    //super_GoodQueryDetailReq.keyword = "https://m.51tiangou.com/product/listing.html?id=16364146&JR=TG.PUSH.MPTM.1.16364146";
+                    super_GoodQueryDetailReq.keyword = "https://u.jd.com/sKzNc7B";
+                    super_GoodQueryDetailReq.pageIndex = 1;
+                    super_GoodQueryDetailReq.pageSize = 20;
                     jD_ApiManage.Super_GetGoodQueryResultByKeyWord(super_GoodQueryRequest); return;
 
                     UnionOpenOrderRowQueryRequest unionOpenOrderRowQueryRequest = new UnionOpenOrderRowQueryRequest();

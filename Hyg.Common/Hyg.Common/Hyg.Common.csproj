@@ -215,6 +215,7 @@
     <Compile Include="OtherTools\LogHelper.cs" />
     <Compile Include="OtherTools\Md5Helper.cs" />
     <Compile Include="OtherTools\OtherModel\DateTimeHelper.cs" />
+    <Compile Include="OtherTools\OtherModel\FormItemModel.cs" />
     <Compile Include="OtherTools\OtherModel\RandomTimeEntity.cs" />
     <Compile Include="OtherTools\RandomHelper.cs" />
     <Compile Include="OtherTools\RegistryHelper.cs" />

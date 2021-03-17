@@ -215,11 +215,22 @@ namespace Hyg.Common.PDDTools
 
                 good_Search_ListResponse = resultContent.ToJsonObject<Good_Search_ListResponse>();
 
-                if (!good_Search_ListResponse.IsError && good_SearchRequest.IsReturnCommonInfo)
-                {
-                    good_Search_ListResponse.CommonGoodInfoList = ConvertCommonGoodInfo(good_Search_ListResponse.goods_search_response.goods_list);
-                }
 
+                if (!good_Search_ListResponse.IsEmpty() && !good_Search_ListResponse.IsError && good_SearchRequest.IsReturnCommonInfo)
+                {
+                    if (good_Search_ListResponse.goods_search_response.IsEmpty() || good_Search_ListResponse.goods_search_response.goods_list.IsEmpty())
+                    {
+                        LogHelper.WriteDebugLog("Good_Search_List", resultContent);
+                    }
+                    else
+                    {
+                        good_Search_ListResponse.CommonGoodInfoList = ConvertCommonGoodInfo(good_Search_ListResponse.goods_search_response.goods_list);
+                    }
+                }
+                else
+                {
+                    LogHelper.WriteDebugLog("Good_Search_List", resultContent);
+                }
             }
             catch (Exception ex)
             {
