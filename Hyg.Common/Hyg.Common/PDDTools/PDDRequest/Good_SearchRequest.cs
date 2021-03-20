@@ -57,7 +57,7 @@ namespace Hyg.Common.PDDTools.PDDRequest
         /// <summary>
         /// 店铺类型，1-个人，2-企业，3-旗舰店，4-专卖店，5-专营店，6-普通店（未传为全部）
         /// </summary>
-        public int merchant_type { get; set; }
+        public int? merchant_type { get; set; }
 
         /// <summary>
         /// 商品标签类目ID，使用pdd.goods.opt.get获取

@@ -64,6 +64,11 @@ namespace Hyg.Common.PDDTools.PDDModel
         public string[] goods_id_list { get; set; }
 
         /// <summary>
+        /// 商品goodsSign列表，支持批量生链。goodsSign是加密后的goodsId, goodsId已下线
+        /// </summary>
+        public string[] goods_sign_list { get; set; }
+
+        /// <summary>
         /// true--生成多人团推广链接 false--生成单人团推广链接（默认false）1、单人团推广链接：用户访问单人团推广链接，可直接购买商品无需拼团。2、多人团推广链接：用户访问双人团推广链接开团，若用户分享给他人参团，则开团者和参团者的佣金均结算给推手
         /// </summary>
         public bool multi_group { get; set; } = false;
@@ -86,6 +91,6 @@ namespace Hyg.Common.PDDTools.PDDModel
         /// <summary>
         /// 是否生成带授权的单品链接。如果未授权，则会走授权流程
         /// </summary>
-        public bool generate_authority_url { get; set; } = true;
+        public bool generate_authority_url { get; set; }
     }
 }

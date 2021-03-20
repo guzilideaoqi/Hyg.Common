@@ -292,5 +292,7 @@ namespace Hyg.Common.PDDTools.PDDModel
         /// </summary>
         private decimal _predict_promotion_rate;
         public decimal predict_promotion_rate { get { return decimal.Parse((_predict_promotion_rate / 10).ToString("#0.00")); } set { _predict_promotion_rate = value; } }
+
+        public string goods_sign { get; set; }
     }
 }

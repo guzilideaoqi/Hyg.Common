@@ -123,11 +123,12 @@ namespace TestTool
                 }
             }
         }
-        const int plaformType = 2;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推 6=淘宝官方 7=多麦商城
+        const int plaformType = 3;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推 6=淘宝官方 7=多麦商城
         static void Main(string[] args)
         {
             try
             {
+                int aa=Convert.ToInt32(50.02);
                 //获取当前进程对象
                 /*Process cur = Process.GetCurrentProcess();
 

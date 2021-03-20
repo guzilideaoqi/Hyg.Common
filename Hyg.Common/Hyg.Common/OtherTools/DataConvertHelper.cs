@@ -254,7 +254,7 @@ namespace Hyg.Common.OtherTools
         #endregion
 
         #region Json对象转字符串
-        public static string ToJsonStr(this object obj,bool IgnoreNULL=false)
+        public static string ToJsonStr(this object obj, bool IgnoreNULL = false)
         {
             if (IgnoreNULL)
                 return JsonConvert.SerializeObject(obj, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
@@ -324,15 +324,17 @@ namespace Hyg.Common.OtherTools
         #endregion
 
         #region Model转字符串
-        public static string ModelToUriParam<T>(this T Model)
+        public static string ModelToUriParam<T>(this T Model, bool filternull = true)
         {
             PropertyInfo[] propertis = Model.GetType().GetProperties();
             StringBuilder sb = new StringBuilder();
             foreach (var p in propertis)
             {
                 var v = p.GetValue(Model, null);
-                if (v.IsEmpty())
+                if (filternull && v.IsEmpty())
+                {
                     continue;
+                }
 
                 if (p.Name.ToLower() == "isreturncommoninfo")
                     continue;
@@ -340,7 +342,8 @@ namespace Hyg.Common.OtherTools
                 sb.Append(p.Name);
                 sb.Append("=");
                 //sb.Append(HttpUtility.UrlEncode(v.ToString()));
-                sb.Append(v.ToString());
+                if (!v.IsEmpty())
+                    sb.Append(v.ToString());
                 sb.Append("&");
             }
 
