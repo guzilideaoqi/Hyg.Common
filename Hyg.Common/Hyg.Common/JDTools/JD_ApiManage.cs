@@ -111,16 +111,20 @@ namespace Hyg.Common.JDTools
                     CouponInfo couponInfo = item.couponInfo;
                     if (couponInfo.couponList.Length > 0)
                     {
-                        Coupon coupon = couponInfo.couponList[couponInfo.couponList.Length - 1];
-                        jFGoodsRespRow.bindType = coupon.bindType;
-                        jFGoodsRespRow.discount = coupon.discount;
-                        jFGoodsRespRow.link = coupon.link;
-                        jFGoodsRespRow.platformType = coupon.platformType;
-                        jFGoodsRespRow.quota = coupon.quota;
-                        jFGoodsRespRow.getStartTime = coupon.getStartTime;
-                        jFGoodsRespRow.getEndTime = coupon.getEndTime;
-                        jFGoodsRespRow.useStartTime = coupon.useStartTime;
-                        jFGoodsRespRow.useEndTime = coupon.useEndTime;
+                        ///获取当前价格可使用的优惠券
+                        Coupon coupon = couponInfo.couponList.ToList().Where(t => t.quota <= jFGoodsRespRow.price).FirstOrDefault();
+                        if (!coupon.IsEmpty())
+                        {
+                            jFGoodsRespRow.bindType = coupon.bindType;
+                            jFGoodsRespRow.discount = coupon.discount;
+                            jFGoodsRespRow.link = coupon.link;
+                            jFGoodsRespRow.platformType = coupon.platformType;
+                            jFGoodsRespRow.quota = coupon.quota;
+                            jFGoodsRespRow.getStartTime = coupon.getStartTime;
+                            jFGoodsRespRow.getEndTime = coupon.getEndTime;
+                            jFGoodsRespRow.useStartTime = coupon.useStartTime;
+                            jFGoodsRespRow.useEndTime = coupon.useEndTime;
+                        }
                     }
                     if (item.shopInfo != null)
                     {

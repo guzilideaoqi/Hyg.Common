@@ -139,7 +139,11 @@ namespace Hyg.Common.Model
         /// <summary>
         /// gif
         /// </summary>
-        Gif = 4
+        Gif = 4,
+        /// <summary>
+        /// 小程序
+        /// </summary>
+        MINIAPP = 5
     }
 
     public enum CollectGoodMode

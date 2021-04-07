@@ -28,6 +28,7 @@ namespace Hyg.Common.WeChatTools
     public class WeChatHelper
     {
         WeChatParseHelper weChatParseHelper = new WeChatParseHelper();
+
         #region 微信消息回调
         /// <summary>
         /// 声明添加日志的委托事件
@@ -121,6 +122,9 @@ namespace Hyg.Common.WeChatTools
                         CallBackWeChatMessage(wXInfo, dwClient);
                         logText = "【" + wXInfo.nickname + "】登录成功!";
 
+                        if (!CommonCacheConfig.WeChat_ImageList.IsEmpty())
+                            CommonCacheConfig.WeChat_ImageList.Clear();
+
                         #region 获取好友和群组消息
                         WeChatTools.GetFriendInfoList(dwClient);
                         WeChatTools.GetChatRoomInfoList(dwClient);
@@ -195,12 +199,7 @@ namespace Hyg.Common.WeChatTools
                         if ((!recv_Image_MsgEntity.room_wxid.IsQun() && recv_Image_MsgEntity.from_wxid.IsSelf(dwClient)) || (recv_Image_MsgEntity.room_wxid.IsQun() && CommonCacheConfig.ZhongZhuan_QunID != recv_Image_MsgEntity.room_wxid) && recv_Image_MsgEntity.from_wxid.IsSelf(dwClient))
                             return;
 
-                        if (!CommonCacheConfig.WeChat_ImageList.ContainsKey(recv_Image_MsgEntity.image))
-                        {
-                            CommonCacheConfig.WeChat_ImageList.Add(recv_Image_MsgEntity.image, recv_Image_MsgEntity);
-                            //间隔2500毫秒下载图片
-                            TaskHelper.ExcuteNewTask((() => { WeChatTools.SendDecryptImage(dwClient, recv_Image_MsgEntity.image); }), 2500);
-                        }
+                        CallBackWeChatMessage(recv_Image_MsgEntity, dwClient);
                         break;
                     case MessageTypeEnum.MT_RECV_VOICE_MSG:
                         //Recv_Video_MsgEntity recv_Video_MsgEntity = weChatParseHelper.ParseRecvVideo(reponseInfo.data);
@@ -270,7 +269,9 @@ namespace Hyg.Common.WeChatTools
                             CallBackWeChatMessage(recv_File_MsgEntity, dwClient);
                         }), 500);
                         break;
-                    case MessageTypeEnum.MT_RECV_MINIAPP_MSG:
+                    case MessageTypeEnum.MT_RECV_MINIAPP_MSG://小程序
+                        Recv_MINIAPP_MsgEntity recv_MINIAPP_MsgEntity = weChatParseHelper.ParseMiniAppMsg(reponseInfo.data);
+                        CallBackWeChatMessage(recv_MINIAPP_MsgEntity, dwClient);
                         break;
                     case MessageTypeEnum.MT_RECV_WCPAY_MSG:
                         break;
@@ -366,13 +367,23 @@ namespace Hyg.Common.WeChatTools
                         Recv_Decrypt_ImageEntity decrypt_ImageEntity = weChatParseHelper.ParseDecryptImage(reponseInfo.data);
                         if (decrypt_ImageEntity.status == 1)
                         {
-                            if (CommonCacheConfig.WeChat_ImageList.ContainsKey(decrypt_ImageEntity.src_file))
-                            {
-                                Recv_Image_MsgEntity recv_Image_MsgEntity_decry = CommonCacheConfig.WeChat_ImageList[decrypt_ImageEntity.src_file];
-                                recv_Image_MsgEntity_decry.image_url = decrypt_ImageEntity.dest_file;
+                            FileInfo fileInfo = new FileInfo(decrypt_ImageEntity.src_file);
+                            string key_image = fileInfo.Name;
 
+                            AddLogs("解密成功." + key_image);
+
+                            if (CommonCacheConfig.WeChat_ImageList.ContainsKey(key_image))
+                            {
+                                Recv_Image_MsgEntity recv_Image_MsgEntity_decry = CommonCacheConfig.WeChat_ImageList[key_image];
+                                CommonCacheConfig.WeChat_ImageList.Remove(key_image);
+
+                                recv_Image_MsgEntity_decry.image_url = decrypt_ImageEntity.dest_file;
                                 CallBackWeChatMessage(recv_Image_MsgEntity_decry, dwClient);
                             }
+                        }
+                        else
+                        {
+                            AddLogs("图片解密失败." + reponseInfo.data);
                         }
                         break;
                     case MessageTypeEnum.MT_OPEN_BROWSER_MSG:

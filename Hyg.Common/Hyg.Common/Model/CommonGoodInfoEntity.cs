@@ -118,5 +118,10 @@ namespace Hyg.Common.Model
         /// 佣金比例
         /// </summary>
         public decimal CommissionRate { get; set; }
+
+        /// <summary>
+        /// 官方额外补贴
+        /// </summary>
+        public decimal GovernmentSubsidy { get; set; }
     }
 }

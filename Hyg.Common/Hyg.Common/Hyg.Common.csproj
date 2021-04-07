@@ -57,6 +57,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChengQuanTools\ChengQuanModel\CardCouponEntity.cs" />
+    <Compile Include="ChengQuanTools\ChengQuanRequest\CardCouponListRequest.cs" />
+    <Compile Include="ChengQuanTools\ChengQuan_ApiManage.cs" />
     <Compile Include="DTKTools\DTKModel\ActivityCatalogueItem.cs" />
     <Compile Include="DTKTools\DTKModel\CategoryItem.cs" />
     <Compile Include="DTKTools\DTKModel\DTK_Activity_GoodListResult.cs" />
@@ -311,6 +314,7 @@
     <Compile Include="WeChatTools\WeChatModel\Recv_File_MsgEntity.cs" />
     <Compile Include="WeChatTools\WeChatModel\Recv_Image_MsgEntity.cs" />
     <Compile Include="WeChatTools\WeChatModel\Recv_Link_MsgEntity.cs" />
+    <Compile Include="WeChatTools\WeChatModel\Recv_MINIAPP_MsgEntity.cs" />
     <Compile Include="WeChatTools\WeChatModel\Recv_System_MsgEntity.cs" />
     <Compile Include="WeChatTools\WeChatModel\Recv_Text_MsgEntity.cs" />
     <Compile Include="WeChatTools\WeChatModel\Recv_Video_MsgEntity.cs" />
@@ -322,6 +326,7 @@
     <Compile Include="WeChatTools\WeChatTools.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ChengQuanTools\ChengQuanResponse\" />
     <Folder Include="TaobaoTools\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

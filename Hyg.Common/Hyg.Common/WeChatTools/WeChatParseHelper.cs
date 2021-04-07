@@ -232,7 +232,18 @@ namespace Hyg.Common.WeChatTools
         #endregion
 
         #region 解析小程序数据
+        public Recv_MINIAPP_MsgEntity ParseMiniAppMsg(object data) {
+            try
+            {
+                Recv_MINIAPP_MsgEntity recv_MINIAPP_MsgEntity = ConvertObjToModel<Recv_MINIAPP_MsgEntity>(data);
 
+                return recv_MINIAPP_MsgEntity;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         #endregion
 
         #region 存储解密后的文件路径

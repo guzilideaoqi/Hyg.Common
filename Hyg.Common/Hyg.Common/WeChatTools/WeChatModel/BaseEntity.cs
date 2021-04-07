@@ -52,5 +52,7 @@ namespace Hyg.Common.WeChatTools.WeChatModel
         /// 微信原始消息类型
         /// </summary>
         public int wx_type { get; set; }
+
+        public uint dw_clientid { get; set; }
     }
 }

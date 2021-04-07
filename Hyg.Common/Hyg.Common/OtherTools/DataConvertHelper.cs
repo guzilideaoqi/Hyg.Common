@@ -490,6 +490,12 @@ namespace Hyg.Common.OtherTools
                 byte[] fileData;
                 using (WebClient client = new WebClient())
                 {
+                    client.Headers.Add("Accept", "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/x-silverlight, application/x-ms-application, application/x-ms-xbap, application/vnd.ms-xpsdocument, application/xaml+xml, application/QVOD, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*");
+                    client.Headers.Add("Accept-Encoding", "gzip, deflate");
+                    client.Headers.Add("Accept-Language", "zh-cn");
+                    client.Headers.Add("UserAgent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36");
+                    client.Headers.Add("UA-CPU", "x86");
+                    client.Headers.Add("Referer", "https://blog.csdn.net/zhanlurbh/article/details/51066507");
                     fileData = client.DownloadData(url);
                 }
                 using (FileStream fs =

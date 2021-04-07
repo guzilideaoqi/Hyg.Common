@@ -1,4 +1,6 @@
 ﻿using Hyg.Common;
+using Hyg.Common.ChengQuanTools;
+using Hyg.Common.ChengQuanTools.ChengQuanRequest;
 using Hyg.Common.DTKTools;
 using Hyg.Common.DTKTools.DTKRequest;
 using Hyg.Common.DTKTools.DTKResponse;
@@ -123,7 +125,7 @@ namespace TestTool
                 }
             }
         }
-        const int plaformType = 3;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推 6=淘宝官方 7=多麦商城
+        const int plaformType = 8;//1=淘宝  2=京东  3=拼多多 4=好单库 5=京推推 6=淘宝官方 7=多麦商城 8=橙券
         static void Main(string[] args)
         {
             try
@@ -188,7 +190,7 @@ namespace TestTool
                 if (plaformType == 1)
                 {
                     DTK_ApiManage dTK_ApiManage = new DTK_ApiManage(CommonCacheConfig.dtk_appkey, CommonCacheConfig.dtk_appsecret);
-                    int apiType = 21;
+                    int apiType = 4;
                     object apiData = null;
                     switch (apiType)
                     {
@@ -214,7 +216,7 @@ namespace TestTool
                         case 4:
                             #region 高效转链
                             DTK_Privilege_LinkRequest dTK_Privilege_LinkRequest = new DTK_Privilege_LinkRequest();
-                            dTK_Privilege_LinkRequest.goodsId = "557600945136";
+                            dTK_Privilege_LinkRequest.goodsId = "540762435572";
                             dTK_Privilege_LinkRequest.pid = "mm_127267155_967450311_109582900164";
                             dTK_Privilege_LinkRequest.channelId = "2256931115";
                             dTK_Privilege_LinkRequest.couponId = "";
@@ -501,6 +503,13 @@ namespace TestTool
                     //rp_Prom_Url_GenerateRequest.generate_short_url = true;
                     //Rp_Prom_Url_GenerateResponse rp_Prom_Url_GenerateResponse = pDD_ApiManage.Get_Rp_Prom_Url_Generate(rp_Prom_Url_GenerateRequest);
 
+                    Super_General_Resource_UrlRequest super_General_Resource_UrlRequest = new Super_General_Resource_UrlRequest();
+                    super_General_Resource_UrlRequest.pid = "1912666_177495987";
+                    super_General_Resource_UrlRequest.custom_parameters = "guzilideaoqi";
+                    super_General_Resource_UrlRequest.resource_type = 39996;
+                    pDD_ApiManage.Super_General_Resource_Url(super_General_Resource_UrlRequest); return;
+
+
                     Good_SearchRequest good_SearchRequest = new Good_SearchRequest();
                     //good_SearchRequest.goods_id_list = new string[] { "177521731055" };
                     //good_SearchRequest.keyword = "https://p.pinduoduo.com/doXbmz4V";
@@ -532,11 +541,7 @@ namespace TestTool
                     super_General_RP_Prom_UrlRequest.generate_short_url = true;
                     pDD_ApiManage.Super_General_RP_Prom_Url(super_General_RP_Prom_UrlRequest); return;
 
-                    Super_General_Resource_UrlRequest super_General_Resource_UrlRequest = new Super_General_Resource_UrlRequest();
-                    super_General_Resource_UrlRequest.pid = "1912666_177495987";
-                    super_General_Resource_UrlRequest.custom_parameters = "guzilideaoqi";
-                    super_General_Resource_UrlRequest.resource_type = 39996;
-                    pDD_ApiManage.Super_General_Resource_Url(super_General_Resource_UrlRequest); return;
+
 
                     Super_Query_Member_AuthorityRequest super_Query_Member_AuthorityRequest = new Super_Query_Member_AuthorityRequest();
                     super_Query_Member_AuthorityRequest.pid = "1912666_177495987";
@@ -675,12 +680,16 @@ namespace TestTool
                     };
                     cPS_Convert_LinkRequest.site_id = "437582";
                     duoMai_ApiManage.Get_CPS_Convert_Link(cPS_Convert_LinkRequest); return;
+                }
+                else if (plaformType == 8) {
+                    ChengQuan_ApiManage chengQuan_ApiManage = new ChengQuan_ApiManage("rNEH7GJsCxX5SZ4HWsic3QJZQhCGXcT2");
 
+                    CardCouponListRequest cardCouponListRequest = new CardCouponListRequest();
+                    cardCouponListRequest.agent_id = "1150";
+                    cardCouponListRequest.machine_code = "guzilideaoqi";
+                    cardCouponListRequest.timestamp = DateTimeHelper.ConvertDateTimeToInt(DateTime.Now, true);
 
-
-
-
-
+                    chengQuan_ApiManage.GetCardCouponList(cardCouponListRequest);
                 }
             }
             catch (Exception ex)
